@@ -9,9 +9,58 @@ services:
     depends_on:
       frontend:
         condition: service_started
+      backend:
+        condition: service_started
+    networks:
+      - app-network
 
   frontend:
     build: ./front
     container_name: frontend
     expose:
       - 80
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - app-network
+
+  backend:
+    build: ./back
+    container_name: backend
+    env_file:
+      - ./back/.env
+    expose:
+      - 8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:15
+    container_name: centranime_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: centranime
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d password"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+volumes:
+  pgdata:
+
+networks:
+  app-network:
+    driver: bridge

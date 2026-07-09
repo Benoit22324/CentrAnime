@@ -1,4 +1,5 @@
 .env
+back/prisma/migrations
 
 # Logs
 logs
