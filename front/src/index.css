@@ -4,13 +4,21 @@
 
 @theme {
     /* colors */
+    --color-light: #F7F7F7;
+    --color-dark: #4A4A4A;
+
     --color-light-lightgrey: #EFEFEF;
     --color-light-grey: #E3E3E3;
-    --color-light-darkgrey: #C9C9C9;
     --color-light-lightblue: #97E3FF;
     --color-light-blue: #41CCFF;
     --color-light-lightyellow: #FFE853;
     --color-light-yellow: #FFDE25;
     --color-light-red: #FF4646;
     --color-light-green: #31FF50;
+
+    --color-dark-grey: #C9C9C9;
+}
+
+* {
+    transition: 0.2s;
 }

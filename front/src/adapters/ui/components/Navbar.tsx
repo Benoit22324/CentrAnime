@@ -9,11 +9,11 @@ export const Navbar = () => {
 
     const selectedColor = (path: string) => {
         if (pathname === path) return "p-2 bg-light-lightblue";
-        return "p-2 bg-light-grey hover:bg-light-lightgrey";
+        return "p-2 bg-light-grey hover:bg-light-lightgrey dark:bg-dark-grey dark:hover:bg-light-grey";
     }
 
     return <>
-        <nav className="flex items-center gap-4 p-3 bg-black/20 rounded-r-lg">
+        <nav className="flex items-center gap-4 p-3 bg-black/20 rounded-r-lg dark:bg-white/20">
             {
                 extended ? <>
                     <Link to={"/"}>
