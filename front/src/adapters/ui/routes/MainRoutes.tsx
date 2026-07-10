@@ -2,6 +2,8 @@ import { Navigate, Route, Routes } from "react-router-dom"
 import { GlobalLayout } from "../layouts/GlobalLayout"
 // import { useAuth } from "../context/AuthContext"
 import { CatalogPage } from "../pages/CatalogPage";
+import { LoginPage } from "../pages/LoginPage";
+import { RegisterPage } from "../pages/RegisterPage";
 
 export const MainRoutes = () => {
     // const { user } = useAuth();
@@ -10,6 +12,8 @@ export const MainRoutes = () => {
         <Routes>
             <Route element={<GlobalLayout />}>
                 <Route path="/" element={<CatalogPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />

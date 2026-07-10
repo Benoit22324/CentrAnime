@@ -13,9 +13,191 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  username  String
-  createdAt DateTime
+  id                      String           @id @default(uuid())
+  email                   String           @unique
+  password                String
+  username                String
+  createdAt               DateTime         @default(now())
+  recommandations         Recommandation[]
+  likes                   Like[]
+  favorites               Favorite[]
+  senderContactRequests   ContactRequest[] @relation("SenderRequest")
+  receiverContactRequests ContactRequest[] @relation("ReceiverRequest")
+  userAContacts           Contact[]        @relation("UserAContact")
+  userBContacts           Contact[]        @relation("UserBContact")
+  chatMessages            ChatMessage[]
+  aniLists                AniList[]
+  opinions                Opinion[]
+}
+
+model Platform {
+  id           String  @id @default(uuid())
+  platformName String
+  link         String
+  ranks        Rank[]
+  scores       Score[]
+}
+
+model Genre {
+  id          String       @id @default(uuid())
+  genreName   String
+  AnimeGenres AnimeGenre[]
+}
+
+model Studio {
+  id           String        @id @default(uuid())
+  studioName   String
+  animeStudios AnimeStudio[]
+}
+
+model Rank {
+  id         String   @id @default(uuid())
+  rank       Int
+  platformId String
+  platform   Platform @relation(fields: [platformId], references: [id])
+  anime      Anime?
+}
+
+model Score {
+  id         String   @id @default(uuid())
+  score      Int
+  platformId String
+  platform   Platform @relation(fields: [platformId], references: [id])
+  anime      Anime?
+}
+
+model Anime {
+  id                   String                @id @default(uuid())
+  main_title           String
+  en_title             String
+  type                 String
+  episodes             Int
+  status               String
+  posterUrl            String
+  startDate            String
+  endDate              String
+  synopsis             String
+  updatedAt            DateTime
+  rankId               String                @unique
+  scoreId              String                @unique
+  rank                 Rank                  @relation(fields: [rankId], references: [id])
+  score                Score                 @relation(fields: [scoreId], references: [id])
+  animeGenres          AnimeGenre[]
+  animeStudios         AnimeStudio[]
+  recommandationAnimes RecommandationAnime[]
+  aniListAnimes        AniListAnime[]
+  opinions             Opinion[]
+}
+
+model AnimeGenre {
+  id      String @id @default(uuid())
+  animeId String
+  genreId String
+  anime   Anime  @relation(fields: [animeId], references: [id])
+  genre   Genre  @relation(fields: [genreId], references: [id])
+}
+
+model AnimeStudio {
+  id       String @id @default(uuid())
+  animeId  String
+  studioId String
+  anime    Anime  @relation(fields: [animeId], references: [id])
+  studio   Studio @relation(fields: [studioId], references: [id])
+}
+
+model Recommandation {
+  id                   String                @id @default(uuid())
+  title                String
+  description          String
+  authorId             String
+  author               User                  @relation(fields: [authorId], references: [id])
+  likes                Like[]
+  favorites            Favorite[]
+  recommandationAnimes RecommandationAnime[]
+}
+
+model Like {
+  id     String         @id @default(uuid())
+  recoId String
+  userId String
+  reco   Recommandation @relation(fields: [recoId], references: [id])
+  user   User           @relation(fields: [userId], references: [id])
+}
+
+model Favorite {
+  id     String         @id @default(uuid())
+  recoId String
+  userId String
+  reco   Recommandation @relation(fields: [recoId], references: [id])
+  user   User           @relation(fields: [userId], references: [id])
+}
+
+model RecommandationAnime {
+  id        String         @id @default(uuid())
+  viewOrder Int
+  animeId   String
+  recoId    String
+  anime     Anime          @relation(fields: [animeId], references: [id])
+  reco      Recommandation @relation(fields: [recoId], references: [id])
+}
+
+model AniList {
+  id            String         @id @default(uuid())
+  title         String
+  userId        String
+  user          User           @relation(fields: [userId], references: [id])
+  aniListAnimes AniListAnime[]
+}
+
+model AniListAnime {
+  id        String  @id @default(uuid())
+  animeId   String
+  aniListId String
+  anime     Anime   @relation(fields: [animeId], references: [id])
+  aniList   AniList @relation(fields: [aniListId], references: [id])
+}
+
+model Opinion {
+  id         String @id @default(uuid())
+  note       Int
+  comment    String
+  viewStatus String
+  userId     String
+  animeId    String
+  user       User   @relation(fields: [userId], references: [id])
+  anime      Anime  @relation(fields: [animeId], references: [id])
+}
+
+model ContactRequest {
+  id         String   @id @default(uuid())
+  createdAt  DateTime @default(now())
+  senderId   String   @unique
+  reveiverId String   @unique
+  sender     User     @relation("SenderRequest", fields: [senderId], references: [id])
+  receiver   User     @relation("ReceiverRequest", fields: [reveiverId], references: [id])
+}
+
+model Contact {
+  id      String @id @default(uuid())
+  userAId String @unique
+  userBId String @unique
+  userA   User   @relation("UserAContact", fields: [userAId], references: [id])
+  userB   User   @relation("UserBContact", fields: [userBId], references: [id])
+  chat    Chat?
+}
+
+model Chat {
+  id           String        @id @default(uuid())
+  contactId    String        @unique
+  contact      Contact       @relation(fields: [contactId], references: [id])
+  chatMessages ChatMessage[]
+}
+
+model ChatMessage {
+  id       String @id @default(uuid())
+  message  String
+  chatId   String
+  authorId String
+  chat     Chat   @relation(fields: [chatId], references: [id])
+  author   User   @relation(fields: [authorId], references: [id])
 }

@@ -19,13 +19,13 @@ export const Header = () => {
             <div className="flex justify-between items-center gap-4">
                 <ThemeToggler />
 
-                <Link to={"/"}>
+                <Link to={"/login"}>
                     <Button
                         label="Se connecter"
                     />
                 </Link>
 
-                <Link to={"/"}>
+                <Link to={"/register"}>
                     <Button
                         label="S'inscrire"
                         className="p-2 font-semibold bg-light-yellow hover:bg-light-lightyellow"
