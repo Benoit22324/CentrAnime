@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { errorHandlerMiddleware, jsonApiResponseMiddleware } from "./middlewares";
+import { ApiRouter } from "./routes";
 
 const app = express();
 
@@ -15,7 +17,10 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(jsonApiResponseMiddleware);
 
+app.use("/api", ApiRouter);
 
+app.use(errorHandlerMiddleware);
 
 app.listen(8000, () => console.log("Serveur lancé !"));

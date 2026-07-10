@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { getEnvVariable } from "../utility";
+import { generateSalt, getEnvVariable, hashPassword } from "../utility";
 
 export const prisma = new PrismaClient({
     adapter: new PrismaPg({
@@ -10,12 +10,16 @@ export const prisma = new PrismaClient({
 });
 
 async function main() {
-    console.log("Ajout des utilisateurs...");
+    console.log("Ajout de l'utilisateurs...");
+    const salt = await generateSalt();
+    const hashedPassword = await hashPassword("test", salt);
+
     await prisma.user.create({
         data: {
             username: "test",
             email: "test@gmail.com",
-            password: "test",
+            password: hashedPassword,
+            salt,
             createdAt: new Date()
         }
     })

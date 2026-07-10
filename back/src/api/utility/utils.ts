@@ -5,3 +5,9 @@ export const getEnvVariable = (varName: string) => {
 
     return value;
 }
+
+export const extractToken = (cookies: string): string | null => {
+    const token = cookies["jwt"];
+
+    return token ?? null
+}
