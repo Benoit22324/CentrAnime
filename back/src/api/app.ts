@@ -3,8 +3,11 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { errorHandlerMiddleware, jsonApiResponseMiddleware } from "./middlewares";
 import { ApiRouter } from "./routes";
+import { initialiseRedisClient } from "./config/redisConfig";
 
 const app = express();
+
+initialiseRedisClient();
 
 app.use(cors({
     origin: [

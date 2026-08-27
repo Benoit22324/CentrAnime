@@ -19,6 +19,7 @@ model User {
   password                String
   salt                    String
   createdAt               DateTime         @default(now())
+  lastLogin               DateTime         @default(now())
   recommandations         Recommandation[]
   likes                   Like[]
   favorites               Favorite[]
@@ -61,7 +62,7 @@ model Rank {
 
 model Score {
   id         String   @id @default(uuid())
-  score      Int
+  score      Float
   platformId String
   platform   Platform @relation(fields: [platformId], references: [id])
   anime      Anime?
@@ -77,6 +78,7 @@ model Anime {
   posterUrl            String
   startDate            String
   endDate              String
+  popularity           Int
   synopsis             String
   updatedAt            DateTime
   rankId               String                @unique
