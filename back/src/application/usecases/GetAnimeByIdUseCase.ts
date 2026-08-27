@@ -1,4 +1,5 @@
-import { Anime } from "@prisma/client";
+import { sanitizeAnime } from "../../api/utility";
+import Anime from "../../domain/entities/Anime";
 import { AnimeRepositoryInterface } from "../../domain/interfaces/AnimeRepositoryInterface";
 
 class GetAnimeByIdUseCase {
@@ -8,7 +9,7 @@ class GetAnimeByIdUseCase {
         try {
             const anime = await this.animeRepository.getAnime(id);
 
-            return anime;
+            return sanitizeAnime(anime);
         } catch (err) {
             throw new Error("Anime introuvable");
         }

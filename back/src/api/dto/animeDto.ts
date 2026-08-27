@@ -1,4 +1,4 @@
-import { Anime } from "@prisma/client"
+import Anime from "../../domain/entities/Anime";
 
 export interface GetAnimesByPageOutputs {
     animes: Anime[],

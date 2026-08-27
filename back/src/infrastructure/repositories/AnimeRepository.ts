@@ -2,6 +2,7 @@ import { Anime, Prisma } from "@prisma/client";
 import { AnimeRepositoryInterface } from "../../domain/interfaces/AnimeRepositoryInterface";
 import { prisma } from "../../api/config/client";
 import { GetAnimesByPageOutputs } from "../../api/dto";
+import { sanitizeAnime } from "../../api/utility";
 
 class AnimeRepository implements AnimeRepositoryInterface {
     async getAnimesByPage(selectedPage: number, maxItems: number, searchName: string | null, filterGenre: string | null): Promise<GetAnimesByPageOutputs | null> {
@@ -56,7 +57,7 @@ class AnimeRepository implements AnimeRepositoryInterface {
         if (!animes) return null;
 
         return {
-            animes,
+            animes: animes.map(anime => sanitizeAnime(anime)),
             total: Math.ceil(totalAnimes)
         };
     }
