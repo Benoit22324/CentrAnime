@@ -10,20 +10,25 @@ class GetAnimesByPageUseCase {
 
     async execute(selectedPage: number, maxItems: number, searchName: string | null, filterGenre: string | null): Promise<GetAnimesByPageOutputs> {
         try {
-            await this.aniListRepository.getApiAnimes(selectedPage, maxItems, searchName, filterGenre);
+            if (searchName || filterGenre) await this.aniListRepository.getApiAnimes(selectedPage, maxItems, searchName, filterGenre);
 
             const animesDatas = await this.animeRepository.getAnimesByPage(selectedPage, maxItems, searchName, filterGenre);
 
-            if (!animesDatas) {
-                return {
-                    animes: [],
-                    total: 0
+            if (!animesDatas || animesDatas.animes.length === 0) {
+                const animesApiData = await this.aniListRepository.getApiAnimes(selectedPage, maxItems, searchName, filterGenre);
+
+                if (!animesApiData || animesApiData.animes.length === 0) {
+                    return {
+                        animes: [],
+                        total: 0
+                    }
                 }
+
+                return animesApiData;
             }
 
             return animesDatas;
         } catch (err) {
-            console.log(err)
             throw new Error("Animes introuvables");
         }
     }

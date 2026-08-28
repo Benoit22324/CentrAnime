@@ -29,7 +29,7 @@ export const redisCachingMiddleware = (options: RedisOptions = { EX: 21600 }) =>
         console.log("Middleware Redis exécuté pour: ", req.path);
 
         res.jsonSuccess = function(data: any, statusCode: number = 200): Response {
-            if (statusCode >= 200 && statusCode < 300) {
+            if (data && statusCode >= 200 && statusCode < 300) {
                 const payload = typeof data === "string" ? data : JSON.stringify(data);
 
                 console.log("Mise en cache déclenché pour ", key);

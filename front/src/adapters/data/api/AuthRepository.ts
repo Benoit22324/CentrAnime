@@ -7,12 +7,12 @@ import type { RepositoryOutput } from "../../../interfaces/outputs/RepositoryOut
 class AuthRepository implements AuthRepositoryInterface {
     async login(payload: LoginFormData): Promise<RepositoryOutput> {
         try {
-            // const response = await axios.post("http://localhost:8000/api/auth/login", payload, {
-            //     withCredentials: true
-            // });
-            const response = await axios.post("/api/auth/login", payload, {
+            const response = await axios.post("http://localhost:8000/api/auth/login", payload, {
                 withCredentials: true
             });
+            // const response = await axios.post("/api/auth/login", payload, {
+            //     withCredentials: true
+            // });
 
             if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
 
@@ -26,8 +26,8 @@ class AuthRepository implements AuthRepositoryInterface {
 
     async register(payload: RegisterFormData): Promise<RepositoryOutput | void> {
         try {
-            // const response = await axios.post("http://localhost:8000/api/auth/register", payload);
-            const response = await axios.post("/api/auth/register", payload);
+            const response = await axios.post("http://localhost:8000/api/auth/register", payload);
+            // const response = await axios.post("/api/auth/register", payload);
 
             if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
         } catch (error) {
@@ -38,12 +38,12 @@ class AuthRepository implements AuthRepositoryInterface {
     }
 
     async logout(): Promise<void> {
-        // await axios.get("http://localhost:8000/api/auth/logout", {
-        //     withCredentials: true
-        // });
-        await axios.get("/api/auth/logout", {
+        await axios.get("http://localhost:8000/api/auth/logout", {
             withCredentials: true
         });
+        // await axios.get("/api/auth/logout", {
+        //     withCredentials: true
+        // });
     }
 }
 

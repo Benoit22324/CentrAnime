@@ -1,8 +1,12 @@
 import { AniListRepositoryInterface } from "../../domain/interfaces/AniListRepositoryInterface";
 import { prisma } from "../../api/config/client";
+import { sanitizeAnime } from "../../api/utility";
+import Anime from "../../domain/entities/Anime";
+import { Prisma } from "@prisma/client";
+import { GetAnimesByPageOutputs } from "../../api/dto";
 
 class AniListRepository implements AniListRepositoryInterface {
-    async getApiAnimes(selectedPage: number, maxItems: number, searchName: string | null, filterGenre: string | null): Promise<void> {
+    async getApiAnimes(selectedPage: number, maxItems: number, searchName: string | null, filterGenre: string | null): Promise<GetAnimesByPageOutputs | undefined | null> {
         const query = `
             query ($page: Int, $maxItems: Int, $search: String, $genre: String) {
                 Page(page: $page, perPage: $maxItems) {
@@ -78,6 +82,7 @@ class AniListRepository implements AniListRepositoryInterface {
         if (response.ok) {
             const dataExtracted = await response.json();
 
+            let animeFinalList: Anime[] = [];
             const animesList = dataExtracted.data.Page.media;
 
             // Récupération de la plateforme AniList (là où on récupère les données)
@@ -101,16 +106,20 @@ class AniListRepository implements AniListRepositoryInterface {
             } else platformId = platformDb.id
 
             for (const anime of animesList) {
+                const searchWhere: Prisma.AnimeWhereInput = {
+                    main_title: anime.title.romaji
+                }
+
+                if (anime.title.english) {
+                    searchWhere.en_title = anime.title.english
+                }
                 // Récupération de l'anime en bdd
                 const dbAnime = await prisma.anime.findFirst({
-                    where: {
-                        main_title: anime.title.romaji,
-                        en_title: anime.title.english
-                    }
+                    where: searchWhere
                 });
 
                 // Vérification s'il existe ou s'il a été mis à jour durant les 24h
-                if (dbAnime && new Date(dbAnime.updatedAt.getTime() + 86400000).getTime() > new Date().getTime()) return
+                if (dbAnime && new Date(dbAnime.updatedAt.getTime() + 86400000).getTime() > new Date().getTime()) return null
 
                 // Si l'anime existe déjà et qu'il n'a pas été mis à jour durant + de 24h
                 if (dbAnime && new Date(dbAnime.updatedAt.getTime() + 86400000).getTime() <= new Date().getTime()) {
@@ -137,7 +146,7 @@ class AniListRepository implements AniListRepositoryInterface {
                         }
                     })
 
-                    return
+                    return null
                 }
 
                 // Vérification si le studio existe
@@ -146,7 +155,7 @@ class AniListRepository implements AniListRepositoryInterface {
 
                 const dbStudio = await prisma.studio.findFirst({
                     where: {
-                        studioName: studio.name
+                        studioName: studio ? studio.name : anime.studios.nodes[0].name
                     }
                 });
 
@@ -154,7 +163,7 @@ class AniListRepository implements AniListRepositoryInterface {
                     // Ajout du studio et récupération de l'id s'il n'existe pas
                     const studioData = await prisma.studio.create({
                         data: {
-                            studioName: studio.name
+                            studioName: studio ? studio.name : anime.studios.nodes[0].name
                         }
                     });
 
@@ -165,7 +174,7 @@ class AniListRepository implements AniListRepositoryInterface {
                     // Création en bdd du rang
                     const rankData = await prisma.rank.create({
                         data: {
-                            rank: anime.rankings[0].rank || 0,
+                            rank: anime.rankings[0] ? anime.rankings[0].rank : 0,
                             platformId
                         }
                     });
@@ -180,7 +189,7 @@ class AniListRepository implements AniListRepositoryInterface {
                     // Valeurs à stocker en bdd
                     const data = {
                         main_title: anime.title.romaji,
-                        en_title: anime.title.english,
+                        en_title: anime.title.english || "",
                         type: anime.format,
                         episodes: anime.episodes || 0,
                         status: anime.status,
@@ -239,8 +248,62 @@ class AniListRepository implements AniListRepositoryInterface {
 
                     // Attendre que tous les liens soient faites
                     await Promise.all(animeGenrePromises);
+
+                    const cleanAnimeData = await prisma.anime.findUnique({
+                        where: { id: animeData.id },
+                        include: {
+                            animeGenres: {
+                                select: {
+                                    genre: {
+                                        select: { genreName: true }
+                                    }
+                                }
+                            }
+                        },
+                    });
+
+                    if (cleanAnimeData) {
+                        animeFinalList.push(sanitizeAnime(cleanAnimeData));
+                    }
                 }
             }
+
+            const where: Prisma.AnimeWhereInput = {};
+
+            if (searchName) {
+                where.OR = [
+                    {
+                        main_title: {
+                            contains: searchName.trim(),
+                            mode: "insensitive"
+                        }
+                    },
+                    {
+                        en_title: {
+                            contains: searchName.trim(),
+                            mode: "insensitive"
+                        }
+                    }
+                ]
+            }
+            if (filterGenre) {
+                where.animeGenres = {
+                    some: {
+                        genre: {
+                            genreName: filterGenre.trim()
+                        }
+                    }
+                }
+            }
+
+            const total = await prisma.anime.count({
+                where
+            });
+
+            return {
+                animes: animeFinalList,
+                total
+            };
         }
     }
 }

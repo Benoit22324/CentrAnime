@@ -6,7 +6,7 @@ export const GlobalLayout = () => {
     return <>
         <Header />
 
-        <main className="w-[80%] mx-auto p-2">
+        <main className="w-[90%] md:w-[80%] mx-auto p-2">
             <Outlet />
         </main>
 
