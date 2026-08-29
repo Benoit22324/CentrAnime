@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext"
 import { CatalogPage } from "../pages/CatalogPage";
 import { LoginPage } from "../pages/LoginPage";
 import { RegisterPage } from "../pages/RegisterPage";
+import { AnimePage } from "../pages/AnimePage";
 
 export const MainRoutes = () => {
     const { user } = useAuth();
@@ -12,6 +13,7 @@ export const MainRoutes = () => {
         <Routes>
             <Route element={<GlobalLayout />}>
                 <Route path="/" element={<CatalogPage />} />
+                <Route path="/anime/:id" element={<AnimePage />} />
                 {
                     user ? <>
                     </>

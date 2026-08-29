@@ -14,6 +14,9 @@ export const convertAnime = (anime: any) => {
         anime.popularity,
         anime.synopsis,
         anime.updatedAt,
-        anime.genres
+        anime.genres,
+        anime.rank,
+        anime.score,
+        anime.studio
     )
 }

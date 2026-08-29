@@ -1,3 +1,14 @@
+type AnimeRank = {
+    rank: number,
+    platformName: string,
+    link: string
+}
+type AnimeScore = {
+    score: number,
+    platformName: string,
+    link: string
+}
+
 class Anime {
     constructor(
         private readonly id: string,
@@ -13,6 +24,9 @@ class Anime {
         private readonly synopsis: string,
         private readonly updatedAt: Date,
         private readonly genres: string[],
+        private readonly rank?: AnimeRank,
+        private readonly score?: AnimeScore,
+        private readonly studio?: string
     ) { }
 
     getId() {
@@ -65,6 +79,18 @@ class Anime {
 
     getGenres() {
         return this.genres;
+    }
+
+    getRank() {
+        return this.rank;
+    }
+
+    getScore() {
+        return this.score;
+    }
+
+    getStudio() {
+        return this.studio;
     }
 }
 

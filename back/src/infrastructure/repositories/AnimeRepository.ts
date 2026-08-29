@@ -67,10 +67,26 @@ class AnimeRepository implements AnimeRepositoryInterface {
             where: { id },
             include: {
                 score: {
-                    select: { score: true }
+                    select: {
+                        score: true,
+                        platform: {
+                            select: {
+                                platformName: true,
+                                link: true
+                            }
+                        }
+                    }
                 },
                 rank: {
-                    select: { rank: true }
+                    select: {
+                        rank: true,
+                        platform: {
+                            select: {
+                                platformName: true,
+                                link: true
+                            }
+                        }
+                    }
                 },
                 animeGenres: {
                     include: {

@@ -9,7 +9,7 @@ type FilterModalProps = {
 
 export const FilterModal = ({ genreList, selectedGenre, setSelectedGenre }: FilterModalProps) => {
     return <>
-        <div className="absolute -bottom-45 flex flex-wrap w-2/3 px-6 py-4 bg-light-grey border border-black rounded-xl z-10">
+        <div className="absolute -bottom-45 flex flex-wrap w-2/3 px-6 py-4 bg-light-grey border border-dark rounded-xl z-10">
             {
                 genreList ? genreList.map(g => <FilterGenreItem
                     key={g.getId()}

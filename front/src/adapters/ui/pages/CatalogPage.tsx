@@ -84,17 +84,17 @@ export const CatalogPage = () => {
             }
             <Button
                 label="Filtrer"
-                className={`px-3 py-1 font-semibold text-xl border border-black ${isFilterOpen ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightgrey"}`}
+                className={`px-3 py-1 font-semibold text-xl border border-dark ${isFilterOpen ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightgrey"}`}
                 handleClick={() => setIsFilterOpen(!isFilterOpen)}
             />
             <input
                 value={searchName}
                 onChange={(e) => setSearchName(e.target.value)}
-                className="w-2/5 px-4 py-2 bg-light-lightgrey text-lg rounded-lg border-1 shadow-custom-1 shadow-black/20 dark:bg-dark-grey dark:border-light"
+                className="w-2/5 px-4 py-2 bg-light-lightgrey text-lg rounded-lg border border-dark shadow-custom-1 shadow-black/20 dark:bg-dark-grey dark:border-light"
                 placeholder="Ex : Frieren, Witch Hat Atelier, etc..."
             />
             <button
-                className={`px-2 font-semibold bg-light-grey border border-black hover:bg-light-lightgrey rounded-lg shadow-custom-1 shadow-black/20 hover:cursor-pointer hover:scale-95`}
+                className={`px-2 font-semibold bg-light-grey border border-dark hover:bg-light-lightgrey rounded-lg shadow-custom-1 shadow-black/20 hover:cursor-pointer hover:scale-95`}
                 onClick={handleSearchAnime}
             >
                 <IoSearchSharp size={30} />
