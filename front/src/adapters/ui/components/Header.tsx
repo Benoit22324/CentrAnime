@@ -2,8 +2,11 @@ import { Link } from "react-router-dom"
 import { Navbar } from "./Navbar"
 import { Button } from "./Button"
 import { ThemeToggler } from "./ThemeToggler"
+import { useAuth } from "../context/AuthContext"
 
 export const Header = () => {
+    const { user, logout } = useAuth();
+
     return <>
         <header className="flex justify-between items-center p-6 pb-2">
             <div className="flex items-center">
@@ -19,18 +22,27 @@ export const Header = () => {
             <div className="flex justify-between items-center gap-4">
                 <ThemeToggler />
 
-                <Link to={"/"}>
-                    <Button
-                        label="Se connecter"
-                    />
-                </Link>
+                {
+                    user ? <Button
+                            label="Se déconnecter"
+                            className="p-2 font-semibold bg-light-red hover:bg-light-lightred"
+                            handleClick={logout}
+                        />
+                    : <>
+                        <Link to={"/login"}>
+                            <Button
+                                label="Se connecter"
+                            />
+                        </Link>
 
-                <Link to={"/"}>
-                    <Button
-                        label="S'inscrire"
-                        className="p-2 font-semibold bg-light-yellow hover:bg-light-lightyellow"
-                    />
-                </Link>
+                        <Link to={"/register"}>
+                            <Button
+                                label="S'inscrire"
+                                className="p-2 font-semibold bg-light-yellow hover:bg-light-lightyellow"
+                            />
+                        </Link>
+                    </>
+                }
             </div>
         </header>
     </>

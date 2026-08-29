@@ -11,7 +11,7 @@ export const ThemeToggler = () => {
 
     return <>
         <button
-            className="p-2 font-semibold bg-light-grey hover:bg-light-lightgrey rounded-lg shadow-md shadow-black/25 hover:cursor-pointer dark:bg-dark-grey dark:hover:bg-light-grey"
+            className="p-2 font-semibold bg-light-grey hover:bg-light-lightgrey rounded-lg shadow-md shadow-black/25 hover:cursor-pointer hover:scale-95 dark:bg-dark-grey dark:hover:bg-light-grey"
             onClick={() => setDarkMode(!darkMode)}
         >
             {

@@ -9,14 +9,20 @@
 
     --color-light-lightgrey: #EFEFEF;
     --color-light-grey: #E3E3E3;
+    --color-light-darkgrey: #6E6E6E;
     --color-light-lightblue: #97E3FF;
     --color-light-blue: #41CCFF;
     --color-light-lightyellow: #FFE853;
     --color-light-yellow: #FFDE25;
+    --color-light-lightred: #FF6F6F;
     --color-light-red: #FF4646;
+    --color-light-lightgreen: #61FF7B;
     --color-light-green: #31FF50;
 
     --color-dark-grey: #C9C9C9;
+
+    /* box shadows */
+    --shadow-custom-1: 3px 3px 2px transparent;
 }
 
 * {

@@ -1,13 +1,59 @@
-import React, { createContext, useContext, type PropsWithChildren } from "react";
+import React, { createContext, useContext, useState, type PropsWithChildren } from "react";
 import type { AuthContextType } from "../../../typings/AuthContextType";
+import type User from "../../../domain/entities/User";
+import type { RegisterFormData } from "../../../typings/RegisterFormData";
+import AuthRepository from "../../data/api/AuthRepository";
+import LoginUseCase from "../../../domain/usecases/LoginUseCase";
+import RegisterUseCase from "../../../domain/usecases/RegisterUseCase";
+import type { LoginFormData } from "../../../typings/LoginFormData";
+import LogoutUseCase from "../../../domain/usecases/LogoutUseCase";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-    // const [user, setUser] = useState<any>(null);
+    const authRepository = new AuthRepository();
+    const loginUseCase = new LoginUseCase(authRepository);
+    const registerUseCase = new RegisterUseCase(authRepository);
+    const logoutUseCase = new LogoutUseCase(authRepository);
+
+    const [user, setUser] = useState<User | null>(null);
+
+    const login = async (payload: LoginFormData) => {
+        try {
+            const res = await loginUseCase.execute(payload);
+
+            if (typeof res === "string") return res;
+            if (res) setUser(res);
+        } catch(err) {
+            throw new Error("Une erreur est survenue");
+        }
+    }
+
+    const register = async (payload: RegisterFormData) => {
+        try {
+            const res = await registerUseCase.execute(payload);
+
+            if (res) return res;
+        } catch(err) {
+            throw new Error("Une erreur est survenue");
+        }
+    }
+
+    const logout = async () => {
+        try {
+            await logoutUseCase.execute();
+
+            setUser(null);
+        } catch(err) {
+            throw new Error("Une erreur est survenue");
+        }
+    }
 
     const authContextValue: AuthContextType = {
-        // user
+        user,
+        login,
+        register,
+        logout
     }
 
     return <AuthContext.Provider value={authContextValue}>
