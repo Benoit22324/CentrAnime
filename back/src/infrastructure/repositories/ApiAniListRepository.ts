@@ -1,11 +1,11 @@
-import { AniListRepositoryInterface } from "../../domain/interfaces/AniListRepositoryInterface";
+import { ApiAniListRepositoryInterface } from "../../domain/interfaces/ApiAniListRepositoryInterface";
 import { prisma } from "../../api/config/client";
 import { sanitizeAnime } from "../../api/utility";
 import Anime from "../../domain/entities/Anime";
 import { Prisma } from "@prisma/client";
 import { GetAnimesByPageOutputs } from "../../api/dto";
 
-class AniListRepository implements AniListRepositoryInterface {
+class ApiAniListRepository implements ApiAniListRepositoryInterface {
     async getApiAnimes(selectedPage: number, maxItems: number, searchName: string | null, filterGenre: string | null): Promise<GetAnimesByPageOutputs | undefined | null> {
         const query = `
             query ($page: Int, $maxItems: Int, $search: String, $genre: String) {
@@ -308,4 +308,4 @@ class AniListRepository implements AniListRepositoryInterface {
     }
 }
 
-export default AniListRepository;
+export default ApiAniListRepository;

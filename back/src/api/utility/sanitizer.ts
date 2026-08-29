@@ -1,6 +1,7 @@
-import { Anime as PrismaAnime, Opinion as PrismaOpinion, Prisma, User } from "@prisma/client";
+import { Anime as PrismaAnime, Opinion as PrismaOpinion, Prisma, User, AniList } from "@prisma/client";
 import Anime from "../../domain/entities/Anime";
 import Opinion from "../../domain/entities/Opinion";
+import AnimeList from "../../domain/entities/AnimeList";
 
 export const sanitizeUser = (user: User) => {
     const { salt, password, ...safeInfo } = user;
@@ -123,5 +124,37 @@ export const sanitizeOpinion = (opinion: PrismaOpinion) => {
         opinion.viewStatus ?? undefined,
         opinion.note ?? undefined,
         opinion.comment ?? undefined
+    )
+}
+
+type PrismaAniListWithInclude = Prisma.AniListGetPayload<{
+    include: {
+        aniListAnimes: {
+            select: {
+                id: true,
+                anime: {
+                    select: {
+                        id: true,
+                        main_title: true
+                    }
+                }
+            }
+        }
+    }
+}>
+
+export const sanitizeAnimeList = (aniList: AniList) => {
+    const al = aniList as PrismaAniListWithInclude;
+
+    const animes = al.aniListAnimes.map(a => ({
+        id: a.id,
+        animeId: a.anime.id,
+        title: a.anime.main_title
+    }))
+
+    return new AnimeList(
+        al.id,
+        al.title,
+        animes
     )
 }

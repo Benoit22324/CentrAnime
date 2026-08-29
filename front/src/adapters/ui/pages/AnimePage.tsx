@@ -12,6 +12,7 @@ import Opinion from "../../../domain/entities/Opinion";
 import CreateOpinionUseCase from "../../../domain/usecases/CreateOpinionUseCase";
 import UpdateOpinionUseCase from "../../../domain/usecases/UpdateOpinionUseCase";
 import type { OpinionFormData } from "../../../typings/OpinionFormData";
+import { Button } from "../components/Button";
 
 export const AnimePage = () => {
     const { user } = useAuth();
@@ -139,13 +140,21 @@ export const AnimePage = () => {
 
                             <div className="flex flex-col gap-1">
                                 <h2 className="mb-1 text-xl md:text-2xl font-semibold">Ajouter dans une liste</h2>
-                                <select
-                                    className="px-2 py-1 bg-light-lightgrey text-sm text-light-darkgrey rounded-lg border border-dark shadow-custom-1 shadow-black/20 dark:bg-dark-grey dark:border-light disabled:text-light-darkgrey/60"
-                                    disabled
-                                >
-                                    {/* <option value={""} hidden>Sélectionner une liste</option> */}
-                                    <option value={""} hidden>Aucune liste disponible</option>
-                                </select>
+
+                                <div className="flex items-center gap-4">
+                                    <select
+                                        className="w-2/3 px-2 py-1 bg-light-lightgrey text-sm text-light-darkgrey rounded-lg border border-dark shadow-custom-1 shadow-black/20 dark:bg-dark-grey dark:border-light disabled:text-light-darkgrey/60"
+                                        disabled
+                                    >
+                                        {/* <option value={""} hidden>Sélectionner une liste</option> */}
+                                        <option value={""} hidden>Aucune liste disponible</option>
+                                    </select>
+                                    <Button
+                                        label="Ajouter"
+                                        className="px-2 py-1 font-semibold bg-light-blue hover:bg-light-lightblue"
+                                        disable={true}
+                                    />
+                                </div>
                             </div>
                         </div>
                     }
