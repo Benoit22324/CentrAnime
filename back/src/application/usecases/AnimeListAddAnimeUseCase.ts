@@ -1,7 +1,7 @@
 import AnimeList from "../../domain/entities/AnimeList";
 import { AnimeListRepositoryInterface } from "../../domain/interfaces/AnimeListRepositoryInterface";
 
-class AddAnimeAnimeListUseCase {
+class AnimeListAddAnimeUseCase {
     constructor(private readonly animeListRepository: AnimeListRepositoryInterface) { }
 
     async execute(id: string, animeId: string): Promise<AnimeList | null> {
@@ -15,4 +15,4 @@ class AddAnimeAnimeListUseCase {
     }
 }
 
-export default AddAnimeAnimeListUseCase;
+export default AnimeListAddAnimeUseCase;

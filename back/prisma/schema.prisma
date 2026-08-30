@@ -137,7 +137,6 @@ model Favorite {
 
 model RecommandationAnime {
   id        String         @id @default(uuid())
-  viewOrder Int
   animeId   String
   recoId    String
   anime     Anime          @relation(fields: [animeId], references: [id])

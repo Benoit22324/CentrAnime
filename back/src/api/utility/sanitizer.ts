@@ -1,7 +1,8 @@
-import { Anime as PrismaAnime, Opinion as PrismaOpinion, Prisma, User, AniList } from "@prisma/client";
+import { Anime as PrismaAnime, Recommandation as PrismaReco, Opinion as PrismaOpinion, Prisma, User, AniList } from "@prisma/client";
 import Anime from "../../domain/entities/Anime";
 import Opinion from "../../domain/entities/Opinion";
 import AnimeList from "../../domain/entities/AnimeList";
+import Recommandation from "../../domain/entities/Recommandation";
 
 export const sanitizeUser = (user: User) => {
     const { salt, password, ...safeInfo } = user;
@@ -156,5 +157,44 @@ export const sanitizeAnimeList = (aniList: AniList) => {
         al.id,
         al.title,
         animes
+    )
+}
+
+type PrismaRecommandationWithInclude = Prisma.RecommandationGetPayload<{
+    include: {
+        recommandationAnimes: {
+            select: {
+                id: true,
+                anime: {
+                    select: {
+                        id: true,
+                        main_title: true
+                    }
+                }
+            }
+        },
+        author: {
+            select: {
+                username: true
+            }
+        }
+    }
+}>
+
+export const sanitizeRecommandation = (recommandation: PrismaReco) => {
+    const reco = recommandation as PrismaRecommandationWithInclude;
+
+    const animes = reco.recommandationAnimes.map(a => ({
+        id: a.id,
+        animeId: a.anime.id,
+        title: a.anime.main_title
+    }))
+
+    return new Recommandation(
+        reco.id,
+        reco.title,
+        reco.description,
+        animes,
+        reco.author.username
     )
 }

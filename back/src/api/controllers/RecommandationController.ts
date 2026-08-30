@@ -1,0 +1,153 @@
+import { NextFunction, Request, Response } from "express";
+import GetRecommandationsUseCase from "../../application/usecases/GetRecommandationsUseCase";
+import GetRecommandationByIdUseCase from "../../application/usecases/GetRecommandationByIdUseCase";
+import GetRecommandationByPageUseCase from "../../application/usecases/GetRecommandationByPageUseCase";
+import CreateRecommandationUseCase from "../../application/usecases/CreateRecommandationUseCase";
+import RecommandationAddAnimeUseCase from "../../application/usecases/RecommandationAddAnimeUseCase";
+import { CreateRecommandationInputs } from "../dto";
+import UpdateRecommandationUseCase from "../../application/usecases/UpdateRecommandationUseCase";
+import RemoveAnimeRecommandationUseCase from "../../application/usecases/RemoveAnimeRecommandationUseCase";
+import DeleteRecommandationUseCase from "../../application/usecases/DeleteRecommandationUseCase";
+
+class RecommandationController {
+    constructor(
+        private readonly getRecommandationsUseCase: GetRecommandationsUseCase,
+        private readonly getRecommandationByIdUseCase: GetRecommandationByIdUseCase,
+        private readonly getRecommandationByPageUseCase: GetRecommandationByPageUseCase,
+        private readonly createRecommandationUseCase: CreateRecommandationUseCase,
+        private readonly recommandationAddAnimeUseCase: RecommandationAddAnimeUseCase,
+        private readonly updateRecommandationUseCase: UpdateRecommandationUseCase,
+        private readonly removeAnimeRecommandationUseCase: RemoveAnimeRecommandationUseCase,
+        private readonly deleteRecommandationUseCase: DeleteRecommandationUseCase
+    ) { }
+
+    async getRecommandations(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.user;
+
+            const recommandations = await this.getRecommandationsUseCase.execute(id);
+
+            return res.jsonSuccess(recommandations);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getRecommandationById(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.user;
+            const { recoId } = req.params;
+
+            if (!recoId || typeof(recoId) !== "string") return res.jsonError("Paramètre invalide", 404);
+
+            const recommandation = await this.getRecommandationByIdUseCase.execute(recoId, id);
+
+            return res.jsonSuccess(recommandation);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getRecommandationByPage(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const selectedPage = parseInt(req.query.selectedPage as string) || 0;
+            const maxItems = parseInt(req.query.maxItems as string) || 12;
+
+            const recommandations = await this.getRecommandationByPageUseCase.execute(selectedPage, maxItems);
+
+            return res.jsonSuccess(recommandations);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async createRecommandation(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.user;
+            const { title, description } = req.body as CreateRecommandationInputs;
+
+            await this.createRecommandationUseCase.execute(id, title, description);
+
+            return res.jsonSuccess(null, 201);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async addAnimeToRecommandation(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { recoId } = req.params;
+            const animeId = req.query.animeId as string;
+
+            if (!recoId || typeof(recoId) !== "string") return res.jsonError("Paramètre invalide", 404);
+
+            const anilist = await this.recommandationAddAnimeUseCase.execute(recoId, animeId);
+
+            return res.jsonSuccess(anilist, 201);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async updateRecommandation(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.params;
+            const { title, description } = req.body as CreateRecommandationInputs;
+
+            if (!id || typeof(id) !== "string") return res.jsonError("Paramètre invalide", 404);
+
+            const recommandation = await this.updateRecommandationUseCase.execute(id, title, description);
+
+            return res.jsonSuccess(recommandation, 201);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async removeAnimeToRecommandation(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.params;
+
+            if (!id || typeof(id) !== "string") return res.jsonError("Paramètre invalide", 404);
+
+            await this.removeAnimeRecommandationUseCase.execute(id);
+
+            return res.jsonSuccess(null, 201);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async deleteRecommandation(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.user;
+            const { recoId } = req.params;
+
+            if (!recoId || typeof(recoId) !== "string") return res.jsonError("Paramètre invalide", 404);
+
+            await this.deleteRecommandationUseCase.execute(recoId, id);
+
+            return res.jsonSuccess(null, 201);
+        } catch (error) {
+            next(error);
+        }
+    }
+}
+
+export default RecommandationController;

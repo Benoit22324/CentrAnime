@@ -6,9 +6,9 @@ class GetAnimeListByPageUseCase {
 
     async execute(selectedPage: number, maxItems: number, userId: string): Promise<GetAnimeListByPageOutputs | null> {
         try {
-            const aniList = await this.animeListRepository.getAnimeListByPage(selectedPage, maxItems, userId);
+            const aniLists = await this.animeListRepository.getAnimeListByPage(selectedPage, maxItems, userId);
 
-            return aniList;
+            return aniLists;
         } catch (err) {
             throw new Error("Liste d'animes introuvables");
         }

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import AddAnimeAnimeListUseCase from "../../application/usecases/AnimeListAddAnimeUseCase";
+import AnimeListAddAnimeUseCase from "../../application/usecases/AnimeListAddAnimeUseCase";
 import CreateAnimeListUseCase from "../../application/usecases/CreateAnimeListUseCase";
 import DeleteAnimeListUseCase from "../../application/usecases/DeleteAnimeListUseCase";
 import GetAnimeListByIdUseCase from "../../application/usecases/GetAnimeListByIdUseCase";
@@ -15,7 +15,7 @@ class AnimeListController {
         private readonly getAnimeListByIdUseCase: GetAnimeListByIdUseCase,
         private readonly getAnimeListByPageUseCase: GetAnimeListByPageUseCase,
         private readonly createAnimeListUseCase: CreateAnimeListUseCase,
-        private readonly addAnimeAnimeListUseCase: AddAnimeAnimeListUseCase,
+        private readonly animeListAddAnimeUseCase: AnimeListAddAnimeUseCase,
         private readonly updateAnimeListUseCase: UpdateAnimeListUseCase,
         private readonly removeAnimeAnimeListUseCase: RemoveAnimeAnimeListUseCase,
         private readonly deleteAnimeListUseCase: DeleteAnimeListUseCase
@@ -92,7 +92,7 @@ class AnimeListController {
 
             if (!anilistId || typeof(anilistId) !== "string") return res.jsonError("Paramètre invalide", 404);
 
-            const anilist = await this.addAnimeAnimeListUseCase.execute(anilistId, animeId);
+            const anilist = await this.animeListAddAnimeUseCase.execute(anilistId, animeId);
 
             return res.jsonSuccess(anilist, 201);
         } catch (error) {

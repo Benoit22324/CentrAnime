@@ -130,6 +130,19 @@ class AnimeListRepository implements AnimeListRepositoryInterface {
             where: { id },
             data: {
                 title
+            },
+            include: {
+                aniListAnimes: {
+                    select: {
+                        id: true,
+                        anime: {
+                            select: {
+                                id: true,
+                                main_title: true
+                            }
+                        }
+                    }
+                }
             }
         });
 

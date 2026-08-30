@@ -4,7 +4,7 @@ import GetAnimeListsUseCase from "../../application/usecases/GetAnimeListsUseCas
 import GetAnimeListByIdUseCase from "../../application/usecases/GetAnimeListByIdUseCase";
 import GetAnimeListByPageUseCase from "../../application/usecases/GetAnimeListByPageUseCase";
 import CreateAnimeListUseCase from "../../application/usecases/CreateAnimeListUseCase";
-import AddAnimeAnimeListUseCase from "../../application/usecases/AnimeListAddAnimeUseCase";
+import AnimeListAddAnimeUseCase from "../../application/usecases/AnimeListAddAnimeUseCase";
 import UpdateAnimeListUseCase from "../../application/usecases/UpdateAnimeListUseCase";
 import RemoveAnimeAnimeListUseCase from "../../application/usecases/RemoveAnimeAnimeListUseCase";
 import DeleteAnimeListUseCase from "../../application/usecases/DeleteAnimeListUseCase";
@@ -16,7 +16,7 @@ const getAnimeListsUseCase = new GetAnimeListsUseCase(animeListRepository);
 const getAnimeListByIdUseCase = new GetAnimeListByIdUseCase(animeListRepository);
 const getAnimeListByPageUseCase = new GetAnimeListByPageUseCase(animeListRepository);
 const createAnimeListUseCase = new CreateAnimeListUseCase(animeListRepository);
-const addAnimeAnimeListUseCase = new AddAnimeAnimeListUseCase(animeListRepository);
+const animeListAddAnimeUseCase = new AnimeListAddAnimeUseCase(animeListRepository);
 const updateAnimeListUseCase = new UpdateAnimeListUseCase(animeListRepository);
 const removeAnimeAnimeListUseCase = new RemoveAnimeAnimeListUseCase(animeListRepository);
 const deleteAnimeListUseCase = new DeleteAnimeListUseCase(animeListRepository);
@@ -26,7 +26,7 @@ const animeListController = new AnimeListController(
     getAnimeListByIdUseCase,
     getAnimeListByPageUseCase,
     createAnimeListUseCase,
-    addAnimeAnimeListUseCase,
+    animeListAddAnimeUseCase,
     updateAnimeListUseCase,
     removeAnimeAnimeListUseCase,
     deleteAnimeListUseCase

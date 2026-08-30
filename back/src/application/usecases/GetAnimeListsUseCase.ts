@@ -6,9 +6,9 @@ class GetAnimeListsUseCase {
 
     async execute(userId: string): Promise<AnimeList[] | null> {
         try {
-            const aniList = await this.animeListRepository.getAnimeLists(userId);
+            const aniLists = await this.animeListRepository.getAnimeLists(userId);
 
-            return aniList;
+            return aniLists;
         } catch (err) {
             throw new Error("Liste d'animes introuvables");
         }
