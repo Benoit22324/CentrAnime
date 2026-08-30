@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, type PropsWithChildren } from "react";
+import React, { createContext, useContext, useEffect, useState, type PropsWithChildren } from "react";
 import type { AuthContextType } from "../../../typings/AuthContextType";
 import type User from "../../../domain/entities/User";
 import type { RegisterFormData } from "../../../typings/RegisterFormData";
@@ -7,6 +7,7 @@ import LoginUseCase from "../../../domain/usecases/LoginUseCase";
 import RegisterUseCase from "../../../domain/usecases/RegisterUseCase";
 import type { LoginFormData } from "../../../typings/LoginFormData";
 import LogoutUseCase from "../../../domain/usecases/LogoutUseCase";
+import GetUserUseCase from "../../../domain/usecases/GetUserUseCase";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -15,6 +16,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const loginUseCase = new LoginUseCase(authRepository);
     const registerUseCase = new RegisterUseCase(authRepository);
     const logoutUseCase = new LogoutUseCase(authRepository);
+    const getUserUseCase = new GetUserUseCase(authRepository);
 
     const [user, setUser] = useState<User | null>(null);
 
@@ -48,6 +50,20 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
             throw new Error("Une erreur est survenue");
         }
     }
+
+    const me = async () => {
+        try {
+            const user = await getUserUseCase.execute();
+
+            setUser(user);
+        } catch (err) {
+            throw new Error("Une erreur est survenue");
+        }
+    }
+
+    useEffect(() => {
+        me();
+    }, [])
 
     const authContextValue: AuthContextType = {
         user,

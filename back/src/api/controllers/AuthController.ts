@@ -3,11 +3,13 @@ import { LoginInputs, RegisterInputs } from "../dto";
 import LoginUseCase from "../../application/usecases/LoginUseCase";
 import RegisterUseCase from "../../application/usecases/RegisterUseCase";
 import { generateSignature } from "../utility";
+import GetUserByIdUseCase from "../../application/usecases/GetUserByIdUseCase";
 
 class AuthController {
     constructor(
         private readonly loginUseCase: LoginUseCase,
-        private readonly registerUseCase: RegisterUseCase
+        private readonly registerUseCase: RegisterUseCase,
+        private readonly getUserByIdUseCase: GetUserByIdUseCase
     ) { }
 
     async login(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -18,7 +20,7 @@ class AuthController {
 
             const token = generateSignature(user);
             const currentDate = new Date();
-            const expiration = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate() + 2}`);
+            const expiration = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate() + 1}`);
 
             res.cookie("jwt", token, {
                 httpOnly: true,
@@ -55,6 +57,20 @@ class AuthController {
             });
 
             return res.jsonSuccess(null);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async me(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.user;
+
+            const user = this.getUserByIdUseCase.execute(id);
+
+            return res.jsonSuccess(user)
         } catch (error) {
             next(error);
         }

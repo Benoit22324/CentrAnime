@@ -45,6 +45,22 @@ class AuthRepository implements AuthRepositoryInterface {
         //     withCredentials: true
         // });
     }
+
+    async me(): Promise<RepositoryOutput> {
+        try {
+            const response = await axios.get("http://localhost:8000/api/auth/me", {
+                withCredentials: true
+            });
+
+            if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
+
+            return response.data;
+        } catch(error) {
+            if (axios.isAxiosError(error) && error.response?.data.error.message) return error.response.data;
+
+            throw new Error("Une erreur inattendue est survenue");
+        }
+    }
 }
 
 export default AuthRepository;
