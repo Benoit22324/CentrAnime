@@ -75,9 +75,9 @@ class AnimeListController {
             const { id } = req.user;
             const { title } = req.body as CreateAnimeListInputs;
 
-            const anilists = await this.createAnimeListUseCase.execute(id, title);
+            await this.createAnimeListUseCase.execute(id, title);
 
-            return res.jsonSuccess(anilists);
+            return res.jsonSuccess(null, 201);
         } catch (error) {
             next(error);
         }
@@ -94,7 +94,7 @@ class AnimeListController {
 
             const anilist = await this.addAnimeAnimeListUseCase.execute(anilistId, animeId);
 
-            return res.jsonSuccess(anilist);
+            return res.jsonSuccess(anilist, 201);
         } catch (error) {
             next(error);
         }
@@ -111,7 +111,7 @@ class AnimeListController {
 
             const anilist = await this.updateAnimeListUseCase.execute(id, title);
 
-            return res.jsonSuccess(anilist);
+            return res.jsonSuccess(anilist, 201);
         } catch (error) {
             next(error);
         }
@@ -125,9 +125,9 @@ class AnimeListController {
 
             if (!id || typeof(id) !== "string") return res.jsonError("Paramètre invalide", 404);
 
-            const anilists = await this.removeAnimeAnimeListUseCase.execute(id);
+            await this.removeAnimeAnimeListUseCase.execute(id);
 
-            return res.jsonSuccess(anilists);
+            return res.jsonSuccess(null, 201);
         } catch (error) {
             next(error);
         }
@@ -142,9 +142,9 @@ class AnimeListController {
 
             if (!anilistId || typeof(anilistId) !== "string") return res.jsonError("Paramètre invalide", 404);
 
-            const anilists = await this.deleteAnimeListUseCase.execute(anilistId, id);
+            await this.deleteAnimeListUseCase.execute(anilistId, id);
 
-            return res.jsonSuccess(anilists);
+            return res.jsonSuccess(null, 201);
         } catch (error) {
             next(error);
         }
