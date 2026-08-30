@@ -1,11 +1,14 @@
+import AnimeList from "../../domain/entities/AnimeList";
 import { AnimeListRepositoryInterface } from "../../domain/interfaces/AnimeListRepositoryInterface";
 
 class AddAnimeAnimeListUseCase {
     constructor(private readonly animeListRepository: AnimeListRepositoryInterface) { }
 
-    async execute(id: string, animeId: string): Promise<void> {
+    async execute(id: string, animeId: string): Promise<AnimeList | null> {
         try {
-            await this.animeListRepository.addAnime(id, animeId);
+            const anilist = await this.animeListRepository.addAnime(id, animeId);
+
+            return anilist;
         } catch (err) {
             throw new Error("Une erreur est survenue");
         }

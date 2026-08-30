@@ -6,8 +6,8 @@ export interface AnimeListRepositoryInterface {
     getAnimeListById(id: string, userId: string): Promise<AnimeList | null>
     getAnimeListByPage(selectedPage: number, maxItems: number, userId: string): Promise<GetAnimeListByPageOutputs | null>
     createAnimeList(userId: string, title: string): Promise<void>
-    addAnime(id: string, animeId: string): Promise<void>
-    updateAnimeList(id: string, title: string): Promise<void>
+    addAnime(id: string, animeId: string): Promise<AnimeList | null>
+    updateAnimeList(id: string, title: string): Promise<AnimeList>
     removeAnime(id: string): Promise<void>
     deleteAnimeList(id: string, userId: string): Promise<void>
 }

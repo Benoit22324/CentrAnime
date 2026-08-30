@@ -13,6 +13,10 @@ import CreateOpinionUseCase from "../../../domain/usecases/CreateOpinionUseCase"
 import UpdateOpinionUseCase from "../../../domain/usecases/UpdateOpinionUseCase";
 import type { OpinionFormData } from "../../../typings/OpinionFormData";
 import { Button } from "../components/Button";
+import AnimeListRepository from "../../data/api/AnimeListRepository";
+import GetAnimeListsUseCase from "../../../domain/usecases/GetAnimeListsUseCase";
+import AddAnimeALUseCase from "../../../domain/usecases/AddAnimeALUseCase";
+import AnimeList from "../../../domain/entities/AnimeList";
 
 export const AnimePage = () => {
     const { user } = useAuth();
@@ -26,8 +30,15 @@ export const AnimePage = () => {
     const createOpinionUseCase = new CreateOpinionUseCase(opinionRepository);
     const updateOpinionUseCase = new UpdateOpinionUseCase(opinionRepository);
 
+    const animeListRepository = new AnimeListRepository();
+    const getAnimeListsUseCase = new GetAnimeListsUseCase(animeListRepository);
+    const addAnimeALUseCase = new AddAnimeALUseCase(animeListRepository);
+
     const [ animeData, setAnimeData ] = useState<Anime | null>(null);
     const [ opinionData, setOpinionData ] = useState<Opinion | null>(null);
+    const [ animeListData, setAnimeListData ] = useState<AnimeList[] | null>(null);
+    const [ selectedAL, setSelectedAL ] = useState<string>("");
+    const [ alreadyAddedAL, setAlreadyAddedAL ] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const translateStatus = (status: string) => {
@@ -66,6 +77,38 @@ export const AnimePage = () => {
         }
     }
 
+    const handleAnimeListChange = (alId: string) => {
+        if (!animeListData) return
+
+        const selectedOne = animeListData.find(al => al.getId() === alId);
+
+        if (!selectedOne) return
+
+        const isAdded = selectedOne.getAnimes().find(a => a.animeId === id);
+
+        if (isAdded) setAlreadyAddedAL(true);
+        else setAlreadyAddedAL(false);
+
+        setSelectedAL(alId);
+    }
+
+    const handleAddAnime = async () => {
+        if (!selectedAL || !id || !user || !animeListData) return
+
+        try {
+            const anilist = await addAnimeALUseCase.execute({ anilistId: selectedAL, animeId: id });
+
+            if (anilist) {
+                const updatedList = animeListData.map(al => al.getId() === anilist.getId() ? anilist : al);
+
+                setAnimeListData(updatedList);
+                setAlreadyAddedAL(true);
+            }
+        } catch (error) {
+            throw new Error("Une erreur est survenue");
+        }
+    }
+
     const fetchAnime = async () => {
         if (!id) return navigate("/");
 
@@ -90,10 +133,26 @@ export const AnimePage = () => {
         }
     }
 
+    const fetchAniList = async () => {
+        if (!user) return
+
+        try {
+            const response = await getAnimeListsUseCase.execute();
+
+            setAnimeListData(response);
+        } catch (err) {
+            throw new Error("Une erreur inattendue est survenue")
+        }
+    }
+
     useEffect(() => {
         fetchAnime();
-        fetchOpinion();
     }, [])
+
+    useEffect(() => {
+        fetchOpinion();
+        fetchAniList();
+    }, [ user ])
 
     return <>
         {
@@ -143,18 +202,29 @@ export const AnimePage = () => {
 
                                 <div className="flex items-center gap-4">
                                     <select
+                                        value={selectedAL}
+                                        onChange={(e) => handleAnimeListChange(e.target.value)}
                                         className="w-2/3 px-2 py-1 bg-light-lightgrey text-sm text-light-darkgrey rounded-lg border border-dark shadow-custom-1 shadow-black/20 dark:bg-dark-grey dark:border-light disabled:text-light-darkgrey/60"
-                                        disabled
+                                        disabled={!animeListData}
                                     >
-                                        {/* <option value={""} hidden>Sélectionner une liste</option> */}
-                                        <option value={""} hidden>Aucune liste disponible</option>
+                                        {
+                                            animeListData ? <>
+                                                <option value={""} hidden>Sélectionner une liste</option>
+                                                {animeListData.map(al => <option key={al.getId()} value={al.getId()}>{al.getTitle()}</option>)}
+                                            </>
+                                            : <option value={""} hidden>Aucune liste disponible</option>
+                                        }
                                     </select>
                                     <Button
                                         label="Ajouter"
                                         className="px-2 py-1 font-semibold bg-light-blue hover:bg-light-lightblue"
-                                        disable={true}
+                                        handleClick={handleAddAnime}
+                                        disable={!animeListData || alreadyAddedAL}
                                     />
                                 </div>
+                                {
+                                    alreadyAddedAL && <span className="text-xs md:text-sm text-light-red font-semibold">L'anime est déjà ajouté à cette liste !</span>
+                                }
                             </div>
                         </div>
                     }

@@ -92,9 +92,9 @@ class AnimeListController {
 
             if (!anilistId || typeof(anilistId) !== "string") return res.jsonError("Paramètre invalide", 404);
 
-            const anilists = await this.addAnimeAnimeListUseCase.execute(anilistId, animeId);
+            const anilist = await this.addAnimeAnimeListUseCase.execute(anilistId, animeId);
 
-            return res.jsonSuccess(anilists);
+            return res.jsonSuccess(anilist);
         } catch (error) {
             next(error);
         }
@@ -109,9 +109,9 @@ class AnimeListController {
 
             if (!id || typeof(id) !== "string") return res.jsonError("Paramètre invalide", 404);
 
-            const anilists = await this.updateAnimeListUseCase.execute(id, title);
+            const anilist = await this.updateAnimeListUseCase.execute(id, title);
 
-            return res.jsonSuccess(anilists);
+            return res.jsonSuccess(anilist);
         } catch (error) {
             next(error);
         }

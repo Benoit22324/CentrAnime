@@ -95,22 +95,45 @@ class AnimeListRepository implements AnimeListRepositoryInterface {
         });
     }
 
-    async addAnime(id: string, animeId: string): Promise<void> {
+    async addAnime(id: string, animeId: string): Promise<AnimeList | null> {
         await prisma.aniListAnime.create({
             data: {
                 aniListId: id,
                 animeId
             }
         })
+
+        const anilist = await prisma.aniList.findUnique({
+            where: { id },
+            include: {
+                aniListAnimes: {
+                    select: {
+                        id: true,
+                        anime: {
+                            select: {
+                                id: true,
+                                main_title: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        if (!anilist) return null;
+
+        return sanitizeAnimeList(anilist);
     }
 
-    async updateAnimeList(id: string, title: string): Promise<void> {
-        await prisma.aniList.update({
+    async updateAnimeList(id: string, title: string): Promise<AnimeList> {
+        const anilist = await prisma.aniList.update({
             where: { id },
             data: {
                 title
             }
         });
+
+        return sanitizeAnimeList(anilist);
     }
 
     async removeAnime(id: string): Promise<void> {
