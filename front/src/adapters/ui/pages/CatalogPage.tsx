@@ -103,7 +103,7 @@ export const CatalogPage = () => {
         <div className="w-[90%] mx-auto my-4 flex justify-center gap-6 flex-wrap">
             {
                 animeList.length > 0 ? animeList.map(anime => <CatalogueAnimeItem key={anime.getId()} anime={anime} />)
-                : <span className="text-xl font-semibold">Aucun anime trouvé.</span>
+                : <span className="text-lg md:text-xl font-semibold">Aucun anime trouvé.</span>
             }
         </div>
         <div className="flex justify-center items-center gap-4">

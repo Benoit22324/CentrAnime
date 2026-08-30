@@ -5,6 +5,7 @@ import { CatalogPage } from "../pages/CatalogPage";
 import { LoginPage } from "../pages/LoginPage";
 import { RegisterPage } from "../pages/RegisterPage";
 import { AnimePage } from "../pages/AnimePage";
+import { AnimeListPage } from "../pages/AnimeListPage";
 
 export const MainRoutes = () => {
     const { user } = useAuth();
@@ -16,6 +17,7 @@ export const MainRoutes = () => {
                 <Route path="/anime/:id" element={<AnimePage />} />
                 {
                     user ? <>
+                        <Route path="/ani-list" element={<AnimeListPage />} />
                     </>
                     : <>
                         <Route path="/login" element={<LoginPage />} />
