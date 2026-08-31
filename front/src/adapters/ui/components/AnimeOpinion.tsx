@@ -28,6 +28,7 @@ export const AnimeOpinion = ({ opinion, handleOpinionChange }: AnimeOpinionProps
     const handleCommentChange = (value: string) => {
         setComment(value);
     }
+
     return <>
         <div className="flex flex-col gap-1 p-3 bg-light-grey rounded-lg shadow-custom-1 shadow-black/20">
             <h2 className="mb-1 text-xl md:text-2xl font-semibold">Votre avis</h2>

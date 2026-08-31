@@ -34,10 +34,11 @@ const recommandationController = new RecommandationController(
 
 const router = Router();
 
+router.get("/offset", recommandationController.getRecommandationByPage.bind(recommandationController));
+
 router.use(authenticationMiddleware);
 
 router.get("/", recommandationController.getRecommandations.bind(recommandationController));
-router.get("/offset", recommandationController.getRecommandationByPage.bind(recommandationController));
 router.get("/:recoId", recommandationController.getRecommandationById.bind(recommandationController));
 router.post("/", recommandationController.createRecommandation.bind(recommandationController));
 router.post("/anime/:recoId", recommandationController.addAnimeToRecommandation.bind(recommandationController));

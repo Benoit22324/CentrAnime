@@ -54,8 +54,6 @@ class RecommandationController {
 
     async getRecommandationByPage(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            if (!req.user) return res.jsonError("Accès non autorisé", 403);
-
             const selectedPage = parseInt(req.query.selectedPage as string) || 0;
             const maxItems = parseInt(req.query.maxItems as string) || 12;
 

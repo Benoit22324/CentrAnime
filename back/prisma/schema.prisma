@@ -161,7 +161,7 @@ model AniListAnime {
 
 model Opinion {
   id         String @id @default(uuid())
-  note       Int
+  note       Float
   comment    String
   viewStatus String
   userId     String

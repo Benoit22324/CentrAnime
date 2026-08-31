@@ -20,7 +20,7 @@ class AuthController {
 
             const token = generateSignature(user);
             const currentDate = new Date();
-            const expiration = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate() + 1}`);
+            const expiration = new Date(`${currentDate.getFullYear()}-${currentDate.getDate() + 1 > 31 ? currentDate.getMonth() + 2 : currentDate.getMonth() + 1}-${currentDate.getDate() + 1 > 31 ? 1 : currentDate.getDate() + 1}`);
 
             res.cookie("jwt", token, {
                 httpOnly: true,

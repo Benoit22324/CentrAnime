@@ -45,7 +45,6 @@ class AnimeListRepository implements AnimeListRepositoryInterface {
                 animeLists: response.data.data.animeLists.map((al: any) => convertAnimeList(al))
             }
         } catch (error) {
-            console.log(error)
             throw new Error("Une erreur inattendue est survenue");
         }
     }

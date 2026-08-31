@@ -5,10 +5,15 @@ import type { RecommandationFormData } from "../../../typings/RecommandationForm
 import AnimeListRepository from "../../data/api/AnimeListRepository";
 import CreateAnimeListUseCase from "../../../domain/usecases/CreateAnimeListUseCase";
 import { useState } from "react";
+import RecommandationRepository from "../../data/api/RecommandationRepository";
+import CreateRecommandationUseCase from "../../../domain/usecases/CreateRecommandationUseCase";
 
 export const ListCreationForm = () => {
     const animeListRepository = new AnimeListRepository();
     const createAnimeListUseCase = new CreateAnimeListUseCase(animeListRepository);
+
+    const recommandationRepository = new RecommandationRepository();
+    const createRecommandationUseCase = new CreateRecommandationUseCase(recommandationRepository);
 
     const {
         control,
@@ -38,7 +43,15 @@ export const ListCreationForm = () => {
             } else if (values.type === "Recommandation") {
                 const data = values as RecommandationFormData;
 
-                console.log(data);
+                await createRecommandationUseCase.execute({
+                    title: data.title,
+                    description: data.description
+                })
+
+                setIsSuccess(true);
+                reset();
+
+                setTimeout(() => setIsSuccess(false), 3000);
             }
         } catch (error) {
             throw new Error("Une erreur inattendue est survenue")
