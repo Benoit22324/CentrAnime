@@ -7,6 +7,7 @@ import { RegisterPage } from "../pages/RegisterPage";
 import { AnimePage } from "../pages/AnimePage";
 import { AnimeListPage } from "../pages/AnimeListPage";
 import { ListCreationPage } from "../pages/ListCreationPage";
+import { RecommandationPage } from "../pages/RecommandationPage";
 
 export const MainRoutes = () => {
     const { user } = useAuth();
@@ -16,6 +17,7 @@ export const MainRoutes = () => {
             <Route element={<GlobalLayout />}>
                 <Route path="/" element={<CatalogPage />} />
                 <Route path="/anime/:id" element={<AnimePage />} />
+                <Route path="/reco" element={<RecommandationPage />} />
                 {
                     user ? <>
                         <Route path="/ani-list" element={<AnimeListPage />} />

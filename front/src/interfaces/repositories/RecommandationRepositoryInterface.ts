@@ -7,7 +7,11 @@ export interface RecommandationRepositoryInterface {
     getRecommandationById(id: string): Promise<Recommandation | null>
     createRecommandation(title: string, description: string): Promise<void>
     addAnimeReco(recoId: string, animeId: string): Promise<Recommandation | null>
+    addFavoriteReco(recoId: string): Promise<Recommandation | null>
+    addLikeReco(recoId: string): Promise<Recommandation | null>
     updateRecommandation(id: string, title: string, description: string): Promise<Recommandation | null>
     removeAnimeReco(id: string): Promise<void>
+    removeFavoriteReco(id: string): Promise<void>
+    removeLikeReco(id: string): Promise<void>
     deleteRecommandation(id: string): Promise<void>
 }

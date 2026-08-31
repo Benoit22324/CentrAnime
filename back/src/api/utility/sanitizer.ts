@@ -177,6 +177,14 @@ type PrismaRecommandationWithInclude = Prisma.RecommandationGetPayload<{
             select: {
                 username: true
             }
+        },
+        favorites: true,
+        likes: true,
+        _count: {
+            select: {
+                favorites: true,
+                likes: true
+            }
         }
     }
 }>
@@ -190,11 +198,19 @@ export const sanitizeRecommandation = (recommandation: PrismaReco) => {
         title: a.anime.main_title
     }))
 
+    const userInteraction = {
+        favoriteId: (reco.favorites && reco.favorites.length > 0) ? reco.favorites[0].id : "",
+        likeId: (reco.likes && reco.likes.length > 0) ? reco.likes[0].id : ""
+    };
+
     return new Recommandation(
         reco.id,
         reco.title,
         reco.description,
         animes,
-        reco.author.username
+        reco.author.username,
+        userInteraction,
+        reco._count ? reco._count.likes : 0,
+        reco._count ? reco._count.favorites : 0
     )
 }

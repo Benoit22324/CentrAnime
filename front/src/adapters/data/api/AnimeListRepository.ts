@@ -87,7 +87,7 @@ class AnimeListRepository implements AnimeListRepositoryInterface {
             const response = await axios.post(`http://localhost:8000/api/anilist/anime/${anilistId}?animeId=${animeId}`, {}, {
                 withCredentials: true
             })
-            // const response = await axios.post(`/api/anilist/anime/${anilistId}?animeId=${animeId}`, {
+            // const response = await axios.post(`/api/anilist/anime/${anilistId}?animeId=${animeId}`, {}, {
             //     withCredentials: true
             // })
 

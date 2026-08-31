@@ -4,9 +4,9 @@ import { RecommandationRepositoryInterface } from "../../domain/interfaces/Recom
 class GetRecommandationByPageUseCase {
     constructor(private readonly recommandationRepository: RecommandationRepositoryInterface) { }
 
-    async execute(selectedPage: number, maxItems: number): Promise<GetRecommandationByPageOutputs | null> {
+    async execute(selectedPage: number, maxItems: number, userId?: string): Promise<GetRecommandationByPageOutputs | null> {
         try {
-            const recommandations = await this.recommandationRepository.getRecommandationByPage(selectedPage, maxItems);
+            const recommandations = await this.recommandationRepository.getRecommandationByPage(selectedPage, maxItems, userId);
 
             return recommandations;
         } catch (err) {

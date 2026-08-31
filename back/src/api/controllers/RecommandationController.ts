@@ -8,6 +8,10 @@ import { CreateRecommandationInputs } from "../dto";
 import UpdateRecommandationUseCase from "../../application/usecases/UpdateRecommandationUseCase";
 import RemoveAnimeRecommandationUseCase from "../../application/usecases/RemoveAnimeRecommandationUseCase";
 import DeleteRecommandationUseCase from "../../application/usecases/DeleteRecommandationUseCase";
+import RecommandationAddFavoriteUseCase from "../../application/usecases/RecommandationAddFavoriteUseCase";
+import RecommandationAddLikeUseCase from "../../application/usecases/RecommandationAddLikeUseCase";
+import RemoveFavoriteRecommandationUseCase from "../../application/usecases/RemoveFavoriteRecommandationUseCase";
+import RemoveLikeRecommandationUseCase from "../../application/usecases/RemoveLikeRecommandationUseCase";
 
 class RecommandationController {
     constructor(
@@ -16,8 +20,12 @@ class RecommandationController {
         private readonly getRecommandationByPageUseCase: GetRecommandationByPageUseCase,
         private readonly createRecommandationUseCase: CreateRecommandationUseCase,
         private readonly recommandationAddAnimeUseCase: RecommandationAddAnimeUseCase,
+        private readonly recommandationAddFavoriteUseCase: RecommandationAddFavoriteUseCase,
+        private readonly recommandationAddLikeUseCase: RecommandationAddLikeUseCase,
         private readonly updateRecommandationUseCase: UpdateRecommandationUseCase,
         private readonly removeAnimeRecommandationUseCase: RemoveAnimeRecommandationUseCase,
+        private readonly removeFavoriteRecommandationUseCase: RemoveFavoriteRecommandationUseCase,
+        private readonly removeLikeRecommandationUseCase: RemoveLikeRecommandationUseCase,
         private readonly deleteRecommandationUseCase: DeleteRecommandationUseCase
     ) { }
 
@@ -54,10 +62,11 @@ class RecommandationController {
 
     async getRecommandationByPage(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            const user = req.user;
             const selectedPage = parseInt(req.query.selectedPage as string) || 0;
             const maxItems = parseInt(req.query.maxItems as string) || 12;
 
-            const recommandations = await this.getRecommandationByPageUseCase.execute(selectedPage, maxItems);
+            const recommandations = await this.getRecommandationByPageUseCase.execute(selectedPage, maxItems, user?.id || undefined);
 
             return res.jsonSuccess(recommandations);
         } catch (error) {
@@ -89,9 +98,43 @@ class RecommandationController {
 
             if (!recoId || typeof(recoId) !== "string") return res.jsonError("Paramètre invalide", 404);
 
-            const anilist = await this.recommandationAddAnimeUseCase.execute(recoId, animeId);
+            const recommandation = await this.recommandationAddAnimeUseCase.execute(recoId, animeId);
 
-            return res.jsonSuccess(anilist, 201);
+            return res.jsonSuccess(recommandation, 201);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async addFavoriteRecommandation(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.user;
+            const { recoId } = req.params;
+
+            if (!recoId || typeof(recoId) !== "string") return res.jsonError("Paramètre invalide", 404);
+
+            const recommandation = await this.recommandationAddFavoriteUseCase.execute(recoId, id);
+
+            return res.jsonSuccess(recommandation, 201);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async addLikeRecommandation(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.user;
+            const { recoId } = req.params;
+
+            if (!recoId || typeof(recoId) !== "string") return res.jsonError("Paramètre invalide", 404);
+
+            const recommandation = await this.recommandationAddLikeUseCase.execute(recoId, id);
+
+            return res.jsonSuccess(recommandation, 201);
         } catch (error) {
             next(error);
         }
@@ -123,6 +166,38 @@ class RecommandationController {
             if (!id || typeof(id) !== "string") return res.jsonError("Paramètre invalide", 404);
 
             await this.removeAnimeRecommandationUseCase.execute(id);
+
+            return res.jsonSuccess(null, 201);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async removeFavoriteReco(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.params;
+
+            if (!id || typeof(id) !== "string") return res.jsonError("Paramètre invalide", 404);
+
+            await this.removeFavoriteRecommandationUseCase.execute(id);
+
+            return res.jsonSuccess(null, 201);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async removeLikeReco(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.params;
+
+            if (!id || typeof(id) !== "string") return res.jsonError("Paramètre invalide", 404);
+
+            await this.removeLikeRecommandationUseCase.execute(id);
 
             return res.jsonSuccess(null, 201);
         } catch (error) {

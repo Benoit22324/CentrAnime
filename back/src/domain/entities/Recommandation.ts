@@ -4,13 +4,21 @@ type RecoAnime = {
     title: string
 }
 
+type RecoUserInteraction = {
+    favoriteId: string,
+    likeId: string
+}
+
 class Recommandation {
     constructor(
         private readonly id: string,
         private readonly title: string,
         private readonly description: string,
         private readonly animes: RecoAnime[],
-        private readonly author: string
+        private readonly author: string,
+        private readonly userInteraction: RecoUserInteraction,
+        private readonly likes: number,
+        private readonly favorites: number
     ) { }
 
     getId() {
@@ -31,6 +39,18 @@ class Recommandation {
 
     getAuthor() {
         return this.author;
+    }
+
+    getUserInteraction() {
+        return this.userInteraction;
+    }
+
+    getFavorites() {
+        return this.favorites;
+    }
+
+    getLikes() {
+        return this.likes;
     }
 }
 

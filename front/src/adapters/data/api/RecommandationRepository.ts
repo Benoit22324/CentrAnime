@@ -25,8 +25,12 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async getRecommandationOffset(selectedPage: number, maxItems: number): Promise<GetRecommandationOffsetOutput> {
         try {
-            const response = await axios.get(`http://localhost:8000/api/reco/offset?selectedPage=${selectedPage}&maxItems=${maxItems}`)
-            // const response = await axios.get(`/api/reco/offset?selectedPage=${selectedPage}&maxItems=${maxItems}`)
+            const response = await axios.get(`http://localhost:8000/api/reco/offset?selectedPage=${selectedPage}&maxItems=${maxItems}`, {
+                withCredentials: true
+            })
+            // const response = await axios.get(`/api/reco/offset?selectedPage=${selectedPage}&maxItems=${maxItems}`, {
+            //     withCredentials: true
+            // })
 
             if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
             if (response.data.data.length === 0) {
@@ -83,7 +87,43 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
             const response = await axios.post(`http://localhost:8000/api/reco/anime/${recoId}?animeId=${animeId}`, {}, {
                 withCredentials: true
             })
-            // const response = await axios.post(`/api/reco/anime/${recoId}?animeId=${animeId}`, {
+            // const response = await axios.post(`/api/reco/anime/${recoId}?animeId=${animeId}`, {}, {
+            //     withCredentials: true
+            // })
+
+            if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
+            if (!response.data) return null;
+
+            return convertRecommandation(response.data.data)
+        } catch (error) {
+            throw new Error("Une erreur inattendue est survenue");
+        }
+    }
+
+    async addFavoriteReco(recoId: string): Promise<Recommandation | null> {
+        try {
+            const response = await axios.post(`http://localhost:8000/api/reco/favorite/${recoId}`, {}, {
+                withCredentials: true
+            })
+            // const response = await axios.post(`/api/reco/favorite/${recoId}`, {}, {
+            //     withCredentials: true
+            // })
+
+            if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
+            if (!response.data) return null;
+
+            return convertRecommandation(response.data.data)
+        } catch (error) {
+            throw new Error("Une erreur inattendue est survenue");
+        }
+    }
+
+    async addLikeReco(recoId: string): Promise<Recommandation | null> {
+        try {
+            const response = await axios.post(`http://localhost:8000/api/reco/like/${recoId}`, {}, {
+                withCredentials: true
+            })
+            // const response = await axios.post(`/api/reco/like/${recoId}`, {}, {
             //     withCredentials: true
             // })
 
@@ -120,6 +160,36 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
                 withCredentials: true
             })
             // const response = await axios.delete(`/api/reco/anime/${id}`, {
+            //     withCredentials: true
+            // })
+
+            if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
+        } catch (error) {
+            throw new Error("Une erreur inattendue est survenue");
+        }
+    }
+
+    async removeFavoriteReco(id: string): Promise<void> {
+        try {
+            const response = await axios.delete(`http://localhost:8000/api/reco/favorite/${id}`, {
+                withCredentials: true
+            })
+            // const response = await axios.delete(`/api/reco/favorite/${id}`, {
+            //     withCredentials: true
+            // })
+
+            if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
+        } catch (error) {
+            throw new Error("Une erreur inattendue est survenue");
+        }
+    }
+
+    async removeLikeReco(id: string): Promise<void> {
+        try {
+            const response = await axios.delete(`http://localhost:8000/api/reco/like/${id}`, {
+                withCredentials: true
+            })
+            // const response = await axios.delete(`/api/reco/like/${id}`, {
             //     withCredentials: true
             // })
 
