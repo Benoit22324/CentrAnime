@@ -111,7 +111,7 @@ export const ListCreationForm = () => {
                             render={({field}) => <textarea
                                 {...field}
                                 id="description_textarea"
-                                cols={3}
+                                rows={3}
                                 className={`w-3/4 px-2 py-1 bg-light-lightgrey text-light-darkgrey rounded-lg border border-dark shadow-custom-1 shadow-black/20 resize-none ${errors.description && "border-light-red"} dark:bg-dark-grey dark:border-light`}
                                 disabled={isAdding}
                             />}

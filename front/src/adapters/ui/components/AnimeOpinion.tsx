@@ -98,7 +98,7 @@ export const AnimeOpinion = ({ opinion, handleOpinionChange }: AnimeOpinionProps
                         <textarea
                             value={comment}
                             onChange={(e) => handleCommentChange(e.target.value)}
-                            cols={3}
+                            rows={3}
                             className="px-2 py-1 bg-light-lightgrey text-sm rounded-lg border border-dark shadow-custom-1 shadow-black/20 dark:bg-dark-grey dark:border-light"
                         />
                         <Button

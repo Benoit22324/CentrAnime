@@ -142,7 +142,7 @@ export const ListEditForm = ({ aniList, reco, updateState }: ListEditFormProps) 
                             render={({field}) => <textarea
                                 {...field}
                                 id="description_textarea"
-                                cols={3}
+                                rows={3}
                                 className={`w-3/4 px-2 py-1 bg-light-lightgrey text-light-darkgrey rounded-lg border border-dark shadow-custom-1 shadow-black/20 resize-none ${errors.description && "border-light-red"} dark:bg-dark-grey dark:border-light`}
                                 disabled={isUpdating}
                             />}
@@ -152,7 +152,7 @@ export const ListEditForm = ({ aniList, reco, updateState }: ListEditFormProps) 
 
                 <p className="text-lg">Anime{animesData.length > 1 ? "s" : ""} sélectionnée{animesData.length > 1 ? "s" : ""} :</p>
                 {
-                    animesData.length > 0 ? <ul className="h-[85%] pl-8 list-disc overflow-y-auto scrollbar-none dark:text-light">
+                    animesData.length > 0 ? <ul className="max-h-[40dvh] pl-8 list-disc overflow-y-auto scrollbar-none dark:text-light">
                         {animesData.map(a => <li key={a.id}>
                             <div className="flex justify-between items-center">
                                 <span className="font-semibold">{a.title}</span>
