@@ -8,8 +8,8 @@ export interface RecommandationRepositoryInterface {
     createRecommandation(authorId: string, title: string, description: string): Promise<void>
     addFavorite(id: string, userId: string): Promise<Recommandation | null>
     addLike(id: string, userId: string): Promise<Recommandation | null>
-    addAnime(id: string, animeId: string): Promise<Recommandation | null>
-    updateRecommandation(id: string, title: string, description: string): Promise<Recommandation>
+    addAnime(id: string, animeId: string, authorId: string): Promise<Recommandation | null>
+    updateRecommandation(id: string, title: string, description: string, authorId: string): Promise<Recommandation>
     removeAnime(id: string): Promise<void>
     removeFavorite(id: string): Promise<void>
     removeLike(id: string): Promise<void>

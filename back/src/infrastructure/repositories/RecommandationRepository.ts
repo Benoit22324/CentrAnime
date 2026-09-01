@@ -45,7 +45,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
         if (!recommandations) return null;
 
-        return recommandations.map(al => sanitizeRecommandation(al));
+        return recommandations.map(reco => sanitizeRecommandation(reco, reco.authorId === authorId));
     }
 
     async getRecommandationById(id: string, authorId: string): Promise<Recommandation | null> {
@@ -90,7 +90,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
         if (!recommandation) return null;
 
-        return sanitizeRecommandation(recommandation);
+        return sanitizeRecommandation(recommandation, recommandation.authorId === authorId);
     }
 
     async getRecommandationByPage(selectedPage: number, maxItems: number, userId?: string): Promise<GetRecommandationByPageOutputs | null> {
@@ -135,14 +135,14 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
             take: maxItems,
             skip: maxItems * selectedPage,
         });
-        
-        const totalList = await prisma.recommandation.count() / maxItems
+
+        const totalList = await prisma.recommandation.count();
 
         if (!recommandations) return null;
 
         return {
-            recommandations: recommandations.map(reco => sanitizeRecommandation(reco)),
-            total: Math.ceil(totalList)
+            recommandations: recommandations.map(reco => sanitizeRecommandation(reco, (userId !== undefined && reco.authorId === userId))),
+            total: Math.ceil(totalList / maxItems)
         }
     }
 
@@ -202,7 +202,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
         if (!recommandation) return null;
 
-        return sanitizeRecommandation(recommandation);
+        return sanitizeRecommandation(recommandation, recommandation.authorId === userId);
     }
 
     async addLike(id: string, userId: string): Promise<Recommandation | null> {
@@ -251,10 +251,10 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
         if (!recommandation) return null;
 
-        return sanitizeRecommandation(recommandation);
+        return sanitizeRecommandation(recommandation, recommandation.authorId === userId);
     }
 
-    async addAnime(id: string, animeId: string): Promise<Recommandation | null> {
+    async addAnime(id: string, animeId: string, authorId: string): Promise<Recommandation | null> {
         await prisma.recommandationAnime.create({
             data: {
                 recoId: id,
@@ -286,10 +286,10 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
         if (!recommandation) return null;
 
-        return sanitizeRecommandation(recommandation);
+        return sanitizeRecommandation(recommandation, recommandation.authorId === authorId);
     }
 
-    async updateRecommandation(id: string, title: string, description: string): Promise<Recommandation> {
+    async updateRecommandation(id: string, title: string, description: string, authorId: string): Promise<Recommandation> {
         const recommandation = await prisma.recommandation.update({
             where: { id },
             data: {
@@ -316,7 +316,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
             }
         });
 
-        return sanitizeRecommandation(recommandation);
+        return sanitizeRecommandation(recommandation, recommandation.authorId === authorId);
     }
 
     async removeAnime(id: string): Promise<void> {

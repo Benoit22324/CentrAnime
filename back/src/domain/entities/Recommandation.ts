@@ -16,6 +16,7 @@ class Recommandation {
         private readonly description: string,
         private readonly animes: RecoAnime[],
         private readonly author: string,
+        private readonly isOwner: boolean,
         private readonly userInteraction: RecoUserInteraction,
         private readonly likes: number,
         private readonly favorites: number
@@ -39,6 +40,10 @@ class Recommandation {
 
     getAuthor() {
         return this.author;
+    }
+
+    getIsOwner() {
+        return this.isOwner;
     }
 
     getUserInteraction() {

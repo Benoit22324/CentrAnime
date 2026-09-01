@@ -11,14 +11,18 @@ import AddFavoriteRecoUseCase from "../../../domain/usecases/AddFavoriteRecoUseC
 import RemoveFavoriteRecoUseCase from "../../../domain/usecases/RemoveFavoriteRecoUseCase";
 import AddLikeRecoUseCase from "../../../domain/usecases/AddLikeRecoUseCase";
 import RemoveLikeRecoUseCase from "../../../domain/usecases/RemoveLikeRecoUseCase";
+import DeleteRecommandationUseCase from "../../../domain/usecases/DeleteRecommandationUseCase";
 
 export const RecommandationPage = () => {
     const { user } = useAuth();
 
     const recommandationRepository = new RecommandationRepository();
     const getRecommandationOffsetUseCase = new GetRecommandationOffsetUseCase(recommandationRepository);
+    const deleteRecommandationUseCase = new DeleteRecommandationUseCase(recommandationRepository);
+
     const addFavoriteRecoUseCase = new AddFavoriteRecoUseCase(recommandationRepository);
     const removeFavoriteRecoUseCase = new RemoveFavoriteRecoUseCase(recommandationRepository);
+
     const addLikeRecoUseCase = new AddLikeRecoUseCase(recommandationRepository);
     const removeLikeRecoUseCase = new RemoveLikeRecoUseCase(recommandationRepository);
 
@@ -47,6 +51,7 @@ export const RecommandationPage = () => {
                     r.getDescription(),
                     r.getAnimes(),
                     r.getAuthor(),
+                    r.getIsOwner(),
                     {
                         ...r.getUserInteraction(),
                         favoriteId: ""
@@ -83,6 +88,7 @@ export const RecommandationPage = () => {
                     r.getDescription(),
                     r.getAnimes(),
                     r.getAuthor(),
+                    r.getIsOwner(),
                     {
                         ...r.getUserInteraction(),
                         likeId: ""
@@ -93,6 +99,16 @@ export const RecommandationPage = () => {
 
                 setRecommandationData(updatedList);
             }
+        } catch (err) {
+            throw new Error("Une erreur inattendue est survenue");
+        }
+    }
+
+    const deleteReco = async (recoId: string) => {
+        try {
+            await deleteRecommandationUseCase.execute({ id: recoId });
+
+            await fetchRecommandation();
         } catch (err) {
             throw new Error("Une erreur inattendue est survenue");
         }
@@ -133,6 +149,7 @@ export const RecommandationPage = () => {
                     reco={reco}
                     handleFavorite={handleFavoriteReco}
                     handleLike={handleLikeReco}
+                    deleteList={deleteReco}
                 />)
                 : <span className="text-lg md:text-xl font-semibold">Aucune recommandation trouvée.</span>
             }

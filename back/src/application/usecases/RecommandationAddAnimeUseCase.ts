@@ -4,9 +4,9 @@ import { RecommandationRepositoryInterface } from "../../domain/interfaces/Recom
 class RecommandationAddAnimeUseCase {
     constructor(private readonly recommandationRepository: RecommandationRepositoryInterface) { }
 
-    async execute(id: string, animeId: string): Promise<Recommandation | null> {
+    async execute(id: string, animeId: string, authorId: string): Promise<Recommandation | null> {
         try {
-            const recommandation = await this.recommandationRepository.addAnime(id, animeId);
+            const recommandation = await this.recommandationRepository.addAnime(id, animeId, authorId);
 
             return recommandation;
         } catch (err) {

@@ -6,9 +6,10 @@ type RecommandationItemProps = {
     reco: Recommandation,
     handleFavorite: (type: string, id: string) => void
     handleLike: (type: string, id: string) => void
+    deleteList: (id: string) => void
 }
 
-export const RecommandationItem = ({ reco, handleFavorite, handleLike }: RecommandationItemProps) => {
+export const RecommandationItem = ({ reco, handleFavorite, handleLike, deleteList }: RecommandationItemProps) => {
     const title = reco.getTitle().length > 36 ? reco.getTitle().slice(0, 33) + "..." : reco.getTitle();
     const description = reco.getDescription().length > 50 ? reco.getDescription().slice(0, 47) + "..." : reco.getDescription();
     const animes = reco.getAnimes().map(a => a.title).join(", ").length > 80 ? reco.getAnimes().map(a => a.title).join(", ").slice(0, 76) + "..." : reco.getAnimes().map(a => a.title).join(", ");
@@ -21,6 +22,7 @@ export const RecommandationItem = ({ reco, handleFavorite, handleLike }: Recomma
                 reco={reco}
                 handleFavorite={() => reco.getUserInteraction().favoriteId ? handleFavorite("Remove", reco.getUserInteraction().favoriteId) : handleFavorite("Add", reco.getId())}
                 handleLike={() => reco.getUserInteraction().likeId ? handleLike("Remove", reco.getUserInteraction().likeId) : handleLike("Add", reco.getId())}
+                deleteList={() => deleteList(reco.getId())}
                 onClose={() => setIsDetailOpen(false)}
             />
         }

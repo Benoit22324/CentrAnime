@@ -189,7 +189,7 @@ type PrismaRecommandationWithInclude = Prisma.RecommandationGetPayload<{
     }
 }>
 
-export const sanitizeRecommandation = (recommandation: PrismaReco) => {
+export const sanitizeRecommandation = (recommandation: PrismaReco, isOwner?: boolean) => {
     const reco = recommandation as PrismaRecommandationWithInclude;
 
     const animes = reco.recommandationAnimes.map(a => ({
@@ -209,8 +209,9 @@ export const sanitizeRecommandation = (recommandation: PrismaReco) => {
         reco.description,
         animes,
         reco.author.username,
+        isOwner ?? false,
         userInteraction,
         reco._count ? reco._count.likes : 0,
-        reco._count ? reco._count.favorites : 0
+        reco._count ? reco._count.favorites : 0,
     )
 }

@@ -1,5 +1,4 @@
-import { FaPen } from "react-icons/fa6";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaPen, FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom"
 import type AnimeList from "../../../domain/entities/AnimeList"
 import { useState } from "react";
@@ -22,7 +21,7 @@ export const AnimeListItem = ({ animeList, deleteList }: AnimeListItemProps) => 
         }
         <div className="w-[30%] h-fit md:h-[640px] py-4 px-3 bg-light-lightyellow/50 rounded-xl dark:bg-light-lightyellow/40 hover:scale-98">
             <div className="flex justify-end items-center gap-2">
-                <Link to={`/edit-ani-list/${animeList.getId()}`} className="hover:scale-90">
+                <Link to={`/edit-list/${animeList.getId()}`} className="hover:scale-90">
                     <FaPen size={18} className="text-dark dark:text-light" />
                 </Link>
                 <FaRegTrashAlt className="text-light-red hover:cursor-pointer hover:scale-90 dark:text-light-lightred" size={20} onClick={() => setIsDeleteConfirmation(true)} />

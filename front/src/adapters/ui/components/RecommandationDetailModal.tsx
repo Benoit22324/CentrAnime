@@ -1,18 +1,30 @@
+import { FaPen, FaRegTrashAlt } from "react-icons/fa";
 import { FaRegThumbsUp, FaThumbsUp, FaRegStar, FaStar } from "react-icons/fa6";
-import type Recommandation from "../../../domain/entities/Recommandation"
+import type Recommandation from "../../../domain/entities/Recommandation";
 import { Button } from "./Button";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { DeleteConfirmationModal } from "./DeleteConfirmationModal";
 
 type RecommandationDetailModalProps = {
     reco: Recommandation,
     handleFavorite: () => void,
     handleLike: () => void,
+    deleteList: () => void,
     onClose: () => void
 }
 
-export const RecommandationDetailModal = ({ reco, handleFavorite, handleLike, onClose }: RecommandationDetailModalProps) => {
+export const RecommandationDetailModal = ({ reco, handleFavorite, handleLike, deleteList, onClose }: RecommandationDetailModalProps) => {
+    const [ isDeleteConfirmation, setIsDeleteConfirmation ] = useState<boolean>(false);
+
     return <>
-        <div className="absolute top-0 left-0 flex items-center justify-center w-full h-[100dvh] bg-black/30 z-30">
+        {
+            isDeleteConfirmation && <DeleteConfirmationModal
+                onConfirm={() => deleteList()}
+                onCancel={() => setIsDeleteConfirmation(false)}
+            />
+        }
+        <div className="absolute top-0 left-0 flex items-center justify-center w-full h-[100dvh] bg-black/30 z-10">
             <div className="flex flex-col gap-2 w-[95%] md:w-[600px] py-4 px-8 bg-light-grey rounded-xl">
                 <div className="flex justify-between gap-4 w-full">
                     <h2 className="text-lg md:text-xl font-semibold">{reco.getTitle()}</h2>
@@ -45,7 +57,7 @@ export const RecommandationDetailModal = ({ reco, handleFavorite, handleLike, on
                 <div className="flex flex-col">
                     <p className="text-sm md:text-base">Anime{reco.getAnimes().length > 1 ? "s" : ""} sélectionné{reco.getAnimes().length > 1 ? "s" : ""} :{reco.getAnimes().length === 0 && <span className="text-xs md:text-sm font-semibold"> Aucun anime est sélectionné.</span>}</p>
                     {
-                        reco.getAnimes().length > 0 && <ul className="list-disc pl-6">
+                        reco.getAnimes().length > 0 && <ul className="list-disc max-h-[40dvh] pl-6 overflow-y-auto">
                             {
                                 reco.getAnimes().map(a => <li key={a.id}>
                                     <Link to={`/anime/${a.animeId}`} className="text-dark font-semibold hover:text-light-darkgrey">{a.title}</Link>
@@ -55,7 +67,17 @@ export const RecommandationDetailModal = ({ reco, handleFavorite, handleLike, on
                     }
                 </div>
 
-                <p className="text-base md:text-lg font-semibold">{reco.getAuthor()}</p>
+                <div className="flex items-center gap-2">
+                    <p className="text-base md:text-lg font-semibold">{reco.getAuthor()}</p>
+                    {
+                        reco.getIsOwner() && <>
+                            <Link to={`/edit-list/${reco.getId()}`} className="hover:scale-90">
+                                <FaPen size={14} className="text-dark dark:text-light" />
+                            </Link>
+                            <FaRegTrashAlt className="text-light-red hover:cursor-pointer hover:scale-90 dark:text-light-lightred" size={16} onClick={() => setIsDeleteConfirmation(true)} />
+                        </>
+                    }
+                </div>
             </div>
         </div>
     </>

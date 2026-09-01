@@ -7,6 +7,7 @@ export const convertRecommandation = (reco: any) => {
         reco.description,
         reco.animes,
         reco.author,
+        reco.isOwner,
         reco.userInteraction,
         reco.likes,
         reco.favorites

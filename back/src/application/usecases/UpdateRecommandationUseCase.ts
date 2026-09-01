@@ -4,12 +4,12 @@ import { RecommandationRepositoryInterface } from "../../domain/interfaces/Recom
 class UpdateRecommandationUseCase {
     constructor(private readonly recommandationRepository: RecommandationRepositoryInterface) { }
 
-    async execute(id: string, title: string, description: string): Promise<Recommandation> {
+    async execute(id: string, title: string, description: string, authorId: string): Promise<Recommandation> {
         if (!title) throw new Error("Le titre est requis");
         if (!description) throw new Error("La description est requise");
 
         try {
-            const anilist = await this.recommandationRepository.updateRecommandation(id, title, description);
+            const anilist = await this.recommandationRepository.updateRecommandation(id, title, description, authorId);
 
             return anilist;
         } catch (err) {

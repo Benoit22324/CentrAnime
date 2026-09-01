@@ -93,12 +93,13 @@ class RecommandationController {
         try {
             if (!req.user) return res.jsonError("Accès non autorisé", 403);
 
+            const { id } = req.user;
             const { recoId } = req.params;
             const animeId = req.query.animeId as string;
 
             if (!recoId || typeof(recoId) !== "string") return res.jsonError("Paramètre invalide", 404);
 
-            const recommandation = await this.recommandationAddAnimeUseCase.execute(recoId, animeId);
+            const recommandation = await this.recommandationAddAnimeUseCase.execute(recoId, animeId, id);
 
             return res.jsonSuccess(recommandation, 201);
         } catch (error) {
@@ -144,12 +145,13 @@ class RecommandationController {
         try {
             if (!req.user) return res.jsonError("Accès non autorisé", 403);
 
+            const user = req.user;
             const { id } = req.params;
             const { title, description } = req.body as CreateRecommandationInputs;
 
             if (!id || typeof(id) !== "string") return res.jsonError("Paramètre invalide", 404);
 
-            const recommandation = await this.updateRecommandationUseCase.execute(id, title, description);
+            const recommandation = await this.updateRecommandationUseCase.execute(id, title, description, user.id);
 
             return res.jsonSuccess(recommandation, 201);
         } catch (error) {
