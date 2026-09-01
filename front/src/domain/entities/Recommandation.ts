@@ -1,8 +1,4 @@
-type RecoAnime = {
-    id: string,
-    animeId: string,
-    title: string
-}
+import type { ListAnimeType } from "../../typings/ListAnimeType";
 
 type RecoUserInteraction = {
     favoriteId: string,
@@ -14,7 +10,7 @@ class Recommandation {
         private readonly id: string,
         private readonly title: string,
         private readonly description: string,
-        private readonly animes: RecoAnime[],
+        private readonly animes: ListAnimeType[],
         private readonly author: string,
         private readonly isOwner: boolean,
         private readonly userInteraction: RecoUserInteraction,

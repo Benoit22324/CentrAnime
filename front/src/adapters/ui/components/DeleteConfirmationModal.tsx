@@ -13,14 +13,14 @@ export const DeleteConfirmationModal = ({ onConfirm, onCancel }: DeleteConfirmat
 
                 <div className="flex items-center justify-center gap-6">
                     <Button
-                        label="Annuler"
-                        className="p-2 font-semibold bg-light-grey hover:bg-light-lightgrey"
-                        handleClick={onCancel}
-                    />
-                    <Button
                         label="Confirmer"
                         className="p-2 font-semibold bg-light-red hover:bg-light-lightred"
                         handleClick={onConfirm}
+                    />
+                    <Button
+                        label="Annuler"
+                        className="p-2 font-semibold bg-light-lightgrey hover:bg-light"
+                        handleClick={onCancel}
                     />
                 </div>
             </div>

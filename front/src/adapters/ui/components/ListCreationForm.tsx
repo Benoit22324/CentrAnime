@@ -1,7 +1,7 @@
 import { Controller, useForm, type FieldValues } from "react-hook-form";
 import { Button } from "./Button";
-import type { AnimeListFormData } from "../../../typings/AnimeListFormData";
-import type { RecommandationFormData } from "../../../typings/RecommandationFormData";
+import type { CreateAnimeListFormData } from "../../../typings/CreateAnimeListFormData";
+import type { CreateRecommandationFormData } from "../../../typings/CreateRecommandationFormData";
 import AnimeListRepository from "../../data/api/AnimeListRepository";
 import CreateAnimeListUseCase from "../../../domain/usecases/CreateAnimeListUseCase";
 import { useState } from "react";
@@ -30,7 +30,7 @@ export const ListCreationForm = () => {
 
         try {
             if (values.type === "AnimeList") {
-                const data = values as AnimeListFormData;
+                const data = values as CreateAnimeListFormData;
 
                 await createAnimeListUseCase.execute({
                     title: data.title
@@ -41,7 +41,7 @@ export const ListCreationForm = () => {
 
                 setTimeout(() => setIsSuccess(false), 3000);
             } else if (values.type === "Recommandation") {
-                const data = values as RecommandationFormData;
+                const data = values as CreateRecommandationFormData;
 
                 await createRecommandationUseCase.execute({
                     title: data.title,
