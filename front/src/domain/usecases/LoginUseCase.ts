@@ -11,7 +11,7 @@ class LoginUseCase {
 
             if (response && response.success && response.data) {
                 const data = response.data;
-                const userInstance = new User(data.id, data.username, data.email, data.createdAt);
+                const userInstance = new User(data.id, data.username, data.email, data.createdAt, data.lastLogin);
 
                 return userInstance;
             } else if (response && !response.success && response.error) {

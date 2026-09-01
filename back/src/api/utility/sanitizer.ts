@@ -119,12 +119,31 @@ export const sanitizeAnime = (anime: PrismaAnime) => {
     )
 }
 
+type PrismaOpinionWithInclude = Prisma.OpinionGetPayload<{
+    include: {
+        anime: {
+            include: {
+                animeGenres: {
+                    select: {
+                        genre: {
+                            select: { genreName: true }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}>
+
 export const sanitizeOpinion = (opinion: PrismaOpinion) => {
+    const op = opinion as PrismaOpinionWithInclude;
+
     return new Opinion(
-        opinion.id,
-        opinion.viewStatus ?? undefined,
-        opinion.note ?? undefined,
-        opinion.comment ?? undefined
+        op.id,
+        op.viewStatus ?? undefined,
+        op.note ?? undefined,
+        op.comment ?? undefined,
+        op.anime ? sanitizeAnime(op.anime) : undefined
     )
 }
 

@@ -7,4 +7,6 @@ export type AuthContextType = {
     login: (payload: LoginFormData) => Promise<string | void>
     register: (payload: RegisterFormData) => Promise<string | void>
     logout: () => Promise<void>
+    updateUser: (username: string) => Promise<void>
+    deleteAccount: () => Promise<void>
 }

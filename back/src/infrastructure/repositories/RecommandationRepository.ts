@@ -6,6 +6,38 @@ import { GetRecommandationByPageOutputs } from "../../api/dto";
 import { Prisma } from "@prisma/client";
 
 class RecommandationRepository implements RecommandationRepositoryInterface {
+    async getFavoriteRecommandations(userId: string): Promise<Recommandation[]> {
+        const recommandations = await prisma.recommandation.findMany({
+            where: {
+                favorites: {
+                    some: {
+                        userId
+                    }
+                }
+            },
+            include: {
+                recommandationAnimes: {
+                    select: {
+                        id: true,
+                        anime: {
+                            select: {
+                                id: true,
+                                main_title: true
+                            }
+                        }
+                    }
+                },
+                author: {
+                    select: {
+                        username: true
+                    }
+                }
+            }
+        });
+
+        return recommandations.map(reco => sanitizeRecommandation(reco, reco.authorId === userId));
+    }
+
     async getRecommandations(authorId: string): Promise<Recommandation[] | null> {
         const recommandations = await prisma.recommandation.findMany({
             where: { authorId },

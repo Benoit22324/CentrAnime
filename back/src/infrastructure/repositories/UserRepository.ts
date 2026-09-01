@@ -44,6 +44,23 @@ class UserRepository implements UserRepositoryInterface {
 
         return user;
     }
+
+    async updateUser(id: string, username: string): Promise<User | null> {
+        const user = await prisma.user.update({
+            where: { id },
+            data: {
+                username
+            }
+        });
+
+        return user;
+    }
+
+    async deleteUser(id: string): Promise<void> {
+        await prisma.user.delete({
+            where: { id }
+        });
+    }
 }
 
 export default UserRepository;

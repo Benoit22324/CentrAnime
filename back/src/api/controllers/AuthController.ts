@@ -68,7 +68,7 @@ class AuthController {
 
             const { id } = req.user;
 
-            const user = this.getUserByIdUseCase.execute(id);
+            const user = await this.getUserByIdUseCase.execute(id);
 
             return res.jsonSuccess(user)
         } catch (error) {

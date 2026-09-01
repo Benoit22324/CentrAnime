@@ -8,10 +8,17 @@ import RegisterUseCase from "../../../domain/usecases/RegisterUseCase";
 import type { LoginFormData } from "../../../typings/LoginFormData";
 import LogoutUseCase from "../../../domain/usecases/LogoutUseCase";
 import GetUserUseCase from "../../../domain/usecases/GetUserUseCase";
+import UpdateUserUseCase from "../../../domain/usecases/UpdateUserUseCase";
+import UserRepository from "../../data/api/UserRepository";
+import DeleteUserUseCase from "../../../domain/usecases/DeleteUserUseCase";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
+    const userRepository = new UserRepository();
+    const updateUserUseCase = new UpdateUserUseCase(userRepository);
+    const deleteUserUseCase = new DeleteUserUseCase(userRepository);
+
     const authRepository = new AuthRepository();
     const loginUseCase = new LoginUseCase(authRepository);
     const registerUseCase = new RegisterUseCase(authRepository);
@@ -61,6 +68,26 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         }
     }
 
+    const updateUser = async (username: string) => {
+        try {
+            const user = await updateUserUseCase.execute({ username });
+
+            setUser(user);
+        } catch (err) {
+            throw new Error("Une erreur est survenue");
+        }
+    }
+
+    const deleteAccount = async () => {
+        try {
+            await deleteUserUseCase.execute();
+
+            setUser(null);
+        } catch (err) {
+            throw new Error("Une erreur est survenue");
+        }
+    }
+
     useEffect(() => {
         me();
     }, [])
@@ -69,7 +96,9 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         user,
         login,
         register,
-        logout
+        logout,
+        updateUser,
+        deleteAccount
     }
 
     return <AuthContext.Provider value={authContextValue}>

@@ -12,9 +12,11 @@ import RecommandationAddFavoriteUseCase from "../../application/usecases/Recomma
 import RecommandationAddLikeUseCase from "../../application/usecases/RecommandationAddLikeUseCase";
 import RemoveFavoriteRecommandationUseCase from "../../application/usecases/RemoveFavoriteRecommandationUseCase";
 import RemoveLikeRecommandationUseCase from "../../application/usecases/RemoveLikeRecommandationUseCase";
+import GetFavoriteRecommandationsUseCase from "../../application/usecases/GetFavoriteRecommandationsUseCase";
 
 class RecommandationController {
     constructor(
+        private readonly getFavoriteRecommandationsUseCase: GetFavoriteRecommandationsUseCase,
         private readonly getRecommandationsUseCase: GetRecommandationsUseCase,
         private readonly getRecommandationByIdUseCase: GetRecommandationByIdUseCase,
         private readonly getRecommandationByPageUseCase: GetRecommandationByPageUseCase,
@@ -28,6 +30,20 @@ class RecommandationController {
         private readonly removeLikeRecommandationUseCase: RemoveLikeRecommandationUseCase,
         private readonly deleteRecommandationUseCase: DeleteRecommandationUseCase
     ) { }
+
+    async getFavoriteRecommandations(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.user;
+
+            const recommandations = await this.getFavoriteRecommandationsUseCase.execute(id);
+
+            return res.jsonSuccess(recommandations);
+        } catch (error) {
+            next(error);
+        }
+    }
 
     async getRecommandations(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {

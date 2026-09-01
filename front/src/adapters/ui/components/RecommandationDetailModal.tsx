@@ -11,10 +11,11 @@ type RecommandationDetailModalProps = {
     handleFavorite: () => void,
     handleLike: () => void,
     deleteList: () => void,
-    onClose: () => void
+    onClose: () => void,
+    noExtra?: boolean
 }
 
-export const RecommandationDetailModal = ({ reco, handleFavorite, handleLike, deleteList, onClose }: RecommandationDetailModalProps) => {
+export const RecommandationDetailModal = ({ reco, handleFavorite, handleLike, deleteList, onClose, noExtra }: RecommandationDetailModalProps) => {
     const [ isDeleteConfirmation, setIsDeleteConfirmation ] = useState<boolean>(false);
 
     return <>
@@ -29,21 +30,25 @@ export const RecommandationDetailModal = ({ reco, handleFavorite, handleLike, de
                 <div className="flex justify-between gap-4 w-full">
                     <h2 className="text-lg md:text-xl font-semibold">{reco.getTitle()}</h2>
 
-                    <div className="flex items-center gap-2 w-1/5">
-                        <div className="flex items-center gap-1">
-                            {
-                                reco.getUserInteraction().likeId ? <FaThumbsUp size={22} className="text-light-blue hover:cursor-pointer" onClick={handleLike} />
-                                : <FaRegThumbsUp size={22} className="text-light-blue hover:cursor-pointer" onClick={handleLike} />
-                            }
-                            <span>{reco.getLikes()}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                            {
-                                reco.getUserInteraction().favoriteId ? <FaStar size={22} className="text-light-yellow hover:cursor-pointer" onClick={handleFavorite} />
-                                : <FaRegStar size={22} className="text-light-yellow hover:cursor-pointer" onClick={handleFavorite} />
-                            }
-                            <span>{reco.getFavorites()}</span>
-                        </div>
+                    <div className={`flex${noExtra ? " justify-end" : ""} items-center gap-2 w-1/5`}>
+                        {
+                            !noExtra && <>
+                                <div className="flex items-center gap-1">
+                                    {
+                                        reco.getUserInteraction().likeId ? <FaThumbsUp size={22} className="text-light-blue hover:cursor-pointer" onClick={handleLike} />
+                                        : <FaRegThumbsUp size={22} className="text-light-blue hover:cursor-pointer" onClick={handleLike} />
+                                    }
+                                    <span>{reco.getLikes()}</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                    {
+                                        reco.getUserInteraction().favoriteId ? <FaStar size={22} className="text-light-yellow hover:cursor-pointer" onClick={handleFavorite} />
+                                        : <FaRegStar size={22} className="text-light-yellow hover:cursor-pointer" onClick={handleFavorite} />
+                                    }
+                                    <span>{reco.getFavorites()}</span>
+                                </div>
+                            </>
+                        }
                         <Button
                             label="X"
                             handleClick={onClose}
@@ -70,7 +75,7 @@ export const RecommandationDetailModal = ({ reco, handleFavorite, handleLike, de
                 <div className="flex items-center gap-2">
                     <p className="text-base md:text-lg font-semibold">{reco.getAuthor()}</p>
                     {
-                        reco.getIsOwner() && <>
+                        (reco.getIsOwner() && !noExtra) && <>
                             <Link to={`/edit-list/${reco.getId()}`} className="hover:scale-90">
                                 <FaPen size={14} className="text-dark dark:text-light" />
                             </Link>

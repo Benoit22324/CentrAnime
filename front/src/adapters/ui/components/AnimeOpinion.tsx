@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./Button"
 import type Opinion from "../../../domain/entities/Opinion";
 
@@ -12,7 +12,7 @@ export const AnimeOpinion = ({ opinion, handleOpinionChange }: AnimeOpinionProps
     const [ isCommentOpen, setIsCommentOpen ] = useState<boolean>(false);
 
     const [ viewStatus, setViewStatus ] = useState<string>((opinion && opinion.getViewStatus()) ? opinion.getViewStatus() : "");
-    const [ note, setNote ] = useState<string>((opinion && opinion.getNote()) ? String(opinion.getNote()) : String(0));
+    const [ note, setNote ] = useState<string>((opinion && opinion.getNote()) ? String(opinion.getNote()) : "0");
     const [ comment, setComment ] = useState<string>((opinion && opinion.getComment()) ? opinion.getComment() : "");
 
     const handleViewStatusChange = (value: string) => {
@@ -28,6 +28,14 @@ export const AnimeOpinion = ({ opinion, handleOpinionChange }: AnimeOpinionProps
     const handleCommentChange = (value: string) => {
         setComment(value);
     }
+
+    useEffect(() => {
+        if (opinion) {
+            setViewStatus(opinion.getViewStatus() ?? "");
+            setNote(String(opinion.getNote()) ?? "0");
+            setComment(opinion.getComment() ?? "");
+        }
+    }, [opinion])
 
     return <>
         <div className="flex flex-col gap-1 p-3 bg-light-grey rounded-lg shadow-custom-1 shadow-black/20">

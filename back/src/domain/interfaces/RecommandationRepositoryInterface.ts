@@ -2,6 +2,7 @@ import { GetRecommandationByPageOutputs } from "../../api/dto";
 import Recommandation from "../entities/Recommandation";
 
 export interface RecommandationRepositoryInterface {
+    getFavoriteRecommandations(userId: string): Promise<Recommandation[]>
     getRecommandations(authorId: string): Promise<Recommandation[] | null>
     getRecommandationById(id: string, authorId: string): Promise<Recommandation | null>
     getRecommandationByPage(selectedPage: number, maxItems: number, userId?: string): Promise<GetRecommandationByPageOutputs | null>

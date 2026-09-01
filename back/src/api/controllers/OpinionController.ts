@@ -3,13 +3,29 @@ import CreateOpinionUseCase from "../../application/usecases/CreateOpinionUseCas
 import GetOpinionUseCase from "../../application/usecases/GetOpinionUseCase";
 import UpdateOpinionUseCase from "../../application/usecases/UpdateOpinionUseCase";
 import { CreateOpinionInputs } from "../dto";
+import GetViewOpinionsUseCase from "../../application/usecases/GetViewOpinionsUseCase";
 
 class OpinionController {
     constructor(
+        private readonly getViewOpinionsUseCase: GetViewOpinionsUseCase,
         private readonly getOpinionUseCase: GetOpinionUseCase,
         private readonly createOpinionUseCase: CreateOpinionUseCase,
         private readonly updateOpinionUseCase: UpdateOpinionUseCase
     ) { }
+
+    async getViewOpinion(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) return res.jsonError("Accès non autorisé", 403);
+
+            const { id } = req.user;
+
+            const OpinionRepositoryInterface = await this.getViewOpinionsUseCase.execute(id);
+
+            return res.jsonSuccess(OpinionRepositoryInterface);
+        } catch (error) {
+            next(error);
+        }
+    }
 
     async getOpinion(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {

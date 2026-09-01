@@ -15,8 +15,10 @@ import RecommandationAddLikeUseCase from "../../application/usecases/Recommandat
 import RemoveFavoriteRecommandationUseCase from "../../application/usecases/RemoveFavoriteRecommandationUseCase";
 import RemoveLikeRecommandationUseCase from "../../application/usecases/RemoveLikeRecommandationUseCase";
 import { optionalAuthenticationMiddleware } from "../middlewares/optionalAuthenticationMiddleware";
+import GetFavoriteRecommandationsUseCase from "../../application/usecases/GetFavoriteRecommandationsUseCase";
 
 const recommandationRepository = new RecommandationRepository();
+const getFavoriteRecommandationsUseCase = new GetFavoriteRecommandationsUseCase(recommandationRepository);
 const getRecommandationsUseCase = new GetRecommandationsUseCase(recommandationRepository);
 const getRecommandationByIdUseCase = new GetRecommandationByIdUseCase(recommandationRepository);
 const getRecommandationByPageUseCase = new GetRecommandationByPageUseCase(recommandationRepository);
@@ -31,6 +33,7 @@ const removeLikeRecommandationUseCase = new RemoveLikeRecommandationUseCase(reco
 const deleteRecommandationUseCase = new DeleteRecommandationUseCase(recommandationRepository);
 
 const recommandationController = new RecommandationController(
+    getFavoriteRecommandationsUseCase,
     getRecommandationsUseCase,
     getRecommandationByIdUseCase,
     getRecommandationByPageUseCase,
@@ -51,6 +54,7 @@ router.get("/offset", optionalAuthenticationMiddleware, recommandationController
 
 router.use(authenticationMiddleware);
 
+router.get("/favorite", recommandationController.getFavoriteRecommandations.bind(recommandationController));
 router.get("/", recommandationController.getRecommandations.bind(recommandationController));
 router.get("/:recoId", recommandationController.getRecommandationById.bind(recommandationController));
 router.post("/", recommandationController.createRecommandation.bind(recommandationController));

@@ -10,7 +10,7 @@ class GetUserUseCase {
 
             if (response) {
                 const data = response.data;
-                const userInstance = new User(data.id, data.username, data.email, data.createdAt);
+                const userInstance = new User(data.id, data.username, data.email, data.createdAt, data.lastLogin);
 
                 return userInstance;
             }

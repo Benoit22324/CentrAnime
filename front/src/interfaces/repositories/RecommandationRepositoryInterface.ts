@@ -2,6 +2,7 @@ import type Recommandation from "../../domain/entities/Recommandation"
 import type { GetRecommandationOffsetOutput } from "../outputs/GetRecommandationOffsetOutput"
 
 export interface RecommandationRepositoryInterface {
+    getFavoriteRecommandations(): Promise<Recommandation[] | null>
     getRecommandations(): Promise<Recommandation[] | null>
     getRecommandationOffset(selectedPage: number, maxItems: number): Promise<GetRecommandationOffsetOutput>
     getRecommandationById(id: string): Promise<Recommandation | null>

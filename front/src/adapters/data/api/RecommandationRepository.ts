@@ -5,6 +5,24 @@ import type { GetRecommandationOffsetOutput } from "../../../interfaces/outputs/
 import { convertRecommandation } from "../../../utils/convertRecommandation";
 
 class RecommandationRepository implements RecommandationRepositoryInterface {
+    async getFavoriteRecommandations(): Promise<Recommandation[] | null> {
+        try {
+            const response = await axios.get("http://localhost:8000/api/reco/favorite", {
+                withCredentials: true
+            })
+            // const response = await axios.get("/api/reco/favorite", {
+            //     withCredentials: true
+            // })
+
+            if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
+            if (response.data.data.length === 0) return null;
+
+            return response.data.data.map((reco: any) => convertRecommandation(reco));
+        } catch (error) {
+            throw new Error("Une erreur inattendue est survenue");
+        }
+    }
+
     async getRecommandations(): Promise<Recommandation[] | null> {
         try {
             const response = await axios.get("http://localhost:8000/api/reco", {

@@ -4,6 +4,30 @@ import { prisma } from "../../api/config/client";
 import { CreateOpinionInputs } from "../../api/dto";
 
 class OpinionRepository implements OpinionRepositoryInterface {
+    async getViewOpinions(userId: string): Promise<Opinion[] | null> {
+        const opinions = await prisma.opinion.findMany({
+            where: {
+                userId,
+                viewStatus: { not: { equals: "" } }
+            },
+            include: {
+                anime: {
+                    include: {
+                        animeGenres: {
+                            select: {
+                                genre: {
+                                    select: { genreName: true }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        return opinions;
+    }
+
     async getOpinion(animeId: string, userId: string): Promise<Opinion | null> {
         const opinion = await prisma.opinion.findFirst({
             where: {
@@ -11,8 +35,6 @@ class OpinionRepository implements OpinionRepositoryInterface {
                 userId
             }
         });
-
-        if (!opinion) return null;
 
         return opinion
     }

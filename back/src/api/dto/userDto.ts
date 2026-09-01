@@ -1,3 +1,7 @@
+export interface UpdateUserInputs {
+    username: string
+}
+
 export interface LoginInputs {
     email: string,
     password: string
