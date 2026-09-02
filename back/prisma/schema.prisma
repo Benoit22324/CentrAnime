@@ -174,9 +174,9 @@ model ContactRequest {
   id         String   @id @default(uuid())
   createdAt  DateTime @default(now())
   senderId   String   @unique
-  reveiverId String   @unique
+  receiverId String   @unique
   sender     User     @relation("SenderRequest", fields: [senderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  receiver   User     @relation("ReceiverRequest", fields: [reveiverId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  receiver   User     @relation("ReceiverRequest", fields: [receiverId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Contact {

@@ -1,8 +1,10 @@
-import { Anime as PrismaAnime, Recommandation as PrismaReco, Opinion as PrismaOpinion, Prisma, User, AniList } from "@prisma/client";
+import { Anime as PrismaAnime, Recommandation as PrismaReco, Opinion as PrismaOpinion, Prisma, User, AniList, Contact as PrismaContact, ContactRequest as PrismaContactRequest } from "@prisma/client";
 import Anime from "../../domain/entities/Anime";
 import Opinion from "../../domain/entities/Opinion";
 import AnimeList from "../../domain/entities/AnimeList";
 import Recommandation from "../../domain/entities/Recommandation";
+import Contact from "../../domain/entities/Contact";
+import ContactRequest from "../../domain/entities/ContactRequest";
 
 export const sanitizeUser = (user: User) => {
     const { salt, password, ...safeInfo } = user;
@@ -232,5 +234,55 @@ export const sanitizeRecommandation = (recommandation: PrismaReco, isOwner?: boo
         userInteraction,
         reco._count ? reco._count.likes : 0,
         reco._count ? reco._count.favorites : 0,
+    )
+}
+
+type PrismaContactWithInclude = Prisma.ContactGetPayload<{
+    include: {
+        userA: {
+            select: {
+                username: true
+            }
+        },
+        userB: {
+            select: {
+                username: true
+            }
+        },
+        chat: {
+            select: {
+                id: true
+            }
+        }
+    }
+}>
+
+export const sanitizeContact = (contact: PrismaContact, userId: string) => {
+    const c = contact as PrismaContactWithInclude;
+
+    return new Contact(
+        c.id,
+        c.userAId === userId ? c.userA.username : c.userB.username,
+        c.chat ? c.chat.id : ""
+    )
+}
+
+type PrismaContactRequestWithInclude = Prisma.ContactRequestGetPayload<{
+    include: {
+        sender: {
+            select: {
+                username: true
+            }
+        }
+    }
+}>
+
+export const sanitizeContactRequest = (contactRequest: PrismaContactRequest) => {
+    const cr = contactRequest as PrismaContactRequestWithInclude;
+
+    return new ContactRequest(
+        cr.id,
+        cr.sender.username,
+        cr.createdAt
     )
 }
