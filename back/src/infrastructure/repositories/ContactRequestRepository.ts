@@ -14,6 +14,23 @@ class ContactRequestRepository implements ContactRequestRepositoryInterface {
         return contactRequest;
     }
 
+    async getContactRequestByUser(userId: string): Promise<ContactRequest | null> {
+        const contactRequest = await prisma.contactRequest.findFirst({
+            where: {
+                OR: [
+                    {
+                        receiverId: userId
+                    },
+                    {
+                        senderId: userId
+                    }
+                ]
+            }
+        });
+
+        return contactRequest;
+    }
+
     async getContactRequests(userId: string): Promise<ContactRequest[]> {
         const contactRequests = await prisma.contactRequest.findMany({
             where: {

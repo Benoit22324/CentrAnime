@@ -9,7 +9,7 @@ export const CatalogueAnimeItem = ({ anime }: CatalogueAnimeItemProps) => {
     const mainTitle = anime.getMainTitle().length > 19 ? anime.getMainTitle().slice(0, 17) + "..." : anime.getMainTitle()
 
     return <>
-        <Link to={`/anime/${anime.getId()}`} className="flex flex-col items-center gap-2 w-[205px] py-2 bg-light-grey rounded-xl shadow-custom-1 shadow-black/20 hover:scale-95">
+        <Link to={`/anime/${anime.getId()}`} className="flex flex-col items-center gap-2 w-[215px] py-2 bg-light-grey rounded-xl shadow-custom-1 shadow-black/20 hover:scale-95">
             <img src={anime.getPosterUrl()} alt={anime.getMainTitle() + " poster"} className="h-[220px] rounded-lg" />
 
             <div className="w-full">

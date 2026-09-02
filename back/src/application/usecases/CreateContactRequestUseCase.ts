@@ -22,6 +22,10 @@ class CreateContactRequestUseCase {
 
         if (isContact) throw new Error("Vous êtes déjà en contact");
 
+        const isSent = await this.contactRequestRepository.getContactRequestByUser(userId);
+
+        if (isSent) throw new Error("Vous avez déjà envoyé/reçu une requête");
+
         try {
             await this.contactRequestRepository.createContactRequest(userId, receiver.id);
         } catch (err) {

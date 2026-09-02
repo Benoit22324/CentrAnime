@@ -32,9 +32,9 @@ class ContactRequestController {
             const { id } = req.user;
             const { email } = req.body as CreateContactRequestInputs;
 
-            const contactRequest = await this.createContactRequestUseCase.execute(id, email);
+            await this.createContactRequestUseCase.execute(id, email);
 
-            return res.jsonSuccess(contactRequest, 201)
+            return res.jsonSuccess(null, 201)
         } catch (error) {
             next(error);
         }

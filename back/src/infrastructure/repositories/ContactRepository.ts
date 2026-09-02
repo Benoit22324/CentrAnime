@@ -73,6 +73,23 @@ class ContactRepository implements ContactRepositoryInterface {
             data: {
                 userAId: userId,
                 userBId: otherId
+            },
+            include: {
+                userA: {
+                    select: {
+                        username: true
+                    }
+                },
+                userB: {
+                    select: {
+                        username: true
+                    }
+                },
+                chat: {
+                    select: {
+                        id: true
+                    }
+                }
             }
         });
 

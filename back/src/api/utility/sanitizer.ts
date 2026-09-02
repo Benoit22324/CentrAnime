@@ -262,7 +262,7 @@ export const sanitizeContact = (contact: PrismaContact, userId: string) => {
 
     return new Contact(
         c.id,
-        c.userAId === userId ? c.userA.username : c.userB.username,
+        c.userAId !== userId ? c.userA.username : c.userB.username,
         c.chat ? c.chat.id : ""
     )
 }
