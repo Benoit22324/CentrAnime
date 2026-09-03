@@ -322,6 +322,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
     }
 
     async updateRecommandation(id: string, title: string, description: string, authorId: string): Promise<Recommandation> {
+        // Mise à jour de la recommandation & Récupération de la recommandation
         const recommandation = await prisma.recommandation.update({
             where: { id },
             data: {
@@ -348,6 +349,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
             }
         });
 
+        // Retour au propre de la recommandation
         return sanitizeRecommandation(recommandation, recommandation.authorId === authorId);
     }
 

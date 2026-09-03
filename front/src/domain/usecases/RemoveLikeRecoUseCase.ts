@@ -8,7 +8,7 @@ class RemoveLikeRecoUseCase {
         const { id } = input;
 
         try {
-            await this.recommandationRepository.removeAnimeReco(id);
+            await this.recommandationRepository.removeLikeReco(id);
         } catch (error) {
             throw new Error("Une erreur est survenue");
         }

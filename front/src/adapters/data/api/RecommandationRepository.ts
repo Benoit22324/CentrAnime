@@ -87,6 +87,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async createRecommandation(title: string, description: string): Promise<void> {
         try {
+            // Appel à l'API avec les données des champs
             const response = await axios.post(`http://localhost:8000/api/reco`, { title, description }, {
                 withCredentials: true
             })
@@ -94,6 +95,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
             //     withCredentials: true
             // })
 
+            // Retourner une erreur à l'échec
             if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
         } catch (error) {
             throw new Error("Une erreur inattendue est survenue");

@@ -92,13 +92,18 @@ class RecommandationController {
 
     async createRecommandation(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            // Vérification si l'utilisateur est connecté
             if (!req.user) return res.jsonError("Accès non autorisé", 403);
 
+            // Récupération de l'id de l'utilisateur
             const { id } = req.user;
+            // Assignation du type et déstructuration des données saisies
             const { title, description } = req.body as CreateRecommandationInputs;
 
+            // Appel du UseCase de création de recommandation
             await this.createRecommandationUseCase.execute(id, title, description);
 
+            // Retour vide avec le code 201
             return res.jsonSuccess(null, 201);
         } catch (error) {
             next(error);

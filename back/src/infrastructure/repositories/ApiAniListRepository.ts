@@ -7,6 +7,7 @@ import { GetAnimesByPageOutputs } from "../../api/dto";
 
 class ApiAniListRepository implements ApiAniListRepositoryInterface {
     async getApiAnimes(selectedPage: number, maxItems: number, searchName: string | null, filterGenre: string | null): Promise<GetAnimesByPageOutputs | undefined | null> {
+        // Préparation de la requête Graphql
         const query = `
             query ($page: Int, $maxItems: Int, $search: String, $genre: String) {
                 Page(page: $page, perPage: $maxItems) {
@@ -58,6 +59,7 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                 }
             }
         `;
+        // Préparation des variables à l'envoie
         const variables = {
             page: selectedPage + 1,
             maxItems,
@@ -65,6 +67,7 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
             genre: filterGenre
         }
 
+        // Mise en place des options
         const options = {
             headers: {
                 'Content-Type': 'application/json',
@@ -77,12 +80,17 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
             })
         }
 
+        // Appel à l'API
         const response: any = await fetch("https://graphql.anilist.co", options);
 
+        // On continue si on a une réponse
         if (response.ok) {
+            // Extraction des données en json (la fonction json est asynchrone)
             const dataExtracted = await response.json();
 
+            // Liste final en retour (vide pour le moment)
             let animeFinalList: Anime[] = [];
+            // Récupération des animes récupérés
             const animesList = dataExtracted.data.Page.media;
 
             // Récupération de la plateforme AniList (là où on récupère les données)
@@ -93,7 +101,7 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                 }
             })
 
-            // S'il n'existe pas, on le créer
+            // S'il n'existe pas, on le créer puis on récupère l'id
             if (!platformDb) {
                 const platformData = await prisma.platform.create({
                     data: {
@@ -103,13 +111,17 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                 })
 
                 platformId = platformData.id
+            // Sinon, on récupère l'id
             } else platformId = platformDb.id
 
+            // Boucle sur tous les animes récupérés de l'API
             for (const anime of animesList) {
+                // Préparation de la recherche en bdd
                 const searchWhere: Prisma.AnimeWhereInput = {
                     main_title: anime.title.romaji
                 }
 
+                // Si l'anime récupéré en bdd contient un titre en anglais (possible qu'il n'y en a pas)
                 if (anime.title.english) {
                     searchWhere.en_title = anime.title.english
                 }
@@ -118,11 +130,12 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                     where: searchWhere
                 });
 
-                // Vérification s'il existe ou s'il a été mis à jour durant les 24h
+                // Vérification s'il existe et s'il a été mis à jour durant les 24h
                 if (dbAnime && new Date(dbAnime.updatedAt.getTime() + 86400000).getTime() > new Date().getTime()) return null
 
                 // Si l'anime existe déjà et qu'il n'a pas été mis à jour durant + de 24h
                 if (dbAnime && new Date(dbAnime.updatedAt.getTime() + 86400000).getTime() <= new Date().getTime()) {
+                    // Mise à jour de sa popularité et de son statut
                     await prisma.anime.update({
                         where: { id: dbAnime.id },
                         data: {
@@ -132,6 +145,7 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                         }
                     })
 
+                    // Mise à jour de son rang
                     await prisma.rank.update({
                         where: { id: dbAnime.rankId },
                         data: {
@@ -139,6 +153,7 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                         }
                     })
 
+                    // Mise à jour de son score
                     await prisma.score.update({
                         where: { id: dbAnime.scoreId },
                         data: {
@@ -146,6 +161,7 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                         }
                     })
 
+                    // Retour pour passer au prochain anime de la liste
                     return null
                 }
 
@@ -159,8 +175,8 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                     }
                 });
 
+                // Ajout du studio et récupération de l'id s'il n'existe pas
                 if (!dbStudio) {
-                    // Ajout du studio et récupération de l'id s'il n'existe pas
                     const studioData = await prisma.studio.create({
                         data: {
                             studioName: studio ? studio.name : anime.studios.nodes[0].name
@@ -168,8 +184,10 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                     });
 
                     studioId = studioData.id;
+                // Récupération de l'id du studio
                 } else studioId = dbStudio.id;
 
+                // Vérification de si on a bien récupéré l'id de la plateforme (ici AniList)
                 if (platformId) {
                     // Création en bdd du rang
                     const rankData = await prisma.rank.create({
@@ -226,7 +244,7 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                             }
                         });
 
-                        // Création du genre s'il n'existe pas
+                        // Création du genre s'il n'existe pas puis on récupère son id
                         if (!genreDb) {
                             const genreData = await prisma.genre.create({
                                 data: {
@@ -235,6 +253,7 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                             });
 
                             genreId = genreData.id;
+                        // S'il existe, on récupère l'id du genre
                         } else genreId = genreDb.id;
 
                         // Lien entre le genre et l'anime
@@ -246,9 +265,10 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                         });
                     })
 
-                    // Attendre que tous les liens soient faites
+                    // Attendre que tous les liens des différents genres soient faites
                     await Promise.all(animeGenrePromises);
 
+                    // Récupération de l'anime mis à jour en bdd
                     const cleanAnimeData = await prisma.anime.findUnique({
                         where: { id: animeData.id },
                         include: {
@@ -262,14 +282,17 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                         },
                     });
 
+                    // Si on récupère bien l'anime, on le met au propre puis on le met dans la liste d'anime final
                     if (cleanAnimeData) {
                         animeFinalList.push(sanitizeAnime(cleanAnimeData));
                     }
                 }
             }
 
+            // Préparation de la requête de récupération du total
             const where: Prisma.AnimeWhereInput = {};
 
+            // Si searchName est défini (donc on fait une recherche par nom), on l'ajoute à la requête
             if (searchName) {
                 where.OR = [
                     {
@@ -286,6 +309,7 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                     }
                 ]
             }
+            // Si filterGenre est défini (donc on fait une recherche par genre), on l'ajoute à la requête
             if (filterGenre) {
                 where.animeGenres = {
                     some: {
@@ -296,10 +320,12 @@ class ApiAniListRepository implements ApiAniListRepositoryInterface {
                 }
             }
 
+            // Calcul du nombre total d'anime bdd selon la requête
             const total = await prisma.anime.count({
                 where
             });
 
+            // Retour du tableau d'anime et du total
             return {
                 animes: animeFinalList,
                 total

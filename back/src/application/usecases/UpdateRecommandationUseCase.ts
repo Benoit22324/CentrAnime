@@ -9,9 +9,9 @@ class UpdateRecommandationUseCase {
         if (!description) throw new Error("La description est requise");
 
         try {
-            const anilist = await this.recommandationRepository.updateRecommandation(id, title, description, authorId);
+            const recommandation = await this.recommandationRepository.updateRecommandation(id, title, description, authorId);
 
-            return anilist;
+            return recommandation;
         } catch (err) {
             throw new Error("Une erreur est survenue");
         }

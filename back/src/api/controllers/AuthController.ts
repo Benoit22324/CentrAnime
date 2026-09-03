@@ -25,7 +25,8 @@ class AuthController {
             res.cookie("jwt", token, {
                 httpOnly: true,
                 secure: true,
-                expires: expiration
+                expires: expiration,
+                sameSite: "lax"
             })
 
             return res.jsonSuccess(user);
@@ -53,7 +54,8 @@ class AuthController {
             res.cookie("jwt", "", {
                 expires: new Date("2000-01-01"),
                 httpOnly: true,
-                secure: true
+                secure: true,
+                sameSite: "lax"
             });
 
             return res.jsonSuccess(null);

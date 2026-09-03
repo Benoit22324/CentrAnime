@@ -93,8 +93,8 @@ export const RecommandationPage = () => {
                         ...r.getUserInteraction(),
                         likeId: ""
                     },
-                    r.getLikes(),
-                    r.getFavorites() - 1
+                    r.getLikes() - 1,
+                    r.getFavorites()
                 ) : r);
 
                 setRecommandationData(updatedList);

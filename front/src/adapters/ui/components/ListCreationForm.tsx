@@ -29,25 +29,33 @@ export const ListCreationForm = () => {
         setIsAdding(true);
 
         try {
+            // Si le type sélectionné est "AnimeList"
             if (values.type === "AnimeList") {
+                // Assignation du bon type
                 const data = values as CreateAnimeListFormData;
 
+                // Création de la liste d'anime
                 await createAnimeListUseCase.execute({
                     title: data.title
                 });
 
+                // Réinitialisation des champs & Affichage temporaire du message de succès
                 setIsSuccess(true);
                 reset();
 
                 setTimeout(() => setIsSuccess(false), 3000);
+            // Si le type sélectionné est "Recommandation"
             } else if (values.type === "Recommandation") {
+                // Assignation du bon type
                 const data = values as CreateRecommandationFormData;
 
+                // Création de la liste de recommandation
                 await createRecommandationUseCase.execute({
                     title: data.title,
                     description: data.description
                 })
 
+                // Réinitialisation des champs & Affichage temporaire du message de succès
                 setIsSuccess(true);
                 reset();
 
