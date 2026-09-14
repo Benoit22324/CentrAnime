@@ -4,7 +4,7 @@ class CreateAnimeListUseCase {
     constructor(private readonly animeListRepository: AnimeListRepositoryInterface) { }
 
     async execute(userId: string, title: string): Promise<void> {
-        if (!title) throw new Error("Le titre est requis");
+        if (!title || title.trim() === "") throw new Error("Le titre est requis");
 
         try {
             await this.animeListRepository.createAnimeList(userId, title);
