@@ -185,7 +185,21 @@ class InMemoryApiAniListRepository implements ApiAniListRepositoryInterface {
 
             return {
                 animes: filteredList.map(a => sanitizeAnime(a)),
-                total: filteredList.length
+                total: Math.ceil(filteredList.length / maxItems)
+            }
+        } else if (searchName && !filterGenre) {
+            const filteredList = animes.filter(a => a.main_title.toLocaleLowerCase().includes(searchName.toLocaleLowerCase()) || a.en_title.toLocaleLowerCase().includes(searchName.toLocaleLowerCase()))
+
+            return {
+                animes: filteredList.map(a => sanitizeAnime(a)),
+                total: Math.ceil(filteredList.length / maxItems)
+            }
+        } else if (!searchName && filterGenre) {
+            const filteredList = animes.filter(a => a.animeGenres.some(g => g.genre.genreName.toLocaleLowerCase() === filterGenre.toLocaleLowerCase()))
+
+            return {
+                animes: filteredList.map(a => sanitizeAnime(a)),
+                total: Math.ceil(filteredList.length / maxItems)
             }
         }
 

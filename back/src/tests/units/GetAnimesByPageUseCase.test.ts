@@ -44,11 +44,29 @@ describe("GetAnimesByPageUseCase", () => {
         usecase = new GetAnimesByPageUseCase(repository, apiRepository);
     })
 
-    it("should return a value of 1 anime in an array & 1 total", async () => {
-        const res = await usecase.execute(0, 10, "Anime 2 EN", "Comedy");
+    it("should return a value of 1 anime in an array & 1 total from filter name & genre", async () => {
+        const res = await usecase.execute(0, 10, "anime 2 EN", "comedy");
 
         expect(res.animes).toBeDefined();
         expect(res.animes[0]).toEqual(anime);
+        expect(res.animes.length).toBe(1);
+        expect(res.total).toBe(1);
+    })
+
+    it("should return a value of 1 anime in an array & 1 total from filter name", async () => {
+        const res = await usecase.execute(0, 10, "anime 2 en", null);
+
+        expect(res.animes).toBeDefined();
+        expect(res.animes[0]).toEqual(anime);
+        expect(res.animes.length).toBe(1);
+        expect(res.total).toBe(1);
+    })
+
+    it("should return a value of 2 animes in an array & 1 total from filter genre", async () => {
+        const res = await usecase.execute(0, 10, null, "Comedy");
+
+        expect(res.animes).toBeDefined();
+        expect(res.animes.length).toBe(2);
         expect(res.total).toBe(1);
     })
 
