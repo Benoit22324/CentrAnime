@@ -1,12 +1,14 @@
 import { sanitizeContact } from "../../api/utility";
 import Contact from "../../domain/entities/Contact";
+import { ChatRepositoryInterface } from "../../domain/interfaces/ChatRepositoryInterface";
 import { ContactRepositoryInterface } from "../../domain/interfaces/ContactRepositoryInterface";
 import { ContactRequestRepositoryInterface } from "../../domain/interfaces/ContactRequestRepositoryInterface";
 
 class CreateContactUseCase {
     constructor(
         private readonly contactRequestRepository: ContactRequestRepositoryInterface,
-        private readonly contactRepository: ContactRepositoryInterface
+        private readonly contactRepository: ContactRepositoryInterface,
+        private readonly chatRepository: ChatRepositoryInterface
     ) { }
 
     async execute(requestId: string, userId: string): Promise<Contact | null> {
@@ -23,7 +25,11 @@ class CreateContactUseCase {
 
             const contact = await this.contactRepository.createContact(userId, request.senderId);
 
-            if (contact) return sanitizeContact(contact, userId);
+            if (contact) {
+                const chatId = await this.chatRepository.createChat(contact.id);
+
+                return sanitizeContact(contact, userId, chatId);
+            }
 
             return null;
         } catch (err) {

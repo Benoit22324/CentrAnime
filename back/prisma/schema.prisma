@@ -196,10 +196,11 @@ model Chat {
 }
 
 model ChatMessage {
-  id       String @id @default(uuid())
-  message  String
-  chatId   String
-  authorId String
-  chat     Chat   @relation(fields: [chatId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  author   User   @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  id        String    @id @default(uuid())
+  message   String
+  chatId    String
+  authorId  String
+  createdAt DateTime  @default(now())
+  chat      Chat      @relation(fields: [chatId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  author    User      @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }

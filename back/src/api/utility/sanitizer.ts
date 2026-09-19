@@ -1,10 +1,12 @@
-import { Anime as PrismaAnime, Recommandation as PrismaReco, Opinion as PrismaOpinion, Prisma, User, AniList, Contact as PrismaContact, ContactRequest as PrismaContactRequest } from "@prisma/client";
+import { Anime as PrismaAnime, Recommandation as PrismaReco, Opinion as PrismaOpinion, Prisma, User, AniList, Contact as PrismaContact, ContactRequest as PrismaContactRequest, Chat as PrismaChat, ChatMessage as PrismaCM } from "@prisma/client";
 import Anime from "../../domain/entities/Anime";
 import Opinion from "../../domain/entities/Opinion";
 import AnimeList from "../../domain/entities/AnimeList";
 import Recommandation from "../../domain/entities/Recommandation";
 import Contact from "../../domain/entities/Contact";
 import ContactRequest from "../../domain/entities/ContactRequest";
+import Chat from "../../domain/entities/Chat";
+import ChatMessage from "../../domain/entities/ChatMessage";
 
 export const sanitizeUser = (user: User) => {
     const { salt, password, ...safeInfo } = user;
@@ -257,13 +259,13 @@ type PrismaContactWithInclude = Prisma.ContactGetPayload<{
     }
 }>
 
-export const sanitizeContact = (contact: PrismaContact, userId: string) => {
+export const sanitizeContact = (contact: PrismaContact, userId: string, manualChatId?: string) => {
     const c = contact as PrismaContactWithInclude;
 
     return new Contact(
         c.id,
         c.userAId !== userId ? c.userA.username : c.userB.username,
-        c.chat ? c.chat.id : ""
+        c.chat ? c.chat.id : manualChatId ?? ""
     )
 }
 
@@ -284,5 +286,82 @@ export const sanitizeContactRequest = (contactRequest: PrismaContactRequest) => 
         cr.id,
         cr.sender.username,
         cr.createdAt
+    )
+}
+
+type PrismaChatWithInclude = Prisma.ChatGetPayload<{
+    include: {
+        chatMessages: {
+            select: {
+                id: true,
+                message: true,
+                author: {
+                    select: {
+                        id: true,
+                        username: true
+                    }
+                }
+            },
+            orderBy: {
+                createdAt: "desc"
+            }
+        },
+        contact: {
+            select: {
+                userA: {
+                    select: {
+                        username: true
+                    }
+                },
+                userB: {
+                    select: {
+                        username: true
+                    }
+                }
+            }
+        }
+    }
+}>
+
+export const sanitizeChat = (chat: PrismaChat, userId: string) => {
+    const c = chat as PrismaChatWithInclude;
+
+    let contactUsername = "";
+    const messages = c.chatMessages.map(m => {
+        const isOwner = m.author.id === userId;
+
+        if (!isOwner) contactUsername = m.author.username;
+
+        return new ChatMessage(
+            m.id,
+            m.message,
+            isOwner
+        );
+    });
+
+    return new Chat(
+        c.id,
+        messages,
+        contactUsername
+    )
+}
+
+type PrismaChatMessageWithInclude = Prisma.ChatMessageGetPayload<{
+    include: {
+        author: {
+            select: {
+                id: true
+            }
+        }
+    }
+}>
+
+export const sanitizeChatMessage = (chatMessage: PrismaCM, userId: string) => {
+    const cm = chatMessage as PrismaChatMessageWithInclude;
+
+    return new ChatMessage(
+        cm.id,
+        cm.message,
+        cm.author.id === userId
     )
 }

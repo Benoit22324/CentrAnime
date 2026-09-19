@@ -8,6 +8,7 @@ import { RecommandationRoute } from "./RecommandationRoute";
 import { UserRoute } from "./UserRoute";
 import { ContactRoute } from "./ContactRoute";
 import { ContactRequestRoute } from "./ContactRequestRoute";
+import { ChatRoute } from "./ChatRoute";
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use("/reco", RecommandationRoute);
 router.use("/user", UserRoute);
 router.use("/contact", ContactRoute);
 router.use("/contactRequest", ContactRequestRoute);
+router.use("/chat", ChatRoute);
 
 export { router as ApiRouter };

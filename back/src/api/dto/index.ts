@@ -4,3 +4,4 @@ export * from "./opinionDto";
 export * from "./animeListDto";
 export * from "./recommandationDto";
 export * from "./contactRequestDto";
+export * from "./chatDto";
