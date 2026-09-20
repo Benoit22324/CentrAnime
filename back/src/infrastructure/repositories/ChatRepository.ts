@@ -22,18 +22,20 @@ class ChatRepository implements ChatRepositoryInterface {
                         }
                     },
                     orderBy: {
-                        createdAt: "desc"
+                        createdAt: "asc"
                     }
                 },
                 contact: {
                     select: {
                         userA: {
                             select: {
+                                id: true,
                                 username: true
                             }
                         },
                         userB: {
                             select: {
+                                id: true,
                                 username: true
                             }
                         }

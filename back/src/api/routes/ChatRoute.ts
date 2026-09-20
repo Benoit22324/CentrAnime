@@ -24,7 +24,7 @@ const router = Router();
 
 router.use(authenticationMiddleware);
 
-router.get("/", chatController.getChat);
+router.get("/", chatController.getChat.bind(chatController));
 router.post("/message/:chatId", chatController.addMessage.bind(chatController));
 router.patch("/message/:messageId", chatController.updateMessage.bind(chatController));
 router.delete("/message/:messageId", chatController.deleteMessage.bind(chatController));

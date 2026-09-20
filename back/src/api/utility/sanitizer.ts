@@ -310,11 +310,13 @@ type PrismaChatWithInclude = Prisma.ChatGetPayload<{
             select: {
                 userA: {
                     select: {
+                        id: true,
                         username: true
                     }
                 },
                 userB: {
                     select: {
+                        id: true,
                         username: true
                     }
                 }
@@ -326,11 +328,10 @@ type PrismaChatWithInclude = Prisma.ChatGetPayload<{
 export const sanitizeChat = (chat: PrismaChat, userId: string) => {
     const c = chat as PrismaChatWithInclude;
 
-    let contactUsername = "";
+    const contactUsername = c.contact.userA.id !== userId ? c.contact.userA.username : c.contact.userB.id !== userId ? c.contact.userB.username : "";
+
     const messages = c.chatMessages.map(m => {
         const isOwner = m.author.id === userId;
-
-        if (!isOwner) contactUsername = m.author.username;
 
         return new ChatMessage(
             m.id,

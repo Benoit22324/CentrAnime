@@ -6,12 +6,14 @@ import DeleteContactUseCase from "../../application/usecases/DeleteContactUseCas
 import ContactController from "../controllers/ContactController";
 import CreateContactUseCase from "../../application/usecases/CreateContactUseCase";
 import ContactRequestRepository from "../../infrastructure/repositories/ContactRequestRepository";
+import ChatRepository from "../../infrastructure/repositories/ChatRepository";
 
+const chatRepository = new ChatRepository()
 const contactRequestRepository = new ContactRequestRepository();
 
 const contactRepository = new ContactRepository();
 const getContactsUseCase = new GetContactsUseCase(contactRepository);
-const createContactUseCase = new CreateContactUseCase(contactRequestRepository, contactRepository);
+const createContactUseCase = new CreateContactUseCase(contactRequestRepository, contactRepository, chatRepository);
 const deleteContactUseCase = new DeleteContactUseCase(contactRepository);
 
 const contactController = new ContactController(
