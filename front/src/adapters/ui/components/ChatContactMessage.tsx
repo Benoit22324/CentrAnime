@@ -12,8 +12,8 @@ type ChatContactMessageProps = {
 export const ChatContactMessage = ({ message, isEdited, setEdit, onDelete }: ChatContactMessageProps) => {
 
     return <>
-        <div className={`flex justify-between w-[80%] px-2 py-1.5 ${ message.getIsOwner() ? "self-end bg-light-blue" : "self-start bg-light-grey" } rounded-lg shadow-custom-1 shadow-black/20`}>
-            <span className={`w-[80%] font-semibold`}>{message.getMessage()}</span>
+        <div className={`flex justify-between w-[80%] px-2 py-1.5 ${ message.getIsOwner() ? "self-end bg-light-blue dark:bg-dark-blue" : "self-start bg-light-grey dark:bg-dark-grey" } rounded-lg shadow-custom-1 shadow-black/20 dark:shadow-light-grey/20`}>
+            <span className={`w-[80%] font-semibold dark:text-light`}>{message.getMessage()}</span>
             {
                 message.getIsOwner() && <div className={`flex justify-end gap-1 w-[20%] ${!isEdited ? "py-1.5" : "py-1"}`}>
                     {
@@ -24,13 +24,13 @@ export const ChatContactMessage = ({ message, isEdited, setEdit, onDelete }: Cha
                                 onClick={() => setEdit(message)}
                             />
                             <FaRegTrashAlt
-                                className="text-light-red hover:cursor-pointer hover:scale-90 dark:text-light-lightred"
+                                className="text-light-red hover:cursor-pointer hover:scale-90 dark:text-dark-lightred"
                                 size={14}
                                 onClick={onDelete}
                             />
                         </>
                         : <RxCross2
-                            className="text-light-red hover:cursor-pointer hover:scale-90 dark:text-light-lightred"
+                            className="text-light-red hover:cursor-pointer hover:scale-90 dark:text-dark-lightred"
                             size={16}
                             onClick={() => setEdit(null)}
                         />

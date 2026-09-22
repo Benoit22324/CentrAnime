@@ -55,12 +55,12 @@ export const RegisterForm = () => {
 
     return <>
         {
-            success && <p className="px-2 py-1 bg-light-green font-semibold rounded-lg">Votre compte a été crée avec succès !</p>
+            success && <p className="px-2 py-1 bg-light-green text-sm md:text-base font-semibold rounded-lg dark:bg-dark-green dark:text-light">Votre compte a été crée avec succès !</p>
         }
-        <div className="w-[30%] p-4 bg-light-grey rounded-lg shadow-md shadow-black/20">
+        <div className="w-full md:w-1/2 xl:w-[30%] p-4 bg-light-grey rounded-lg shadow-md shadow-black/20 dark:bg-dark-grey dark:shadow-light-grey/20">
             <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col gap-2">
-                <div className="flex justify-between items-center gap-2">
-                    <label>Pseudonyme</label>
+                <div className="flex flex-col md:flex-row justify-between md:items-center gap-1 md:gap-2">
+                    <label className="text-sm md:text-base dark:text-light">Pseudonyme</label>
                     <Controller
                         rules={{ required: true }}
                         control={control}
@@ -69,17 +69,17 @@ export const RegisterForm = () => {
                         render={({field}) => <input
                             {...field}
                             type="text"
-                            className={`px-2 py-1 bg-light-lightgrey rounded-lg border-1 dark:bg-dark-grey dark:border-light ${errors.username && "border-light-red"}`}
+                            className={`px-2 py-1 bg-light-lightgrey rounded-lg border-1 shadow-custom-1 shadow-black/20 ${errors.username && "border-light-red dark:!border-dark-red"} dark:bg-dark-grey dark:border-light dark:shadow-light-grey/20 dark:text-light dark:placeholder:text-dark-lightgrey`}
                         />}
                     />
                 </div>
 
                 {
-                    (errors.username && errors.username.message) && <p className="text-sm text-light-red text-center">{errors.username.message as string}</p>
+                    (errors.username && errors.username.message) && <p className="text-xs md:text-sm text-light-red text-center dark:text-dark-red">{errors.username.message as string}</p>
                 }
 
-                <div className="flex justify-between items-center gap-2">
-                    <label>E-mail</label>
+                <div className="flex flex-col md:flex-row justify-between md:items-center gap-1 md:gap-2">
+                    <label className="text-sm md:text-base dark:text-light">E-mail</label>
                     <Controller
                         rules={{ required: true }}
                         control={control}
@@ -88,17 +88,17 @@ export const RegisterForm = () => {
                         render={({field}) => <input
                             {...field}
                             type="email"
-                            className={`px-2 py-1 bg-light-lightgrey rounded-lg border-1 dark:bg-dark-grey dark:border-light ${errors.email && "border-light-red"}`}
+                            className={`px-2 py-1 bg-light-lightgrey rounded-lg border-1 shadow-custom-1 shadow-black/20 ${errors.email && "border-light-red dark:!border-dark-red"} dark:bg-dark-grey dark:border-light dark:shadow-light-grey/20 dark:text-light dark:placeholder:text-dark-lightgrey`}
                         />}
                     />
                 </div>
 
                 {
-                    (errors.email && errors.email.message) && <p className="text-sm text-light-red text-center">{errors.email.message as string}</p>
+                    (errors.email && errors.email.message) && <p className="text-xs md:text-sm text-light-red text-center dark:text-dark-red">{errors.email.message as string}</p>
                 }
 
-                <div className="flex justify-between items-center gap-2">
-                    <label>Mot de passe</label>
+                <div className="flex flex-col md:flex-row justify-between md:items-center gap-1 md:gap-2">
+                    <label className="text-sm md:text-base dark:text-light">Mot de passe</label>
                     <Controller
                         rules={{ required: true }}
                         control={control}
@@ -107,21 +107,21 @@ export const RegisterForm = () => {
                         render={({field}) => <input
                             {...field}
                             type="password"
-                            className={`px-2 py-1 bg-light-lightgrey rounded-lg border-1 dark:bg-dark-grey dark:border-light ${errors.password && "border-light-red"}`}
+                            className={`px-2 py-1 bg-light-lightgrey rounded-lg border-1 shadow-custom-1 shadow-black/20 ${errors.password && "border-light-red dark:!border-dark-red"} dark:bg-dark-grey dark:border-light dark:shadow-light-grey/20 dark:text-light dark:placeholder:text-dark-lightgrey`}
                         />}
                     />
                 </div>
 
                 {
-                    (errors.password && errors.password.message) && <p className="text-sm text-light-red text-center">{errors.password.message as string}</p>
+                    (errors.password && errors.password.message) && <p className="text-xs md:text-sm text-light-red text-center dark:text-dark-red">{errors.password.message as string}</p>
                 }
                 {
-                    formError && <p className="text-light-red text-center">{formError}</p>
+                    formError && <p className="text-sm md:text-base text-light-red text-center dark:text-dark-red">{formError}</p>
                 }
 
                 <Button
                     label="S'inscrire"
-                    className="p-1 bg-light-green font-semibold hover:bg-light-lightgreen"
+                    className="p-1 bg-light-green font-semibold hover:bg-light-lightgreen dark:bg-dark-green dark:hover:bg-dark-lightgreen dark:text-light"
                 />
             </form>
         </div>

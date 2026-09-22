@@ -131,13 +131,13 @@ export const RecommandationPage = () => {
 
     return <>
         <div className="flex justify-center items-end gap-2 mb-4">
-            <h1 className="text-4xl font-semibold text-center dark:text-light">Liste de recommandations</h1>
+            <h1 className="mt-8 lg:mt-0 text-2xl md:text-4xl font-semibold text-center dark:text-light">Liste de recommandations</h1>
             {
                 user && <Link
                     to={"/create-list"}
-                    className={`p-1.5 font-semibold bg-light-grey border border-dark hover:bg-light-lightgrey rounded-lg shadow-custom-1 shadow-black/20 hover:cursor-pointer hover:scale-95`}
+                    className={`p-1.5 font-semibold bg-light-grey border border-dark hover:bg-light-lightgrey rounded-lg shadow-custom-1 shadow-black/20 hover:cursor-pointer hover:scale-95 dark:bg-dark-grey dark:hover:bg-dark-darkgrey dark:shadow-light-grey/20 dark:border-light`}
                 >
-                    <FaPlus size={20} />
+                    <FaPlus size={20} className="dark:text-light" />
                 </Link>
             }
         </div>
@@ -151,7 +151,7 @@ export const RecommandationPage = () => {
                     handleLike={handleLikeReco}
                     deleteList={deleteReco}
                 />)
-                : <span className="text-lg md:text-xl font-semibold">Aucune recommandation trouvée.</span>
+                : <span className="text-lg md:text-xl font-semibold dark:text-light">Aucune recommandation trouvée.</span>
             }
         </div>
 

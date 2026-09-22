@@ -116,7 +116,7 @@ export const ChatOverlay = () => {
     }, [editMessage])
 
     return <>
-        <div className="fixed bottom-0 right-10 flex flex-row-reverse justify-between items-end gap-8">
+        <div className="lg:fixed lg:bottom-0 lg:right-10 flex flex-row-reverse justify-between items-end gap-8">
             <ChatMessaging
                 contactList={contactList}
                 fetchChat={fetchChat}

@@ -45,8 +45,8 @@ export const ListEditPage = () => {
 
     return <>
         <div className="flex flex-col justify-center items-center gap-2 h-[80vh]">
-            <h1 className="text-2xl font-semibold dark:text-light">Modifier une liste</h1>
-            <p className="text-sm md:text-base">Les animes doivent être ajoutés directement sur leur page.</p>
+            <h1 className="text-xl md:text-2xl font-semibold dark:text-light">Modifier une liste</h1>
+            <p className="text-sm md:text-base dark:text-light">Les animes doivent être ajoutés directement sur leur page.</p>
 
             <ListEditForm
                 aniList={aniListData}

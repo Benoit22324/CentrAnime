@@ -35,12 +35,12 @@ export const ProfileEditModal = ({ onClose }: ProfileEditModalProps) => {
 
     return <>
         <div className="absolute top-0 left-0 flex items-center justify-center w-full h-[100dvh] bg-black/30 z-30">
-            <div className="flex flex-col items-center gap-2 py-4 px-8 bg-light-grey rounded-xl">
-                <h3 className="text-xl md:text-2xl font-semibold">Modifier ses informations</h3>
+            <div className="flex flex-col items-center gap-2 py-4 px-6 md:px-8 bg-light-grey rounded-xl dark:bg-dark-grey">
+                <h3 className="text-xl md:text-2xl font-semibold dark:text-light">Modifier ses informations</h3>
 
                 <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col gap-2 w-full">
                     <div className="flex flex-col gap-2">
-                        <label htmlFor="username_input" className="w-fit text-base md:text-lg">Titre</label>
+                        <label htmlFor="username_input" className="w-fit text-base md:text-lg dark:text-light">Titre</label>
                         <Controller
                             rules={{ required: true }}
                             control={control}
@@ -49,7 +49,7 @@ export const ProfileEditModal = ({ onClose }: ProfileEditModalProps) => {
                             render={({field}) => <input
                                 {...field}
                                 id="username_input"
-                                className={`w-full px-2 py-1 bg-light-lightgrey rounded-lg border-1 dark:bg-dark-grey dark:border-light ${errors.username && "border-light-red"}`}
+                                className={`w-full px-2 py-1 bg-light-lightgrey rounded-lg border-1 shadow-custom-1 shadow-black/20 ${errors.username && "border-light-red dark:!border-dark-red"} dark:bg-dark-grey dark:border-light dark:shadow-light-grey/20 dark:text-light dark:placeholder:text-dark-lightgrey`}
                                 disabled={isUpdating}
                             />}
                         />
@@ -58,13 +58,13 @@ export const ProfileEditModal = ({ onClose }: ProfileEditModalProps) => {
                     <div className="flex justify-between">
                         <Button
                             label="Enregistrer"
-                            className="w-2/5 mx-auto py-1 px-2 font-semibold bg-light-green hover:bg-light-lightgreen"
+                            className="w-2/5 mx-auto py-1 px-2 font-semibold bg-light-green hover:bg-light-lightgreen dark:bg-dark-green dark:hover:bg-dark-lightgreen dark:text-light"
                             disable={isUpdating}
                         />
                         <Button
                             label="Annuler"
                             type="button"
-                            className="w-2/5 mx-auto py-1 px-2 font-semibold bg-light-lightgrey hover:bg-light"
+                            className="w-2/5 mx-auto py-1 px-2 font-semibold bg-light-lightgrey hover:bg-light dark:bg-dark-darkgrey dark:hover:bg-dark dark:text-light"
                             handleClick={onClose}
                             disable={isUpdating}
                         />

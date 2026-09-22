@@ -11,11 +11,11 @@ export const ThemeToggler = () => {
 
     return <>
         <button
-            className="p-2 font-semibold bg-light-grey hover:bg-light-lightgrey rounded-lg shadow-md shadow-black/25 hover:cursor-pointer hover:scale-95 dark:bg-dark-grey dark:hover:bg-light-grey"
+            className="p-2 font-semibold bg-light-grey hover:bg-light-lightgrey border-1 border-transparent rounded-lg shadow-md shadow-black/25 hover:cursor-pointer hover:scale-95 dark:border-light dark:bg-dark-grey dark:shadow-light-grey/25 dark:hover:bg-dark-darkgrey"
             onClick={() => setDarkMode(!darkMode)}
         >
             {
-                darkMode ? <LuMoon className="w-5 h-5" />
+                darkMode ? <LuMoon className="w-5 h-5 text-light" />
                 : <LuSun className="w-5 h-5" />
             }
         </button>

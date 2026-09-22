@@ -24,13 +24,13 @@ export const ProfileFavoriteRecoItem = ({ reco }: ProfileFavoriteItemProps) => {
             />
         }
         <div
-            className="flex flex-col gap-2 px-4 py-2 bg-light-grey rounded-xl shadow-custom-1 shadow-dark/20 hover:scale-95 hover:cursor-pointer"
+            className="flex flex-col gap-2 px-4 py-2 bg-light-grey rounded-xl shadow-custom-1 shadow-dark/20 hover:scale-95 hover:cursor-pointer dark:bg-dark-grey dark:shadow-light-grey/20"
             onClick={() => setIsDetailOpen(true)}
         >
-            <h3 className="w-2/3 font-semibold text-sm md:text-base">{title}</h3>
+            <h3 className="w-2/3 font-semibold text-sm lg:text-base dark:text-light">{title}</h3>
 
-            <p className="text-sm md:text-base">{description}</p>
-            <p className="text-base md:text-lg font-semibold">{reco.getAuthor()}</p>
+            <p className="text-sm lg:text-base dark:text-light">{description}</p>
+            <p className="text-base lg:text-lg font-semibold dark:text-light">{reco.getAuthor()}</p>
         </div>
     </>
 }

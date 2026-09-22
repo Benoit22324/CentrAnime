@@ -114,32 +114,32 @@ export const ContactPage = () => {
     }, [])
 
     return <>
-        <div className="flex justify-between items-center gap-2 h-[80dvh]">
-            <div className="flex flex-col items-center gap-4 w-[40%] h-[90%]">
-                <h2 className="text-2xl md:text-3xl font-semibold text-center">Vos contacts</h2>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-2 h-[80dvh]">
+            <div className="flex flex-col items-center gap-4 w-full md:w-[45%] xl:w-[40%] h-[90%] mt-8 md:mt-0">
+                <h2 className="text-2xl md:text-3xl font-semibold text-center dark:text-light">Vos contacts</h2>
 
-                <div className="flex flex-col items-center gap-2 w-3/4 h-[90%] p-2 bg-light-lightgrey rounded-xl shadow-custom-1 shadow-dark/20">
+                <div className="flex flex-col items-center gap-2 w-full xl:w-3/4 h-[90%] p-2 bg-light-lightgrey rounded-xl shadow-custom-1 shadow-dark/20 dark:bg-dark-grey dark:shadow-light-grey/20">
                     {
                         contactDatas ? contactDatas.map(contact => <ContactItem
                             key={contact.getId()}
                             contact={contact}
                             handleDelete={() => handleDeleteContact(contact.getId())}
                         />)
-                        : <span className="text-lg md:text-xl font-semibold">Aucun contact</span>
+                        : <span className="text-lg md:text-xl font-semibold dark:text-light">Aucun contact</span>
                     }
                 </div>
             </div>
-            <div className="flex flex-col items-center gap-4 w-[40%] h-[90%]">
-                <h2 className="text-2xl md:text-3xl font-semibold text-center">Demandes de contacts</h2>
+            <div className="flex flex-col items-center gap-4 w-full md:w-[45%] xl:w-[40%] h-[90%]">
+                <h2 className="text-2xl md:text-3xl font-semibold text-center dark:text-light">Demandes de contacts</h2>
 
-                <div className="flex justify-between items-center gap-4 w-2/3">
+                <div className="flex justify-between items-center gap-4 w-full xl:w-2/3">
                     <input
                         value={contactEmail}
                         onChange={(e) => {
                             setContactEmail(e.target.value);
                             setError("");
                         }}
-                        className="w-full px-3 py-2 bg-light-lightgrey rounded-lg border border-dark shadow-custom-1 shadow-black/20 dark:bg-dark-grey dark:border-light"
+                        className="w-full px-3 py-2 bg-light-lightgrey rounded-lg border border-dark shadow-custom-1 shadow-black/20 dark:bg-dark-grey dark:border-light dark:shadow-light-grey/20 dark:text-light dark:placeholder:text-dark-lightgrey"
                         placeholder=""
                     />
                     <Button
@@ -149,20 +149,20 @@ export const ContactPage = () => {
                 </div>
 
                 {
-                    error && <span className="text-xs md:text-sm font-semibold text-light-red">{error}</span>
+                    error && <span className="text-xs md:text-sm font-semibold text-light-red dark:text-dark-red">{error}</span>
                 }
                 {
-                    success && <span className="text-xs md:text-sm font-semibold text-light-green">Requête envoyé avec succès</span>
+                    success && <span className="text-xs md:text-sm font-semibold text-light-green dark:text-dark-green">Requête envoyé avec succès</span>
                 }
 
-                <div className="flex flex-col items-center gap-2 w-3/4 h-[70%] p-2">
+                <div className="flex flex-col items-center gap-2 w-full xl:w-3/4 h-[70%] p-2">
                     {
                         contactRequestDatas ? contactRequestDatas.map(cr => <ContactRequestItem
                             key={cr.getId()}
                             contactRequest={cr}
                             handleRequest={(type: "Accept" | "Deny") => handleRequest(type, cr.getId())}
                         />)
-                        : <span className="text-lg md:text-xl font-semibold">Aucune requête</span>
+                        : <span className="text-lg md:text-xl font-semibold dark:text-light">Aucune requête</span>
                     }
                 </div>
             </div>

@@ -113,10 +113,10 @@ export const ListEditForm = ({ aniList, reco, updateState }: ListEditFormProps) 
     }, [aniList, reco])
 
     return <>
-        <div className="w-[400px] p-4 bg-light-grey rounded-lg shadow-md shadow-black/20">
+        <div className="w-[400px] p-4 bg-light-grey rounded-lg shadow-md shadow-black/20 dark:bg-dark-grey dark:shadow-light-grey/20">
             <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col gap-2">
-                <div className="flex justify-between items-center gap-2">
-                    <label htmlFor="title_input" className="w-1/4">Titre</label>
+                <div className="flex flex-col md:flex-row justify-between items-center gap-1 md:gap-2">
+                    <label htmlFor="title_input" className="w-full md:w-1/4 dark:text-light">Titre</label>
                     <Controller
                         rules={{ required: true }}
                         control={control}
@@ -125,15 +125,15 @@ export const ListEditForm = ({ aniList, reco, updateState }: ListEditFormProps) 
                         render={({field}) => <input
                             {...field}
                             id="title_input"
-                            className={`w-3/4 px-2 py-1 bg-light-lightgrey rounded-lg border-1 dark:bg-dark-grey dark:border-light ${errors.title && "border-light-red"}`}
+                            className={`w-full md:w-3/4 px-2 py-1 bg-light-lightgrey rounded-lg border-1 shadow-custom-1 shadow-black/20 ${errors.title && "border-light-red dark:!border-dark-red"} dark:bg-dark-grey dark:border-light dark:shadow-light-grey/20 dark:text-light dark:placeholder:text-dark-lightgrey`}
                             disabled={isUpdating}
                         />}
                     />
                 </div>
 
                 {
-                    reco && <div className="flex justify-between gap-2">
-                        <label htmlFor="description_textarea" className="w-1/4">Description</label>
+                    reco && <div className="flex flex-col md:flex-row justify-between gap-1 md:gap-2">
+                        <label htmlFor="description_textarea" className="w-full md:w-1/4 dark:text-light">Description</label>
                         <Controller
                             rules={{ required: true }}
                             control={control}
@@ -143,51 +143,51 @@ export const ListEditForm = ({ aniList, reco, updateState }: ListEditFormProps) 
                                 {...field}
                                 id="description_textarea"
                                 rows={3}
-                                className={`w-3/4 px-2 py-1 bg-light-lightgrey text-light-darkgrey rounded-lg border border-dark shadow-custom-1 shadow-black/20 resize-none ${errors.description && "border-light-red"} dark:bg-dark-grey dark:border-light`}
+                                className={`w-full md:w-3/4 px-2 py-1 bg-light-lightgrey text-light-darkergrey rounded-lg border border-dark shadow-custom-1 shadow-black/20 resize-none ${errors.description && "border-light-red dark:!border-dark-red"} dark:bg-dark-grey dark:border-light dark:shadow-light-grey/20 dark:text-light dark:placeholder:text-dark-lightgrey`}
                                 disabled={isUpdating}
                             />}
                         />
                     </div>
                 }
 
-                <p className="text-lg">Anime{animesData.length > 1 ? "s" : ""} sélectionnée{animesData.length > 1 ? "s" : ""} :</p>
+                <p className="text-base md:text-lg dark:text-light">Anime{animesData.length > 1 ? "s" : ""} sélectionnée{animesData.length > 1 ? "s" : ""} :</p>
                 {
                     animesData.length > 0 ? <ul className="max-h-[40dvh] pl-8 list-disc overflow-y-auto scrollbar-none dark:text-light">
                         {animesData.map(a => <li key={a.id}>
                             <div className="flex justify-between items-center">
-                                <span className="font-semibold">{a.title}</span>
+                                <span className="font-semibold dark:text-light">{a.title}</span>
                                 {
                                     deleteAnimesData.find(da => da.id === a.id) ? <FaPlus
                                         size={16}
-                                        className={`text-light-blue dark:text-light-lightblue ${!isUpdating ? "hover:cursor-pointer hover:scale-90" : ""}`}
+                                        className={`text-light-blue dark:text-dark-blue ${!isUpdating ? "hover:cursor-pointer hover:scale-90" : ""}`}
                                         onClick={() => !isUpdating && handleAnimesListChange("cancel", a)}
                                     />
                                     : <FaRegTrashAlt
                                         size={16}
-                                        className={`text-light-red dark:text-light-lightred ${!isUpdating ? "hover:cursor-pointer hover:scale-90" : ""}`}
+                                        className={`text-light-red dark:text-dark-red ${!isUpdating ? "hover:cursor-pointer hover:scale-90" : ""}`}
                                         onClick={() => !isUpdating && handleAnimesListChange("delete", a)}
                                     />
                                 }
                             </div>
                         </li>)}
                     </ul>
-                    : <span className="text-xs md:text-sm font-semibold"> Aucun anime est sélectionné.</span>
+                    : <span className="text-xs md:text-sm font-semibold dark:text-light"> Aucun anime est sélectionné.</span>
                 }
 
                 {
-                    isSuccess && <span className="text-light-green font-semibold text-center">Les modifications ont été appliquées !</span>
+                    isSuccess && <span className="text-sm md:text-base text-light-green font-semibold text-center dark:text-dark-green">Les modifications ont été appliquées !</span>
                 }
 
                 <div className="flex justify-between">
                     <Button
                         label="Valider"
-                        className="w-2/5 mx-auto py-1 px-2 font-semibold bg-light-green hover:bg-light-lightgreen"
+                        className="w-2/5 mx-auto py-1 px-2 font-semibold bg-light-green hover:bg-light-lightgreen dark:bg-dark-green dark:hover:bg-dark-lightgreen dark:text-light"
                         disable={isUpdating}
                     />
                     <Button
                         label="Annuler"
                         type="button"
-                        className="w-2/5 mx-auto py-1 px-2 font-semibold bg-light-lightgrey hover:bg-light"
+                        className="w-2/5 mx-auto py-1 px-2 font-semibold bg-light-lightgrey hover:bg-light dark:bg-dark-darkgrey dark:hover:bg-dark dark:text-light"
                         handleClick={() => aniList ? navigate("/ani-list") : navigate("/reco")}
                         disable={isUpdating}
                     />

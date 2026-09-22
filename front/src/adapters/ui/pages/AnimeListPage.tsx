@@ -44,23 +44,23 @@ export const AnimeListPage = () => {
 
     return <>
         <div className="flex justify-center items-end gap-2 mb-4">
-            <h1 className="text-4xl font-semibold text-center dark:text-light">Vos listes d'animes</h1>
+            <h1 className="text-2xl md:text-4xl font-semibold text-center dark:text-light">Vos listes d'animes</h1>
             <Link
                 to={"/create-list"}
-                className={`p-1.5 font-semibold bg-light-grey border border-dark hover:bg-light-lightgrey rounded-lg shadow-custom-1 shadow-black/20 hover:cursor-pointer hover:scale-95`}
+                className={`p-1.5 font-semibold bg-light-grey border border-dark hover:bg-light-lightgrey rounded-lg shadow-custom-1 shadow-black/20 hover:cursor-pointer hover:scale-95 dark:bg-dark-grey dark:hover:bg-dark-darkgrey dark:shadow-light-grey/20 dark:border-light`}
             >
-                <FaPlus size={20} />
+                <FaPlus size={20} className="dark:text-light" />
             </Link>
         </div>
 
-        <div className="flex justify-center gap-6 w-[90%] mx-auto my-4">
+        <div className="flex flex-col md:flex-row justify-center gap-6 w-full xl:w-[90%] mx-auto my-4">
             {
                 (animeListData && animeListData.length > 0) ? animeListData.map(al => <AnimeListItem
                     key={al.getId()}
                     animeList={al}
                     deleteList={deleteAniList}
                 />)
-                : <span className="text-lg md:text-xl font-semibold">Aucune liste d'animes trouvée.</span>
+                : <span className="text-lg md:text-xl font-semibold dark:text-light">Aucune liste d'animes trouvée.</span>
             }
         </div>
 

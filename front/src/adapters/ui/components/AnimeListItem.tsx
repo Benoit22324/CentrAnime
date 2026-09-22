@@ -19,22 +19,22 @@ export const AnimeListItem = ({ animeList, deleteList }: AnimeListItemProps) => 
                 onCancel={() => setIsDeleteConfirmation(false)}
             />
         }
-        <div className="w-[30%] h-fit md:h-[640px] py-4 px-3 bg-light-lightyellow/50 rounded-xl dark:bg-light-lightyellow/40 hover:scale-98">
+        <div className="w-full md:w-[30%] h-[180px] md:h-[640px] py-4 px-3 bg-light-lightyellow/50 rounded-xl dark:bg-dark-lightyellow/70 hover:scale-98">
             <div className="flex justify-end items-center gap-2">
-                <Link to={`/edit-list/${animeList.getId()}`} className="hover:scale-90">
+                <Link to={`/edit-list/${animeList.getId()}`} className="scale-90 hover:scale-80 lg:scale-100 lg:hover:scale-90 ">
                     <FaPen size={18} className="text-dark dark:text-light" />
                 </Link>
-                <FaRegTrashAlt className="text-light-red hover:cursor-pointer hover:scale-90 dark:text-light-lightred" size={20} onClick={() => setIsDeleteConfirmation(true)} />
+                <FaRegTrashAlt className="text-light-red hover:cursor-pointer dark:text-dark-red scale-90 hover:scale-80 lg:scale-100 lg:hover:scale-90" size={20} onClick={() => setIsDeleteConfirmation(true)} />
             </div>
 
-            <h2 className="my-4 text-xl md:text-2xl font-semibold text-center dark:text-light">{animeList.getTitle()}</h2>
+            <h2 className="md:my-4 text-xl lg:text-2xl font-semibold text-center dark:text-light">{animeList.getTitle()}</h2>
 
             {
-                animeList.getAnimes() && <ul className="h-[85%] pl-8 list-disc overflow-y-auto scrollbar-none dark:text-light">
+                animeList.getAnimes() && <ul className="h-[70%] md:h-[78%] lg:h-[85%] pl-8 list-disc overflow-y-auto scrollbar-none dark:text-light">
                     {
                         animeList.getAnimes().map(anime => <li key={anime.animeId}>
                             <Link to={`/anime/${anime.animeId}`}>
-                                <span className="text-sm md:text-base hover:text-light-darkgrey dark:text-light dark:hover:text-light-grey">{anime.title}</span>
+                                <span className="text-sm md:text-base hover:text-light-darkergrey dark:text-light dark:hover:text-light-grey">{anime.title}</span>
                             </Link>
                         </li>)
                     }

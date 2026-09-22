@@ -3,13 +3,16 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
-    /* colors */
+    /* Color Palette */
+    /* Basics */
     --color-light: #F7F7F7;
     --color-dark: #4A4A4A;
 
+    /* Light mode */
     --color-light-lightgrey: #EFEFEF;
     --color-light-grey: #E3E3E3;
-    --color-light-darkgrey: #6E6E6E;
+    --color-light-darkgrey: #C9C9C9;
+    --color-light-darkergrey: #6E6E6E;
     --color-light-lightblue: #97E3FF;
     --color-light-blue: #41CCFF;
     --color-light-lightyellow: #FFE853;
@@ -19,12 +22,42 @@
     --color-light-lightgreen: #61FF7B;
     --color-light-green: #31FF50;
 
-    --color-dark-grey: #C9C9C9;
+    /* Dark mode */
+    --color-dark-darkergrey: #1C1E22;
+    --color-dark-darkgrey: #34343A;
+    --color-dark-grey: #4E4E4E;
+    --color-dark-lightgrey: #CFCFCF;
+    --color-dark-lightblue: #6BA7BD;
+    --color-dark-blue: #1C98C5;
+    --color-dark-lightyellow: #D4C156;
+    --color-dark-yellow: #C0A717;
+    --color-dark-lightred: #E46565;
+    --color-dark-red: #D23E3E;
+    --color-dark-lightgreen: #5FB96E;
+    --color-dark-green: #24AF3B;
 
-    /* box shadows */
+    /* Box shadow */
     --shadow-custom-1: 3px 3px 2px transparent;
 }
 
 * {
     transition: 0.2s;
+}
+
+.nav_anchor {
+    anchor-name: --nav_anchor;
+}
+
+.nav_mobile_bar {
+    position-anchor: --nav_anchor;
+    top: anchor(bottom)
+}
+
+.filter_anchor {
+    anchor-name: --filter_anchor;
+}
+
+.filter_modal {
+    position-anchor: --filter_anchor;
+    top: calc(anchor(bottom) + 5px)
 }

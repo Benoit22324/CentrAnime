@@ -26,13 +26,13 @@ export const RecommandationItem = ({ reco, handleFavorite, handleLike, deleteLis
                 onClose={() => setIsDetailOpen(false)}
             />
         }
-        <div className="flex flex-col justify-between gap-2 w-[30%] py-2 px-3 bg-light-grey rounded-xl shadow-custom-1 shadow-black/20 hover:scale-98 hover:cursor-pointer" onClick={() => setIsDetailOpen(true)}>
-            <h2 className="text-base md:text-lg font-semibold">{title}</h2>
+        <div className="flex flex-col justify-between gap-2 w-full md:w-[48%] lg:w-[30%] py-2 px-3 bg-light-grey rounded-xl shadow-custom-1 shadow-black/20 hover:scale-98 hover:cursor-pointer dark:bg-dark-grey dark:shadow-light-grey/20" onClick={() => setIsDetailOpen(true)}>
+            <h2 className="text-base md:text-lg font-semibold dark:text-light">{title}</h2>
 
-            <p className="text-xs md:text-sm">{description}</p>
-            <p className="text-xs md:text-sm">Anime{reco.getAnimes().length > 1 ? "s" : ""} sélectionné{reco.getAnimes().length > 1 ? "s" : ""}: {animes}</p>
+            <p className="text-xs md:text-sm dark:text-light">{description}</p>
+            <p className="text-xs md:text-sm dark:text-light">Anime{reco.getAnimes().length > 1 ? "s" : ""} sélectionné{reco.getAnimes().length > 1 ? "s" : ""}: {animes}</p>
 
-            <p className="text-sm md:text-base font-semibold">{reco.getAuthor()}</p>
+            <p className="text-sm md:text-base font-semibold dark:text-light">{reco.getAuthor()}</p>
         </div>
     </>
 }
