@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
         {
-            "src": "dist/src/api/server.ts",
+            "src": "src/api/app.ts",
             "use": "@vercel/node"
         }
     ],
@@ -17,16 +17,10 @@
             ]
         }
     ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "dist/src/api/server.ts"
-        }
-    ],
     "rewrites": [
         {
             "source": "/(.*)",
-            "destination": "/dist/src/api/server.js"
+            "destination": "/src/api/app.js"
         }
     ]
 }
