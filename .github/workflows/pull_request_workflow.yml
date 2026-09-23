@@ -3,6 +3,12 @@ on:
   pull_request:
     branches:
       - main
+env:
+  DATABASE_URL: ${{ secrets.PARAM_DATABASE_URL }}
+  JWT_SECRET: ${{ secrets.PARAM_JWT_SECRET }}
+  APP_NAME: ${{ secrets.PARAM_APP_NAME }}
+  REDIS_URI: ${{ secrets.PARAM_REDIS_URI }}
+  NODE_ENV: ${{ secrets.PARAM_NODE_ENV }}
 
 jobs:
   backend:
