@@ -1,6 +1,5 @@
-name: Test des PR
-on:
-  pull_request
+name: Deploiement et test des PR
+'on': pull_request
 
 jobs:
     backend:
@@ -14,7 +13,6 @@ jobs:
         - uses: actions/setup-node@v4
           with:
             node-version: 22
-
         - run: npm i
         - run: npm run build
         - run: npm test
