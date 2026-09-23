@@ -1,11 +1,12 @@
 import axios from "axios";
 import type { UserRepositoryInterface } from "../../../interfaces/repositories/UserRepositoryInterface";
 import type { RepositoryOutput } from "../../../interfaces/outputs/RepositoryOutput";
+import { apiUrl } from "../../../env";
 
 class UserRepository implements UserRepositoryInterface {
     async updateUser(username: string): Promise<RepositoryOutput> {
         try {
-            const response = await axios.patch("http://localhost:8000/api/user", { username }, {
+            const response = await axios.patch(`${apiUrl}/api/user`, { username }, {
                 withCredentials: true
             });
             // const response = await axios.patch("/api/user", { username }, {
@@ -24,7 +25,7 @@ class UserRepository implements UserRepositoryInterface {
 
     async deleteUser(): Promise<void> {
         try {
-            const response = await axios.delete("http://localhost:8000/api/user", {
+            const response = await axios.delete(`${apiUrl}/api/user`, {
                 withCredentials: true
             });
             // const response = await axios.delete("/api/user", {

@@ -3,11 +3,12 @@ import type { AuthRepositoryInterface } from "../../../interfaces/repositories/A
 import type { RegisterFormData } from "../../../typings/RegisterFormData";
 import type { LoginFormData } from "../../../typings/LoginFormData";
 import type { RepositoryOutput } from "../../../interfaces/outputs/RepositoryOutput";
+import { apiUrl } from "../../../env";
 
 class AuthRepository implements AuthRepositoryInterface {
     async login(payload: LoginFormData): Promise<RepositoryOutput> {
         try {
-            const response = await axios.post("http://localhost:8000/api/auth/login", payload, {
+            const response = await axios.post(`${apiUrl}/api/auth/login`, payload, {
                 withCredentials: true
             });
             // const response = await axios.post("/api/auth/login", payload, {
@@ -26,7 +27,7 @@ class AuthRepository implements AuthRepositoryInterface {
 
     async register(payload: RegisterFormData): Promise<RepositoryOutput | void> {
         try {
-            const response = await axios.post("http://localhost:8000/api/auth/register", payload);
+            const response = await axios.post(`${apiUrl}/api/auth/register`, payload);
             // const response = await axios.post("/api/auth/register", payload);
 
             if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
@@ -38,7 +39,7 @@ class AuthRepository implements AuthRepositoryInterface {
     }
 
     async logout(): Promise<void> {
-        await axios.get("http://localhost:8000/api/auth/logout", {
+        await axios.get(`${apiUrl}/api/auth/logout`, {
             withCredentials: true
         });
         // await axios.get("/api/auth/logout", {
@@ -48,7 +49,7 @@ class AuthRepository implements AuthRepositoryInterface {
 
     async me(): Promise<RepositoryOutput> {
         try {
-            const response = await axios.get("http://localhost:8000/api/auth/me", {
+            const response = await axios.get(`${apiUrl}/api/auth/me`, {
                 withCredentials: true
             });
             // const response = await axios.get("/api/auth/me", {

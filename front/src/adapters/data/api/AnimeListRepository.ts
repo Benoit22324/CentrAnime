@@ -3,11 +3,12 @@ import type AnimeList from "../../../domain/entities/AnimeList";
 import type { AnimeListRepositoryInterface } from "../../../interfaces/repositories/AnimeListRepositoryInterface";
 import { convertAnimeList } from "../../../utils/convertAnimeList";
 import type { GetAnimeListOffsetOutput } from "../../../interfaces/outputs/GetAnimeListOffsetOutput";
+import { apiUrl } from "../../../env";
 
 class AnimeListRepository implements AnimeListRepositoryInterface {
     async getAnimeLists(): Promise<AnimeList[] | null> {
         try {
-            const response = await axios.get("http://localhost:8000/api/anilist", {
+            const response = await axios.get(`${apiUrl}/api/anilist`, {
                 withCredentials: true
             })
             // const response = await axios.get("/api/anilist", {
@@ -25,7 +26,7 @@ class AnimeListRepository implements AnimeListRepositoryInterface {
 
     async getAnimeListOffset(selectedPage: number, maxItems: number): Promise<GetAnimeListOffsetOutput> {
         try {
-            const response = await axios.get(`http://localhost:8000/api/anilist/offset?selectedPage=${selectedPage}&maxItems=${maxItems}`, {
+            const response = await axios.get(`${apiUrl}/api/anilist/offset?selectedPage=${selectedPage}&maxItems=${maxItems}`, {
                 withCredentials: true
             })
             // const response = await axios.get(`/api/anilist/offset?selectedPage=${selectedPage}&maxItems=${maxItems}`, {
@@ -51,7 +52,7 @@ class AnimeListRepository implements AnimeListRepositoryInterface {
 
     async getAnimeListById(id: string): Promise<AnimeList | null> {
         try {
-            const response = await axios.get(`http://localhost:8000/api/anilist/${id}`, {
+            const response = await axios.get(`${apiUrl}/api/anilist/${id}`, {
                 withCredentials: true
             })
             // const response = await axios.get(`/api/anilist/${id}`, {
@@ -69,7 +70,7 @@ class AnimeListRepository implements AnimeListRepositoryInterface {
 
     async createAnimeList(title: string): Promise<void> {
         try {
-            const response = await axios.post(`http://localhost:8000/api/anilist/`, { title }, {
+            const response = await axios.post(`${apiUrl}/api/anilist/`, { title }, {
                 withCredentials: true
             })
             // const response = await axios.post(`/api/anilist/`, { title }, {
@@ -84,7 +85,7 @@ class AnimeListRepository implements AnimeListRepositoryInterface {
 
     async addAnimeAL(anilistId: string, animeId: string): Promise<AnimeList | null> {
         try {
-            const response = await axios.post(`http://localhost:8000/api/anilist/anime/${anilistId}?animeId=${animeId}`, {}, {
+            const response = await axios.post(`${apiUrl}/api/anilist/anime/${anilistId}?animeId=${animeId}`, {}, {
                 withCredentials: true
             })
             // const response = await axios.post(`/api/anilist/anime/${anilistId}?animeId=${animeId}`, {}, {
@@ -102,7 +103,7 @@ class AnimeListRepository implements AnimeListRepositoryInterface {
 
     async updateAnimeList(id: string, title: string): Promise<AnimeList | null> {
         try {
-            const response = await axios.patch(`http://localhost:8000/api/anilist/${id}`, { title }, {
+            const response = await axios.patch(`${apiUrl}/api/anilist/${id}`, { title }, {
                 withCredentials: true
             })
             // const response = await axios.patch(`/api/anilist/${id}}`, { title }, {
@@ -120,7 +121,7 @@ class AnimeListRepository implements AnimeListRepositoryInterface {
 
     async removeAnimeAL(id: string): Promise<void> {
         try {
-            const response = await axios.delete(`http://localhost:8000/api/anilist/anime/${id}`, {
+            const response = await axios.delete(`${apiUrl}/api/anilist/anime/${id}`, {
                 withCredentials: true
             })
             // const response = await axios.delete(`/api/anilist/anime/${id}`, {
@@ -135,7 +136,7 @@ class AnimeListRepository implements AnimeListRepositoryInterface {
 
     async deleteAnimeList(id: string): Promise<void> {
         try {
-            const response = await axios.delete(`http://localhost:8000/api/anilist/${id}`, {
+            const response = await axios.delete(`${apiUrl}/api/anilist/${id}`, {
                 withCredentials: true
             })
             // const response = await axios.delete(`/api/anilist/${id}`, {
