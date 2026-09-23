@@ -1,19 +1,21 @@
 name: Deploiement et test des PR
 on:
-  pull_request
+  pull_request:
+    branches:
+      - main
 
 jobs:
-    backend:
-        runs-on: ubuntu-latest
-        defaults:
-          run:
-            working-directory: apps/backend
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/backend
 
-        steps:
-        - uses: actions/checkout@v4
-        - uses: actions/setup-node@v4
-          with:
-            node-version: 22
-        - run: npm i
-        - run: npm run build
-        - run: npm test
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 24
+    - run: npm ci
+    - run: npm run build
+    - run: npm test
