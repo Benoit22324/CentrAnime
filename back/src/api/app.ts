@@ -30,4 +30,4 @@ app.use("/api", ApiRouter);
 
 app.use(errorHandlerMiddleware);
 
-app.listen(8000, () => console.log("Serveur lancé !"));
+export default app;

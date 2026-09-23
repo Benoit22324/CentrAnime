@@ -7,7 +7,8 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec tsx src/api/app.ts",
+    "dev": "nodemon --exec tsx src/api/server.ts",
+    "start": "node dist/api/server.js",
     "seed": "tsx src/api/config/seed.ts",
     "build": "tsc",
     "test": "jest"
