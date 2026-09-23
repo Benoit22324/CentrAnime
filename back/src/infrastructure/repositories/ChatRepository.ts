@@ -71,13 +71,6 @@ class ChatRepository implements ChatRepositoryInterface {
                 authorId,
                 chatId,
                 message
-            },
-            include: {
-                author: {
-                    select: {
-                        id: true
-                    }
-                }
             }
         });
 
@@ -92,13 +85,6 @@ class ChatRepository implements ChatRepositoryInterface {
             },
             data: {
                 message
-            },
-            include: {
-                author: {
-                    select: {
-                        id: true
-                    }
-                }
             }
         });
 

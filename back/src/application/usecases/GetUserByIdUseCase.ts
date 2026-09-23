@@ -6,7 +6,7 @@ class GetUserByIdUseCase {
     constructor(private readonly userRepository: UserRepositoryInterface) { }
 
     async execute(id: string): Promise<UserPayload | null> {
-        if (!id) return null;
+        if (!id || id.trim() === "") return null;
 
         try {
             const user = await this.userRepository.getUserById(id);

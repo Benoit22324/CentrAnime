@@ -347,22 +347,10 @@ export const sanitizeChat = (chat: PrismaChat, userId: string) => {
     )
 }
 
-type PrismaChatMessageWithInclude = Prisma.ChatMessageGetPayload<{
-    include: {
-        author: {
-            select: {
-                id: true
-            }
-        }
-    }
-}>
-
 export const sanitizeChatMessage = (chatMessage: PrismaCM, userId: string) => {
-    const cm = chatMessage as PrismaChatMessageWithInclude;
-
     return new ChatMessage(
-        cm.id,
-        cm.message,
-        cm.author.id === userId
+        chatMessage.id,
+        chatMessage.message,
+        chatMessage.authorId === userId
     )
 }

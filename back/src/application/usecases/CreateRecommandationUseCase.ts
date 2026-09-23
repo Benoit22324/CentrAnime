@@ -5,8 +5,8 @@ class CreateRecommandationUseCase {
 
     async execute(userId: string, title: string, description: string): Promise<void> {
         // Vérification si les champs saisies ne sont pas vide
-        if (!title) throw new Error("Le titre est requis");
-        if (!description) throw new Error("La description est requise");
+        if (!title || title.trim() === "") throw new Error("Le titre est requis");
+        if (!description || description.trim() === "") throw new Error("La description est requise");
 
         try {
             // Création de la recommandation en bdd

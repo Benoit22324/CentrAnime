@@ -6,7 +6,7 @@ class UpdateMessageUseCase {
     constructor(private readonly chatRepository: ChatRepositoryInterface) { }
 
     async execute(userId: string, messageId: string, message: string): Promise<ChatMessage> {
-        if (!message) throw new Error("Le message est requis");
+        if (!message || message.trim() === "") throw new Error("Le message est requis");
 
         try {
             const cm = await this.chatRepository.updateMessage(userId, messageId, message);

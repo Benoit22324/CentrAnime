@@ -5,7 +5,7 @@ class UpdateAnimeListUseCase {
     constructor(private readonly animeListRepository: AnimeListRepositoryInterface) { }
 
     async execute(id: string, title: string): Promise<AnimeList> {
-        if (!title) throw new Error("Le titre est requis");
+        if (!title || title.trim() === "") throw new Error("Le titre est requis");
 
         try {
             const anilist = await this.animeListRepository.updateAnimeList(id, title);

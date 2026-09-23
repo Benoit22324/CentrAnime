@@ -6,7 +6,7 @@ class UpdateUserUseCase {
     constructor(private readonly userRepository: UserRepositoryInterface) { }
 
     async execute(id: string, username: string): Promise<UserPayload | null> {
-        if (!username) throw new Error("Le pseudonyme est requis");
+        if (!username || username.trim() === "") throw new Error("Le pseudonyme est requis");
 
         try {
             const user = await this.userRepository.updateUser(id, username);
