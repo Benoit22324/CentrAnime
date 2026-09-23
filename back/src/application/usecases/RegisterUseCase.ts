@@ -4,9 +4,9 @@ class RegisterUseCase {
     constructor(private readonly userRepository: UserRepositoryInterface) { }
 
     async execute(username: string, email: string, password: string): Promise<void> {
-        if (!username) throw new Error("Le nom d'utilisateur est requis");
-        if (!email) throw new Error("L'e-mail est requis");
-        if (!password) throw new Error("Le mot de passe est requis");
+        if (!username || username.trim() === "") throw new Error("Le nom d'utilisateur est requis");
+        if (!email || email.trim() === "") throw new Error("L'e-mail est requis");
+        if (!password || password.trim() === "") throw new Error("Le mot de passe est requis");
 
         const user = await this.userRepository.findByEmail(email);
 

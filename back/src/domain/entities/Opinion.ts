@@ -1,9 +1,12 @@
+import Anime from "./Anime";
+
 class Opinion {
     constructor(
         private readonly id: string,
         private readonly viewStatus: string,
         private readonly note: number,
         private readonly comment: string,
+        private readonly anime?: Anime
     ) { }
 
     getId() {
@@ -20,6 +23,10 @@ class Opinion {
 
     getComment() {
         return this.comment;
+    }
+
+    getAnime() {
+        return this.anime;
     }
 }
 

@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import { errorHandlerMiddleware, jsonApiResponseMiddleware } from "./middlewares";
 import { ApiRouter } from "./routes";
 import { initialiseRedisClient } from "./config/redisConfig";
+import rateLimit from "express-rate-limit";
 
 const app = express();
 
@@ -16,6 +17,9 @@ app.use(cors({
         "http://localhost", "http://127.0.0.1", "http://0.0.0.0"
     ],
     credentials: true
+}));
+app.use(rateLimit({
+    limit: 50
 }));
 app.use(cookieParser());
 app.use(express.json());

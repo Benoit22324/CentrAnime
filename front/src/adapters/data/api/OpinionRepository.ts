@@ -5,6 +5,26 @@ import { convertOpinion } from "../../../utils/convertOpinion";
 import type { OpinionFormData } from "../../../typings/OpinionFormData";
 
 class OpinionRepository implements OpinionRepositoryInterface {
+    async getViewOpinion(): Promise<Opinion[] | null> {
+        try {
+            const response = await axios.get(`http://localhost:8000/api/opinion`, {
+                withCredentials: true
+            });
+            // const response = await axios.get(`/api/opinion/`, {
+            //     withCredentials: true
+            // });
+
+            if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
+
+            if (!response.data.data) return null;
+
+            return response.data.data.map((opinion: any) => convertOpinion(opinion));
+        } catch (error) {
+            console.log(error)
+            throw new Error("Une erreur inattendue est survenue");
+        }
+    }
+
     async getOpinion(animeId: string): Promise<Opinion | null> {
         try {
             const response = await axios.get(`http://localhost:8000/api/opinion/${animeId}`, {

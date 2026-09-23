@@ -56,7 +56,7 @@ model Rank {
   id         String   @id @default(uuid())
   rank       Int
   platformId String
-  platform   Platform @relation(fields: [platformId], references: [id])
+  platform   Platform @relation(fields: [platformId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   anime      Anime?
 }
 
@@ -64,7 +64,7 @@ model Score {
   id         String   @id @default(uuid())
   score      Float
   platformId String
-  platform   Platform @relation(fields: [platformId], references: [id])
+  platform   Platform @relation(fields: [platformId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   anime      Anime?
 }
 
@@ -83,8 +83,8 @@ model Anime {
   updatedAt            DateTime
   rankId               String                @unique
   scoreId              String                @unique
-  rank                 Rank                  @relation(fields: [rankId], references: [id])
-  score                Score                 @relation(fields: [scoreId], references: [id])
+  rank                 Rank                  @relation(fields: [rankId], references: [id], onUpdate: Cascade)
+  score                Score                 @relation(fields: [scoreId], references: [id], onUpdate: Cascade)
   animeGenres          AnimeGenre[]
   animeStudios         AnimeStudio[]
   recommandationAnimes RecommandationAnime[]
@@ -96,16 +96,16 @@ model AnimeGenre {
   id      String @id @default(uuid())
   animeId String
   genreId String
-  anime   Anime  @relation(fields: [animeId], references: [id])
-  genre   Genre  @relation(fields: [genreId], references: [id])
+  anime   Anime  @relation(fields: [animeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  genre   Genre  @relation(fields: [genreId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model AnimeStudio {
   id       String @id @default(uuid())
   animeId  String
   studioId String
-  anime    Anime  @relation(fields: [animeId], references: [id])
-  studio   Studio @relation(fields: [studioId], references: [id])
+  anime    Anime  @relation(fields: [animeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  studio   Studio @relation(fields: [studioId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Recommandation {
@@ -113,7 +113,7 @@ model Recommandation {
   title                String
   description          String
   authorId             String
-  author               User                  @relation(fields: [authorId], references: [id])
+  author               User                  @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   likes                Like[]
   favorites            Favorite[]
   recommandationAnimes RecommandationAnime[]
@@ -123,32 +123,31 @@ model Like {
   id     String         @id @default(uuid())
   recoId String
   userId String
-  reco   Recommandation @relation(fields: [recoId], references: [id])
-  user   User           @relation(fields: [userId], references: [id])
+  reco   Recommandation @relation(fields: [recoId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user   User           @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Favorite {
   id     String         @id @default(uuid())
   recoId String
   userId String
-  reco   Recommandation @relation(fields: [recoId], references: [id])
-  user   User           @relation(fields: [userId], references: [id])
+  reco   Recommandation @relation(fields: [recoId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user   User           @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model RecommandationAnime {
   id        String         @id @default(uuid())
-  viewOrder Int
   animeId   String
   recoId    String
-  anime     Anime          @relation(fields: [animeId], references: [id])
-  reco      Recommandation @relation(fields: [recoId], references: [id])
+  anime     Anime          @relation(fields: [animeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  reco      Recommandation @relation(fields: [recoId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model AniList {
   id            String         @id @default(uuid())
   title         String
   userId        String
-  user          User           @relation(fields: [userId], references: [id])
+  user          User           @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   aniListAnimes AniListAnime[]
 }
 
@@ -156,51 +155,52 @@ model AniListAnime {
   id        String  @id @default(uuid())
   animeId   String
   aniListId String
-  anime     Anime   @relation(fields: [animeId], references: [id])
-  aniList   AniList @relation(fields: [aniListId], references: [id])
+  anime     Anime   @relation(fields: [animeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  aniList   AniList @relation(fields: [aniListId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Opinion {
   id         String @id @default(uuid())
-  note       Int
+  note       Float
   comment    String
   viewStatus String
   userId     String
   animeId    String
-  user       User   @relation(fields: [userId], references: [id])
-  anime      Anime  @relation(fields: [animeId], references: [id])
+  user       User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  anime      Anime  @relation(fields: [animeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model ContactRequest {
   id         String   @id @default(uuid())
   createdAt  DateTime @default(now())
   senderId   String   @unique
-  reveiverId String   @unique
-  sender     User     @relation("SenderRequest", fields: [senderId], references: [id])
-  receiver   User     @relation("ReceiverRequest", fields: [reveiverId], references: [id])
+  receiverId String   @unique
+  sender     User     @relation("SenderRequest", fields: [senderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  receiver   User     @relation("ReceiverRequest", fields: [receiverId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Contact {
   id      String @id @default(uuid())
   userAId String @unique
   userBId String @unique
-  userA   User   @relation("UserAContact", fields: [userAId], references: [id])
-  userB   User   @relation("UserBContact", fields: [userBId], references: [id])
+  userA   User   @relation("UserAContact", fields: [userAId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userB   User   @relation("UserBContact", fields: [userBId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   chat    Chat?
 }
 
 model Chat {
   id           String        @id @default(uuid())
   contactId    String        @unique
-  contact      Contact       @relation(fields: [contactId], references: [id])
+  contact      Contact       @relation(fields: [contactId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   chatMessages ChatMessage[]
 }
 
 model ChatMessage {
-  id       String @id @default(uuid())
-  message  String
-  chatId   String
-  authorId String
-  chat     Chat   @relation(fields: [chatId], references: [id])
-  author   User   @relation(fields: [authorId], references: [id])
+  id        String    @id @default(uuid())
+  message   String
+  chatId    String
+  authorId  String
+  createdAt DateTime  @default(now())
+  chat      Chat      @relation(fields: [chatId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  author    User      @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }

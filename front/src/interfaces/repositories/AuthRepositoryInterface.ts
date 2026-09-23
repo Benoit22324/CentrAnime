@@ -6,4 +6,5 @@ export interface AuthRepositoryInterface {
     login(payload: LoginFormData): Promise<RepositoryOutput>
     register(payload: RegisterFormData): Promise<RepositoryOutput | void>
     logout(): Promise<void>
+    me(): Promise<RepositoryOutput>
 }

@@ -14,34 +14,34 @@ export const Pagination = ({ selectedPage, setSelectedPage, totalPage }: Paginat
             buttons.push(<Button
                 label="0"
                 handleClick={() => setSelectedPage(0)}
-                className={`px-4 py-2 font-semibold ${selectedPage === 0 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === 0 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
             />)
         } else if (!totalPage && selectedPage <= 2) {
             buttons.push(<>
                 <Button
                     label="1"
                     handleClick={() => setSelectedPage(0)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === 0 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === 0 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
                 <Button
                     label="2"
                     handleClick={() => setSelectedPage(1)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === 1 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === 1 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
                 <Button
                     label="3"
                     handleClick={() => setSelectedPage(2)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === 2 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === 2 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
                 <Button
                     label="4"
                     handleClick={() => setSelectedPage(3)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === 3 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === 3 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
                 <Button
                     label="5"
                     handleClick={() => setSelectedPage(4)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === 4 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === 4 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
             </>)
         } else if (!totalPage && selectedPage > 2) {
@@ -49,33 +49,33 @@ export const Pagination = ({ selectedPage, setSelectedPage, totalPage }: Paginat
                 <Button
                     label="1"
                     handleClick={() => setSelectedPage(0)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === 0 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === 0 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
-                <span className="mx-2 font-semibold select-none">...</span>
+                <span className="mx-2 font-semibold select-none dark:text-light">...</span>
                 <Button
                     label={String(selectedPage - 1)}
                     handleClick={() => setSelectedPage(selectedPage - 2)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === selectedPage - 2 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === selectedPage - 2 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
                 <Button
                     label={String(selectedPage)}
                     handleClick={() => setSelectedPage(selectedPage - 1)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === selectedPage - 1 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === selectedPage - 1 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
                 <Button
                     label={String(selectedPage + 1)}
                     handleClick={() => setSelectedPage(selectedPage)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === selectedPage ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === selectedPage ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
                 <Button
                     label={String(selectedPage + 2)}
                     handleClick={() => setSelectedPage(selectedPage + 1)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === selectedPage + 1 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === selectedPage + 1 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
                 <Button
                     label={String(selectedPage + 3)}
                     handleClick={() => setSelectedPage(selectedPage + 2)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === selectedPage + 2 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === selectedPage + 2 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
             </>)
         } else if (totalPage && selectedPage <= 2) {
@@ -83,15 +83,15 @@ export const Pagination = ({ selectedPage, setSelectedPage, totalPage }: Paginat
                 buttons.push(<Button
                     label={String(i + 1)}
                     handleClick={() => setSelectedPage(i)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === i ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === i ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />)
             }
             if (totalPage >= 5) buttons.push(<>
-                <span className="mx-2 font-semibold select-none">...</span>
+                <span className="mx-2 font-semibold select-none dark:text-light">...</span>
                 <Button
                     label={String(totalPage)}
                     handleClick={() => setSelectedPage(totalPage - 1)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === totalPage - 1 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === totalPage - 1 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
             </>)
         } else if (totalPage && selectedPage > 2 && selectedPage < totalPage - 3) {
@@ -99,23 +99,23 @@ export const Pagination = ({ selectedPage, setSelectedPage, totalPage }: Paginat
                 <Button
                     label="1"
                     handleClick={() => setSelectedPage(0)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === 0 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === 0 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
-                <span className="mx-2 font-semibold select-none">...</span>
+                <span className="mx-2 font-semibold select-none dark:text-light">...</span>
             </>)
             for (let i = selectedPage - 2; i <= selectedPage + 2; i++) {
                 buttons.push(<Button
                     label={String(i + 1)}
                     handleClick={() => setSelectedPage(i)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === i ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === i ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />)
             }
             if (totalPage >= 5) buttons.push(<>
-                <span className="mx-2 font-semibold select-none">...</span>
+                <span className="mx-2 font-semibold select-none dark:text-light">...</span>
                 <Button
                     label={String(totalPage)}
                     handleClick={() => setSelectedPage(totalPage - 1)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === totalPage - 1 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === totalPage - 1 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
             </>)
         } else if (totalPage && selectedPage > 2 && selectedPage >= totalPage - 3) {
@@ -123,15 +123,15 @@ export const Pagination = ({ selectedPage, setSelectedPage, totalPage }: Paginat
                 <Button
                     label="1"
                     handleClick={() => setSelectedPage(0)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === 0 ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === 0 ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />
-                <span className="mx-2 font-semibold select-none">...</span>
+                <span className="mx-2 font-semibold select-none dark:text-light">...</span>
             </>)
             for (let i = totalPage - 5; i <= totalPage - 1; i++) {
                 buttons.push(<Button
                     label={String(i + 1)}
                     handleClick={() => setSelectedPage(i)}
-                    className={`px-4 py-2 font-semibold ${selectedPage === i ? "bg-light-lightblue" : "bg-light-grey hover:bg-light-lightblue"}`}
+                    className={`px-4 py-2 font-semibold dark:text-light ${selectedPage === i ? "bg-light-lightblue dark:bg-dark-lightblue" : "bg-light-grey hover:bg-light-lightblue dark:bg-dark-grey dark:hover:bg-dark-lightblue"}`}
                 />)
             }
         }

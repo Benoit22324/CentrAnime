@@ -6,8 +6,8 @@ class LoginUseCase {
     constructor(private readonly userRepository: UserRepositoryInterface) { }
 
     async execute(email: string, password: string): Promise<UserPayload> {
-        if (!email) throw new Error("L'email est requis");
-        if (!password) throw new Error("Le mot de passe est requis");
+        if (!email || email.trim() === "") throw new Error("L'email est requis");
+        if (!password || password.trim() === "") throw new Error("Le mot de passe est requis");
 
         try {
             const user = await this.userRepository.login(email);

@@ -1,6 +1,12 @@
-import { Anime as PrismaAnime, Opinion as PrismaOpinion, Prisma, User } from "@prisma/client";
+import { Anime as PrismaAnime, Recommandation as PrismaReco, Opinion as PrismaOpinion, Prisma, User, AniList, Contact as PrismaContact, ContactRequest as PrismaContactRequest, Chat as PrismaChat, ChatMessage as PrismaCM } from "@prisma/client";
 import Anime from "../../domain/entities/Anime";
 import Opinion from "../../domain/entities/Opinion";
+import AnimeList from "../../domain/entities/AnimeList";
+import Recommandation from "../../domain/entities/Recommandation";
+import Contact from "../../domain/entities/Contact";
+import ContactRequest from "../../domain/entities/ContactRequest";
+import Chat from "../../domain/entities/Chat";
+import ChatMessage from "../../domain/entities/ChatMessage";
 
 export const sanitizeUser = (user: User) => {
     const { salt, password, ...safeInfo } = user;
@@ -117,11 +123,234 @@ export const sanitizeAnime = (anime: PrismaAnime) => {
     )
 }
 
+type PrismaOpinionWithInclude = Prisma.OpinionGetPayload<{
+    include: {
+        anime: {
+            include: {
+                animeGenres: {
+                    select: {
+                        genre: {
+                            select: { genreName: true }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}>
+
 export const sanitizeOpinion = (opinion: PrismaOpinion) => {
+    const op = opinion as PrismaOpinionWithInclude;
+
     return new Opinion(
-        opinion.id,
-        opinion.viewStatus ?? undefined,
-        opinion.note ?? undefined,
-        opinion.comment ?? undefined
+        op.id,
+        op.viewStatus ?? undefined,
+        op.note ?? undefined,
+        op.comment ?? undefined,
+        op.anime ? sanitizeAnime(op.anime) : undefined
+    )
+}
+
+type PrismaAniListWithInclude = Prisma.AniListGetPayload<{
+    include: {
+        aniListAnimes: {
+            select: {
+                id: true,
+                anime: {
+                    select: {
+                        id: true,
+                        main_title: true
+                    }
+                }
+            }
+        }
+    }
+}>
+
+export const sanitizeAnimeList = (aniList: AniList) => {
+    const al = aniList as PrismaAniListWithInclude;
+
+    const animes = al.aniListAnimes.map(a => ({
+        id: a.id,
+        animeId: a.anime.id,
+        title: a.anime.main_title
+    }))
+
+    return new AnimeList(
+        al.id,
+        al.title,
+        animes
+    )
+}
+
+type PrismaRecommandationWithInclude = Prisma.RecommandationGetPayload<{
+    include: {
+        recommandationAnimes: {
+            select: {
+                id: true,
+                anime: {
+                    select: {
+                        id: true,
+                        main_title: true
+                    }
+                }
+            }
+        },
+        author: {
+            select: {
+                username: true
+            }
+        },
+        favorites: true,
+        likes: true,
+        _count: {
+            select: {
+                favorites: true,
+                likes: true
+            }
+        }
+    }
+}>
+
+export const sanitizeRecommandation = (recommandation: PrismaReco, isOwner?: boolean) => {
+    const reco = recommandation as PrismaRecommandationWithInclude;
+
+    const animes = reco.recommandationAnimes.map(a => ({
+        id: a.id,
+        animeId: a.anime.id,
+        title: a.anime.main_title
+    }))
+
+    const userInteraction = {
+        favoriteId: (reco.favorites && reco.favorites.length > 0) ? reco.favorites[0].id : "",
+        likeId: (reco.likes && reco.likes.length > 0) ? reco.likes[0].id : ""
+    };
+
+    return new Recommandation(
+        reco.id,
+        reco.title,
+        reco.description,
+        animes,
+        reco.author.username,
+        isOwner ?? false,
+        userInteraction,
+        reco._count ? reco._count.likes : 0,
+        reco._count ? reco._count.favorites : 0,
+    )
+}
+
+type PrismaContactWithInclude = Prisma.ContactGetPayload<{
+    include: {
+        userA: {
+            select: {
+                username: true
+            }
+        },
+        userB: {
+            select: {
+                username: true
+            }
+        },
+        chat: {
+            select: {
+                id: true
+            }
+        }
+    }
+}>
+
+export const sanitizeContact = (contact: PrismaContact, userId: string, manualChatId?: string) => {
+    const c = contact as PrismaContactWithInclude;
+
+    return new Contact(
+        c.id,
+        c.userAId !== userId ? c.userA.username : c.userB.username,
+        c.chat ? c.chat.id : manualChatId ?? ""
+    )
+}
+
+type PrismaContactRequestWithInclude = Prisma.ContactRequestGetPayload<{
+    include: {
+        sender: {
+            select: {
+                username: true
+            }
+        }
+    }
+}>
+
+export const sanitizeContactRequest = (contactRequest: PrismaContactRequest) => {
+    const cr = contactRequest as PrismaContactRequestWithInclude;
+
+    return new ContactRequest(
+        cr.id,
+        cr.sender.username,
+        cr.createdAt
+    )
+}
+
+type PrismaChatWithInclude = Prisma.ChatGetPayload<{
+    include: {
+        chatMessages: {
+            select: {
+                id: true,
+                message: true,
+                author: {
+                    select: {
+                        id: true,
+                        username: true
+                    }
+                }
+            },
+            orderBy: {
+                createdAt: "desc"
+            }
+        },
+        contact: {
+            select: {
+                userA: {
+                    select: {
+                        id: true,
+                        username: true
+                    }
+                },
+                userB: {
+                    select: {
+                        id: true,
+                        username: true
+                    }
+                }
+            }
+        }
+    }
+}>
+
+export const sanitizeChat = (chat: PrismaChat, userId: string) => {
+    const c = chat as PrismaChatWithInclude;
+
+    const contactUsername = c.contact.userA.id !== userId ? c.contact.userA.username : c.contact.userB.id !== userId ? c.contact.userB.username : "";
+
+    const messages = c.chatMessages.map(m => {
+        const isOwner = m.author.id === userId;
+
+        return new ChatMessage(
+            m.id,
+            m.message,
+            isOwner
+        );
+    });
+
+    return new Chat(
+        c.id,
+        messages,
+        contactUsername
+    )
+}
+
+export const sanitizeChatMessage = (chatMessage: PrismaCM, userId: string) => {
+    return new ChatMessage(
+        chatMessage.id,
+        chatMessage.message,
+        chatMessage.authorId === userId
     )
 }

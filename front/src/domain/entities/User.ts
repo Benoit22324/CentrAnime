@@ -3,7 +3,8 @@ class User {
         private id: string,
         private username: string,
         private email: string,
-        private createdAt: Date
+        private createdAt: Date,
+        private lastLogin: Date
     ) { }
 
     getId() {
@@ -20,6 +21,10 @@ class User {
 
     getCreatedAt() {
         return this.createdAt;
+    }
+
+    getLastLogin() {
+        return this.lastLogin;
     }
 }
 

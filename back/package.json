@@ -9,7 +9,8 @@
   "scripts": {
     "start": "nodemon --exec tsx src/api/app.ts",
     "seed": "tsx src/api/config/seed.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",

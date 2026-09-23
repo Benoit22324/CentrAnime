@@ -1,3 +1,7 @@
 export * from "./userDto";
 export * from "./animeDto";
 export * from "./opinionDto";
+export * from "./animeListDto";
+export * from "./recommandationDto";
+export * from "./contactRequestDto";
+export * from "./chatDto";

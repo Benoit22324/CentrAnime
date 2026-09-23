@@ -53,10 +53,10 @@ export const LoginForm = () => {
     }
 
     return <>
-        <div className="p-4 bg-light-grey rounded-lg shadow-md shadow-black/20">
+        <div className="w-full md:w-fit p-4 bg-light-grey rounded-lg shadow-md shadow-black/20 dark:bg-dark-grey dark:shadow-light-grey/20">
             <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col gap-2">
-                <div className="flex justify-between items-center gap-2">
-                    <label>E-mail</label>
+                <div className="flex flex-col md:flex-row justify-between md:items-center gap-1 md:gap-2">
+                    <label className="text-sm md:text-base dark:text-light">E-mail</label>
                     <Controller
                         rules={{ required: true }}
                         control={control}
@@ -65,17 +65,17 @@ export const LoginForm = () => {
                         render={({field}) => <input
                             {...field}
                             type="email"
-                            className={`px-2 py-1 bg-light-lightgrey rounded-lg border-1 dark:bg-dark-grey dark:border-light ${errors.email && "border-light-red"}`}
+                            className={`px-2 py-1 bg-light-lightgrey rounded-lg border-1 shadow-custom-1 shadow-black/20 ${errors.email && "border-light-red dark:!border-dark-red"} dark:bg-dark-grey dark:border-light dark:shadow-light-grey/20 dark:text-light dark:placeholder:text-dark-lightgrey`}
                         />}
                     />
                 </div>
 
                 {
-                    (errors.email && errors.email.message) && <p className="text-sm text-light-red text-center">{errors.email.message as string}</p>
+                    (errors.email && errors.email.message) && <p className="text-xs md:text-sm text-light-red text-center dark:text-dark-red">{errors.email.message as string}</p>
                 }
 
-                <div className="flex justify-between items-center gap-2">
-                    <label>Mot de passe</label>
+                <div className="flex flex-col md:flex-row justify-between md:items-center gap-1 md:gap-2">
+                    <label className="text-sm md:text-base dark:text-light">Mot de passe</label>
                     <Controller
                         rules={{ required: true }}
                         control={control}
@@ -84,21 +84,21 @@ export const LoginForm = () => {
                         render={({field}) => <input
                             {...field}
                             type="password"
-                            className={`px-2 py-1 bg-light-lightgrey rounded-lg border-1 dark:bg-dark-grey dark:border-light ${errors.password && "border-light-red"}`}
+                            className={`px-2 py-1 bg-light-lightgrey rounded-lg border-1 shadow-custom-1 shadow-black/20 ${errors.password && "border-light-red dark:!border-dark-red"} dark:bg-dark-grey dark:border-light dark:shadow-light-grey/20 dark:text-light dark:placeholder:text-dark-lightgrey`}
                         />}
                     />
                 </div>
 
                 {
-                    (errors.password && errors.password.message) && <p className="text-sm text-light-red text-center">{errors.password.message as string}</p>
+                    (errors.password && errors.password.message) && <p className="text-xs md:text-sm text-light-red text-center dark:text-dark-red">{errors.password.message as string}</p>
                 }
                 {
-                    formError && <p className="text-light-red text-center">{formError}</p>
+                    formError && <p className="text-sm md:text-base text-light-red text-center dark:text-dark-red">{formError}</p>
                 }
 
                 <Button
                     label="Se connecter"
-                    className="p-1 bg-light-green font-semibold hover:bg-light-lightgreen"
+                    className="p-1 bg-light-green font-semibold hover:bg-light-lightgreen dark:bg-dark-green dark:hover:bg-dark-lightgreen dark:text-light"
                 />
             </form>
         </div>
