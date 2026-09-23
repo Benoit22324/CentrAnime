@@ -11,7 +11,7 @@
     "start": "node dist/api/server.js",
     "seed": "tsx src/api/config/seed.ts",
     "build": "tsc",
-    "postinstall": "prisma generate && npx prisma migrate deploy",
+    "postinstall": "prisma generate && npx prisma migrate dev -n init && npx prisma migrate deploy",
     "test": "jest"
   },
   "devDependencies": {
