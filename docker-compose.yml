@@ -17,6 +17,8 @@ services:
   frontend:
     build: ./front
     container_name: frontend
+    env_file:
+      - ./front/.env
     expose:
       - 80
     depends_on:

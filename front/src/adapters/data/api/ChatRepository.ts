@@ -4,11 +4,12 @@ import type Chat from "../../../domain/entities/Chat";
 import { convertChat } from "../../../utils/convertChat";
 import type ChatMessage from "../../../domain/entities/ChatMessage";
 import { convertChatMessage } from "../../../utils/convertChatMessage";
+import { apiUrl } from "../../../env";
 
 class ChatRepository implements ChatRepositoryInterface {
     async getChat(chatId: string, contactId: string): Promise<Chat | null> {
         try {
-            const response = await axios.get(`http://localhost:8000/api/chat?chatId=${chatId}&contactId=${contactId}`, {
+            const response = await axios.get(`${apiUrl}/api/chat?chatId=${chatId}&contactId=${contactId}`, {
                 withCredentials: true
             })
             // const response = await axios.get(`/api/chat?chatId=${chatId}&contactId=${contactId}`, {
@@ -26,7 +27,7 @@ class ChatRepository implements ChatRepositoryInterface {
 
     async addMessage(chatId: string, message: string): Promise<ChatMessage> {
         try {
-            const response = await axios.post(`http://localhost:8000/api/chat/message/${chatId}`, { message }, {
+            const response = await axios.post(`${apiUrl}/api/chat/message/${chatId}`, { message }, {
                 withCredentials: true
             })
             // const response = await axios.post(`/api/chat/message/${chatId}`, { message }, {
@@ -43,7 +44,7 @@ class ChatRepository implements ChatRepositoryInterface {
 
     async updateMessage(messageId: string, message: string): Promise<ChatMessage> {
         try {
-            const response = await axios.patch(`http://localhost:8000/api/chat/message/${messageId}`, { message }, {
+            const response = await axios.patch(`${apiUrl}/api/chat/message/${messageId}`, { message }, {
                 withCredentials: true
             })
             // const response = await axios.patch(`/api/chat/message/${messageId}`, { message }, {
@@ -60,7 +61,7 @@ class ChatRepository implements ChatRepositoryInterface {
 
     async deleteMessage(messageId: string): Promise<void> {
         try {
-            const response = await axios.delete(`http://localhost:8000/api/chat/message/${messageId}`, {
+            const response = await axios.delete(`${apiUrl}/api/chat/message/${messageId}`, {
                 withCredentials: true
             })
             // const response = await axios.delete(`/api/chat/message/${messageId}`, {

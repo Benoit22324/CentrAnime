@@ -3,11 +3,12 @@ import type { RecommandationRepositoryInterface } from "../../../interfaces/repo
 import type Recommandation from "../../../domain/entities/Recommandation";
 import type { GetRecommandationOffsetOutput } from "../../../interfaces/outputs/GetRecommandationOffsetOutput";
 import { convertRecommandation } from "../../../utils/convertRecommandation";
+import { apiUrl } from "../../../env";
 
 class RecommandationRepository implements RecommandationRepositoryInterface {
     async getFavoriteRecommandations(): Promise<Recommandation[] | null> {
         try {
-            const response = await axios.get("http://localhost:8000/api/reco/favorite", {
+            const response = await axios.get(`${apiUrl}/api/reco/favorite`, {
                 withCredentials: true
             })
             // const response = await axios.get("/api/reco/favorite", {
@@ -25,7 +26,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async getRecommandations(): Promise<Recommandation[] | null> {
         try {
-            const response = await axios.get("http://localhost:8000/api/reco", {
+            const response = await axios.get(`${apiUrl}/api/reco`, {
                 withCredentials: true
             })
             // const response = await axios.get("/api/reco", {
@@ -43,7 +44,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async getRecommandationOffset(selectedPage: number, maxItems: number): Promise<GetRecommandationOffsetOutput> {
         try {
-            const response = await axios.get(`http://localhost:8000/api/reco/offset?selectedPage=${selectedPage}&maxItems=${maxItems}`, {
+            const response = await axios.get(`${apiUrl}/api/reco/offset?selectedPage=${selectedPage}&maxItems=${maxItems}`, {
                 withCredentials: true
             })
             // const response = await axios.get(`/api/reco/offset?selectedPage=${selectedPage}&maxItems=${maxItems}`, {
@@ -69,7 +70,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async getRecommandationById(id: string): Promise<Recommandation | null> {
         try {
-            const response = await axios.get(`http://localhost:8000/api/reco/${id}`, {
+            const response = await axios.get(`${apiUrl}/api/reco/${id}`, {
                 withCredentials: true
             })
             // const response = await axios.get(`/api/reco/${id}`, {
@@ -88,7 +89,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
     async createRecommandation(title: string, description: string): Promise<void> {
         try {
             // Appel à l'API avec les données des champs
-            const response = await axios.post(`http://localhost:8000/api/reco`, { title, description }, {
+            const response = await axios.post(`${apiUrl}/api/reco`, { title, description }, {
                 withCredentials: true
             })
             // const response = await axios.post(`/api/reco`, { title, description }, {
@@ -104,7 +105,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async addAnimeReco(recoId: string, animeId: string): Promise<Recommandation | null> {
         try {
-            const response = await axios.post(`http://localhost:8000/api/reco/anime/${recoId}?animeId=${animeId}`, {}, {
+            const response = await axios.post(`${apiUrl}/api/reco/anime/${recoId}?animeId=${animeId}`, {}, {
                 withCredentials: true
             })
             // const response = await axios.post(`/api/reco/anime/${recoId}?animeId=${animeId}`, {}, {
@@ -122,7 +123,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async addFavoriteReco(recoId: string): Promise<Recommandation | null> {
         try {
-            const response = await axios.post(`http://localhost:8000/api/reco/favorite/${recoId}`, {}, {
+            const response = await axios.post(`${apiUrl}/api/reco/favorite/${recoId}`, {}, {
                 withCredentials: true
             })
             // const response = await axios.post(`/api/reco/favorite/${recoId}`, {}, {
@@ -140,7 +141,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async addLikeReco(recoId: string): Promise<Recommandation | null> {
         try {
-            const response = await axios.post(`http://localhost:8000/api/reco/like/${recoId}`, {}, {
+            const response = await axios.post(`${apiUrl}/api/reco/like/${recoId}`, {}, {
                 withCredentials: true
             })
             // const response = await axios.post(`/api/reco/like/${recoId}`, {}, {
@@ -158,7 +159,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async updateRecommandation(id: string, title: string, description: string): Promise<Recommandation | null> {
         try {
-            const response = await axios.patch(`http://localhost:8000/api/reco/${id}`, { title, description }, {
+            const response = await axios.patch(`${apiUrl}/api/reco/${id}`, { title, description }, {
                 withCredentials: true
             })
             // const response = await axios.patch(`/api/reco/${id}}`, { title, description }, {
@@ -176,7 +177,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async removeAnimeReco(id: string): Promise<void> {
         try {
-            const response = await axios.delete(`http://localhost:8000/api/reco/anime/${id}`, {
+            const response = await axios.delete(`${apiUrl}/api/reco/anime/${id}`, {
                 withCredentials: true
             })
             // const response = await axios.delete(`/api/reco/anime/${id}`, {
@@ -191,7 +192,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async removeFavoriteReco(id: string): Promise<void> {
         try {
-            const response = await axios.delete(`http://localhost:8000/api/reco/favorite/${id}`, {
+            const response = await axios.delete(`${apiUrl}/api/reco/favorite/${id}`, {
                 withCredentials: true
             })
             // const response = await axios.delete(`/api/reco/favorite/${id}`, {
@@ -206,7 +207,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async removeLikeReco(id: string): Promise<void> {
         try {
-            const response = await axios.delete(`http://localhost:8000/api/reco/like/${id}`, {
+            const response = await axios.delete(`${apiUrl}/api/reco/like/${id}`, {
                 withCredentials: true
             })
             // const response = await axios.delete(`/api/reco/like/${id}`, {
@@ -221,7 +222,7 @@ class RecommandationRepository implements RecommandationRepositoryInterface {
 
     async deleteRecommandation(id: string): Promise<void> {
         try {
-            const response = await axios.delete(`http://localhost:8000/api/reco/${id}`, {
+            const response = await axios.delete(`${apiUrl}/api/reco/${id}`, {
                 withCredentials: true
             })
             // const response = await axios.delete(`/api/reco/${id}`, {

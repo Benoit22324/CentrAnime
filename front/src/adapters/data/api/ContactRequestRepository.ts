@@ -2,11 +2,12 @@ import axios from "axios";
 import type ContactRequest from "../../../domain/entities/ContactRequest";
 import type { ContactRequestRepositoryInterface } from "../../../interfaces/repositories/ContactRequestRepositoryInterface";
 import { convertContactRequest } from "../../../utils/convertContactRequest";
+import { apiUrl } from "../../../env";
 
 class ContactRequestRepository implements ContactRequestRepositoryInterface {
     async getContactRequests(): Promise<ContactRequest[] | null> {
         try {
-            const response = await axios.get("http://localhost:8000/api/contactRequest", {
+            const response = await axios.get(`${apiUrl}/api/contactRequest`, {
                 withCredentials: true
             })
             // const response = await axios.get("/api/contact", {
@@ -24,7 +25,7 @@ class ContactRequestRepository implements ContactRequestRepositoryInterface {
 
     async createContactRequest(email: string): Promise<string | void> {
         try {
-            const response = await axios.post("http://localhost:8000/api/contactRequest", { email }, {
+            const response = await axios.post(`${apiUrl}/api/contactRequest`, { email }, {
                 withCredentials: true
             })
             // const response = await axios.post("/api/contact", { email }, {
@@ -41,7 +42,7 @@ class ContactRequestRepository implements ContactRequestRepositoryInterface {
 
     async deleteContactRequest(requestId: string): Promise<void> {
         try {
-            const response = await axios.delete(`http://localhost:8000/api/contactRequest/${requestId}`, {
+            const response = await axios.delete(`${apiUrl}/api/contactRequest/${requestId}`, {
                 withCredentials: true
             })
             // const response = await axios.delete(`/api/contactRequest/${requestId}`, {

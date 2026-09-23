@@ -3,12 +3,13 @@ import type { AnimeRepositoryInterface } from "../../../interfaces/repositories/
 import { convertAnime } from "../../../utils/convertAnime";
 import type { GetAnimeOffsetOutput } from "../../../interfaces/outputs/GetAnimeOffsetOutput";
 import type Anime from "../../../domain/entities/Anime";
+import { apiUrl } from "../../../env";
 
 class AnimeRepository implements AnimeRepositoryInterface {
     async getAnimeOffset(selectedPage: number, maxItems: number, searchName: string, filterGenre: string): Promise<GetAnimeOffsetOutput> {
         try {
             // Appel à l'API avec les données sous forme de query
-            const response = await axios.get(`http://localhost:8000/api/anime/offset?selectedPage=${selectedPage}&maxItems=${maxItems}${searchName ? `&searchName=${searchName}` : ""}${filterGenre ? `&filterGenre=${filterGenre}` : ""}`);
+            const response = await axios.get(`${apiUrl}/api/anime/offset?selectedPage=${selectedPage}&maxItems=${maxItems}${searchName ? `&searchName=${searchName}` : ""}${filterGenre ? `&filterGenre=${filterGenre}` : ""}`);
             // const response = await axios.get(`/api/anime/offset?selectedPage=${selectedPage}&maxItems=${maxItems}${searchName ? `&searchName=${searchName}` : ""}${filterGenre ? `&filterGenre=${filterGenre}` : ""}`);
 
             // Retourner une erreur en cas d'échec
@@ -27,7 +28,7 @@ class AnimeRepository implements AnimeRepositoryInterface {
 
     async getAnimeById(id: string): Promise<Anime> {
         try {
-            const response = await axios.get(`http://localhost:8000/api/anime/${id}`);
+            const response = await axios.get(`${apiUrl}/api/anime/${id}`);
             // const response = await axios.get(`/api/anime/${id}`);
 
             if (!response.data.success) throw new Error(response.data.error.message || "Erreur inconnue");
