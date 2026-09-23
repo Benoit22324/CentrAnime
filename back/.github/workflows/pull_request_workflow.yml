@@ -1,8 +1,6 @@
 name: Deploiement et test des PR
 on:
-  pull_request:
-    paths:
-      - *
+  pull_request
 
 jobs:
     backend:
