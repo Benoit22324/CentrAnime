@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { LoginInputs, RegisterInputs } from "../dto";
 import LoginUseCase from "../../application/usecases/LoginUseCase";
 import RegisterUseCase from "../../application/usecases/RegisterUseCase";
-import { generateSignature } from "../utility";
+import { generateSignature, getEnvVariable } from "../utility";
 import GetUserByIdUseCase from "../../application/usecases/GetUserByIdUseCase";
 
 class AuthController {
@@ -26,7 +26,7 @@ class AuthController {
                 httpOnly: true,
                 secure: true,
                 expires: expiration,
-                sameSite: "lax"
+                sameSite: getEnvVariable("NODE_ENV") === "PRD" ? "none" : "lax"
             })
 
             return res.jsonSuccess(user);
