@@ -6,8 +6,10 @@ import { sanitizeAnime } from "../../api/utility";
 
 class AnimeRepository implements AnimeRepositoryInterface {
     async getAnimesByPage(selectedPage: number, maxItems: number, searchName: string | null, filterGenre: string | null): Promise<GetAnimesByPageOutputs | null> {
+        // Préparation des conditions (s'il y en a)
         const where: Prisma.AnimeWhereInput = {};
 
+        // Ajout de la condition sur le titre si on recherche sur le nom
         if (searchName) {
             where.OR = [
                 {
@@ -24,6 +26,7 @@ class AnimeRepository implements AnimeRepositoryInterface {
                 }
             ]
         }
+        // Ajout de la condition sur le genre si on recherche par genre
         if (filterGenre) {
             where.animeGenres = {
                 some: {
@@ -34,6 +37,7 @@ class AnimeRepository implements AnimeRepositoryInterface {
             }
         }
 
+        // Récupération des animes en offset
         const animes = await prisma.anime.findMany({
             where,
             include: {
@@ -50,12 +54,15 @@ class AnimeRepository implements AnimeRepositoryInterface {
             orderBy: { popularity: "desc" }
         });
 
+        // Récupération du nombre total de page
         const totalAnimes = await prisma.anime.count({
             where
         }) / maxItems;
 
+        // Retour null si aucun anime est récupéré
         if (!animes) return null;
 
+        // Formatage de la réponse
         return {
             animes: animes.map(anime => sanitizeAnime(anime)),
             total: Math.ceil(totalAnimes)
